@@ -1,19 +1,35 @@
-sourceCompatibility = 1.8
-sourceSets.main.java.srcDirs = [ "src/" ]
-sourceSets.main.resources.srcDirs = ["../assets"]
+plugins {
+    id 'java'
+    id 'eclipse'
+}
 
-project.ext.mainClassName = "com.mygdx.game.DesktopLauncher"
-project.ext.assetsDir = new File("../assets")
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+sourceSets {
+    main {
+        java {
+            srcDirs = [ "src/" ]
+        }
+        resources {
+            srcDirs = ["../assets"]
+        }
+    }
+}
+
+ext {
+    mainClassName = "com.mygdx.game.DesktopLauncher"
+    assetsDir = new File("../assets")
+}
 
 import org.gradle.internal.os.OperatingSystem
 
-tasks.register('run', JavaExec) {
+tasks.register('runCustom', JavaExec) {
     dependsOn classes
-    mainClass = project.mainClassName
-    classpath = sourceSets.main.runtimeClasspath
+    mainClass.set(ext.mainClassName)
+    classpath = sourceSets.main.get().runtimeClasspath
     standardInput = System.in
-    workingDir = project.assetsDir
-    ignoreExitValue = true
+    workingDir = ext.assetsDir
+    ignoreExitValue.set(true)
 
     if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
         // Required to run on macOS
@@ -23,27 +39,34 @@ tasks.register('run', JavaExec) {
 
 tasks.register('debug', JavaExec) {
     dependsOn classes
-    mainClass = project.mainClassName
-    classpath = sourceSets.main.runtimeClasspath
+    mainClass.set(ext.mainClassName)
+    classpath = sourceSets.main.get().runtimeClasspath
     standardInput = System.in
-    workingDir = project.assetsDir
-    ignoreExitValue = true
-    debug = true
+    workingDir = ext.assetsDir
+    ignoreExitValue.set(true)
+    debugOptions {
+        enabled.set(true)
+    }
 }
 
 tasks.register('dist', Jar) {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     manifest {
-        attributes 'Main-Class': project.mainClassName
+        attributes 'Main-Class': ext.mainClassName
     }
     dependsOn configurations.runtimeClasspath
     from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.runtimeClasspath.get().collect { it.isDirectory() ? it : zipTree(it) }
     }
     with jar
 }
 
+tasks.named('dist').configure {
+    dependsOn classes
+}
 
-dist.dependsOn classes
-
-eclipse.project.name = appName + "-desktop"
+eclipse {
+    project {
+        name = 'appName' + "-desktop"
+    }
+}
