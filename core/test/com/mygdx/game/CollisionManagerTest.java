@@ -1,31 +1,28 @@
 package com.mygdx.game;
+
+import com.mygdx.game.CollisionManagement.CollisionManager;
+import com.mygdx.game.EntityManagement.BucketEntity;
+import com.mygdx.game.EntityManagement.RaindropEntity;
+import com.mygdx.game.EntityManagement.Entity;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CollisionManagerTest {
 
     @Test
-    public void testCollisionHandling() {
-        // Create a collision system
-        CollisionManager.CollisionSystem collisionSystem = new CollisionManager.CollisionSystem();
+    public void testHandleCollisions() {
+        List<Entity> entities = new ArrayList<>();
+        entities.add(new RaindropEntity(0, 0, 10, 10));
+        entities.add(new BucketEntity(5, 5, 10, 10));
 
-        // Create two entities that will collide
-        CollisionManager.MovableEntity entity1 = new CollisionManager.MovableEntity(0, 0, 10, 10, 5, 0);
-        CollisionManager.MovableEntity entity2 = new CollisionManager.MovableEntity(10, 0, 10, 10, -5, 0);
+        CollisionManager collisionManager = new CollisionManager(entities);
+        collisionManager.handleCollisions();
 
-        // Add the entities to a list
-        List<CollisionManager.Collidable> entities = new ArrayList<>();
-        entities.add(entity1);
-        entities.add(entity2);
-
-        // Update the collision system
-        collisionSystem.update(entities);
-
-        // Check if a collision was detected
-        assertTrue(entity1.collidesWith(entity2), "Entities should collide");
+        System.out.println("Entity 0 active status: " + entities.get(0).isActive());
+        assertFalse(entities.get(0).isActive(), "The first entity should be inactive after collision");
     }
-
-    // Add other test methods here...
 }
