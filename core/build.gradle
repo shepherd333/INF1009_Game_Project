@@ -1,6 +1,31 @@
 sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets {
+    main {
+        java {
+            srcDirs = [ "src/" ]
+        }
+    }
+    test {
+        java {
+            srcDirs = [ "test/" ]
+        }
+    }
+}
 
 eclipse.project.name = appName + "-core"
+
+// Add JUnit 5 as a test implementation dependency
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+}
+
+// Use JUnit Platform for running tests
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
+}
