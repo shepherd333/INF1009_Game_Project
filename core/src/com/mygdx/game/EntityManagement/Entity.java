@@ -1,25 +1,55 @@
 package com.mygdx.game.EntityManagement;
 
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.Texture;
 
-public class Entity {
-    private Rectangle bounds;
-    private boolean active;
+public abstract class Entity {
+    private float x;
+    private float y;
+    private float speed;
 
-    public Entity(float x, float y, float width, float height) {
-        this.bounds = new Rectangle(x, y, width, height);
-        this.active = true;
+    protected Texture texture;
+
+    public Entity(float x, float y, float speed) {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
     }
 
-    public Rectangle getBounds() {
-        return bounds;
+    public Entity() {
+
     }
 
-    public boolean isActive() {
-        return active;
+    public Texture getTexture() {
+        return texture;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public float getX() {
+        return x;
     }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public abstract void update();
+
+    public abstract void movement();
+
 }
+
