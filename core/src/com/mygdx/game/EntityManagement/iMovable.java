@@ -1,5 +1,5 @@
 package com.mygdx.game.EntityManagement;
 
-public interface MovableEntities {
+public interface iMovable {
     void move();
 }

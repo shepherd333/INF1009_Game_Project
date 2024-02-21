@@ -35,7 +35,6 @@ public class MainMenu implements SceneInterface {
         camera = new OrthographicCamera();
         viewport = new StretchViewport(800, 600, camera); // Use your desired world size
         camera.position.set(400, 300, 0); // Adjust according to your viewport's world width/height
-        startButtonTexture = new Texture(Gdx.files.internal("droplet.png")); // Ensure this exists
         startButtonBounds = new Rectangle(350, 250, 100, 50); // Example position and size
         font = new BitmapFont();
     }

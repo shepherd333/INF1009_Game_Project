@@ -1,25 +1,21 @@
 package com.mygdx.game.Scenes;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.Input;
-import com.mygdx.game.AIManagement.AIManager;
-import com.mygdx.game.EntityManagement.BucketEntity;
-import com.mygdx.game.EntityManagement.Entity;
 import com.mygdx.game.EntityManagement.EntityManager;
+import com.mygdx.game.EntityManagement.TextureObject;
 import com.mygdx.game.Game_Engine;
-import com.mygdx.game.InputManagement.InputManager;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.badlogic.gdx.graphics.g3d.particles.ParticleShader.Setters.screenWidth;
+import com.mygdx.game.EntityManagement.BucketEntity;
+import com.mygdx.game.EntityManagement.RaindropEntity;
 
 public class GamePlay implements SceneInterface {
     private SpriteBatch batch;
@@ -28,55 +24,51 @@ public class GamePlay implements SceneInterface {
     private Viewport viewport;
     private SceneManager sceneManager;
     private BitmapFont font;
-    // Example instantiation within a game scene
-    Texture raindropTexture = new Texture("assets/droplet.png");
-    float raindropSpeed = 200;
+    private ShapeRenderer shapeRenderer;
     private EntityManager entityManager;
-    AIManager aiManager = new AIManager(entityManager, 800);
-
-    private float spawnTimer = 0;
-    private final float spawnInterval = 1.0f;
-    private InputManager inputManager;
 
     public void initialize() {
         batch = new SpriteBatch();
         img = new Texture(Gdx.files.internal("GamePlay.png"));
         camera = new OrthographicCamera();
-        viewport = new StretchViewport(800, 600, camera); // Use your desired world size
-        camera.position.set(400, 300, 0); // Adjust according to your viewport's world width/height
+        viewport = new StretchViewport(800, 600, camera);
+        camera.position.set(400, 300, 0);
         font = new BitmapFont();
-        // Initialize the list of entities
-        List<Entity> entities = new ArrayList<>();
+        batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
+        entityManager = new EntityManager();
 
-        // Create a BucketEntity
-        BucketEntity bucket = new BucketEntity(new Texture("bucket.png"), 100, 100, 5);
+        Texture bucketTexture = new Texture(Gdx.files.internal("bucket.png"));
+        BucketEntity bucket = new BucketEntity(bucketTexture, 0, 0, 200, batch);
+        entityManager.addEntity(bucket);
 
-        // Add the BucketEntity to the list
-        entities.add(bucket);
-
-        // Initialize the EntityManager with the list of entities
-        entityManager = new EntityManager(entities);
-
-        // Initialize the InputManager with the bucket
-        inputManager = new InputManager(bucket);
-
-        // Now, the AIManager can be initialized with the properly initialized EntityManager
-        aiManager = new AIManager(entityManager, 800);
-
+        for (int i = 0; i < 50; i++) {
+            float randomX = MathUtils.random(0, Gdx.graphics.getWidth());
+            float randomY = MathUtils.random(0, Gdx.graphics.getHeight());
+            double dropSpeed = MathUtils.random(1,5);
+            Texture dropTexture = new Texture(Gdx.files.internal("droplet.png"));
+            float bucketX = bucket.getX();
+            float bucketWidth = bucket.getWidth();
+            RaindropEntity drop = new RaindropEntity(dropTexture, randomX, randomY, dropSpeed, batch, bucketX, bucketWidth);
+            drop.setWidth(dropTexture.getWidth());
+            drop.setHeight(dropTexture.getHeight());
+            drop.setActive(true);
+            System.out.println("Raindrop created. Active: " + drop.isActive());
+            entityManager.addEntity(drop);
+        }
     }
+
     @Override
     public void setSceneManager(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
     }
+
     @Override
     public void update(float deltaTime) {
-        //inputManager.handleInput();
-        //spawnTimer += deltaTime;
-        //if (spawnTimer >= spawnInterval) {
-            //aiManager.spawnRaindrop(raindropTexture);
-            //spawnTimer = 0;
-        //}
+        // Update entities
+        entityManager.updateEntities();
     }
+
     @Override
     public void render() {
         ScreenUtils.clear(1, 0, 0, 1);
@@ -91,9 +83,14 @@ public class GamePlay implements SceneInterface {
         font.draw(batch,"Press C to transit to EndMenu Scene.", 1, 300);
         font.draw(batch,"Press V to transit to MainMenu Scene.", 1, 250);
         font.draw(batch,"Press M to mute/unmute the audio.", 1, 200);
-
-
+        entityManager.draw(batch, null);
         batch.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        entityManager.draw(null, shapeRenderer);
+        shapeRenderer.end();
+
+        entityManager.moveEntities();
     }
 
     @Override
@@ -102,6 +99,7 @@ public class GamePlay implements SceneInterface {
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
         camera.update();
     }
+
     @Override
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
@@ -113,5 +111,6 @@ public class GamePlay implements SceneInterface {
     public void dispose() {
         img.dispose();
         batch.dispose();
+        shapeRenderer.dispose();
     }
 }
