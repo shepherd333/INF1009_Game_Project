@@ -2,6 +2,13 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
+import com.mygdx.game.Lifecycle.HighScoreManager;
 import com.mygdx.game.Scenes.SceneManager;
 import com.mygdx.game.Scenes.PauseMenu;
 import com.badlogic.gdx.audio.Music;
@@ -11,6 +18,9 @@ public class Game_Engine extends ApplicationAdapter {
 	SceneManager sm;
 	private Music backgroundMusic;
 	public static boolean isMusicMuted = false;
+	private HighScoreManager highScoreManager;
+
+
 
 
 	@Override
@@ -21,11 +31,15 @@ public class Game_Engine extends ApplicationAdapter {
 		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("bgmusic2.mp3"));
 		backgroundMusic.setLooping(true);
 		backgroundMusic.play();
+		highScoreManager = new HighScoreManager();
+		highScoreManager.create();
 
 	}
 
 	@Override
 	public void render() {
+
+
 		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
 			// The condition here assumes isCurrentSceneGamePlay() returns true if GamePlay scene is active
 			// For unpausing, this check is not strictly necessary unless you want to restrict it further
@@ -67,6 +81,8 @@ public class Game_Engine extends ApplicationAdapter {
 		} else {
 			backgroundMusic.setVolume(1); // Set volume back to normal
 		}
+
+		highScoreManager.render();
 	}
 	public void toggleMusic() {
 		isMusicMuted = !isMusicMuted;
@@ -100,8 +116,11 @@ public class Game_Engine extends ApplicationAdapter {
 		if (backgroundMusic != null) {
 			backgroundMusic.dispose();
 		}
-	}
 
+		if (highScoreManager != null) {
+			highScoreManager.dispose();
+		}
+	}
 }
 
 
