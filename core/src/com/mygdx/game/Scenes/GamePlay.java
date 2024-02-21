@@ -3,6 +3,7 @@ package com.mygdx.game.Scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -11,11 +12,9 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.Input;
-import com.mygdx.game.EntityManagement.EntityManager;
-import com.mygdx.game.EntityManagement.TextureObject;
+import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.Game_Engine;
-import com.mygdx.game.EntityManagement.BucketEntity;
-import com.mygdx.game.EntityManagement.RaindropEntity;
+import com.mygdx.game.Lifecycle.HighScoreManager;
 
 public class GamePlay implements SceneInterface {
     private SpriteBatch batch;
@@ -26,6 +25,9 @@ public class GamePlay implements SceneInterface {
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
     private EntityManager entityManager;
+    public HighScoreManager highScoreManager = HighScoreManager.getInstance();
+    private float scoreDisplayX;
+    private float scoreDisplayY;
 
     public void initialize() {
         batch = new SpriteBatch();
@@ -37,12 +39,17 @@ public class GamePlay implements SceneInterface {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         entityManager = new EntityManager();
+        highScoreManager.create();
+        highScoreManager.resetCurrentScore();
+
+
+
 
         Texture bucketTexture = new Texture(Gdx.files.internal("bucket.png"));
         BucketEntity bucket = new BucketEntity(bucketTexture, 0, 0, 200, batch);
         entityManager.addEntity(bucket);
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 5; i++) {
             float randomX = MathUtils.random(0, Gdx.graphics.getWidth());
             float randomY = MathUtils.random(0, Gdx.graphics.getHeight());
             double dropSpeed = MathUtils.random(1,5);
@@ -53,7 +60,7 @@ public class GamePlay implements SceneInterface {
             drop.setWidth(dropTexture.getWidth());
             drop.setHeight(dropTexture.getHeight());
             drop.setActive(true);
-            System.out.println("Raindrop created. Active: " + drop.isActive());
+            //System.out.println("Raindrop created. Active: " + drop.isActive());
             entityManager.addEntity(drop);
         }
     }
@@ -69,10 +76,16 @@ public class GamePlay implements SceneInterface {
         entityManager.updateEntities();
     }
 
+
+    public void setHighScoreManager(HighScoreManager highScoreManager) {
+        this.highScoreManager = highScoreManager;
+    }
+
     @Override
     public void render() {
         ScreenUtils.clear(1, 0, 0, 1);
         camera.update();
+
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
@@ -84,6 +97,13 @@ public class GamePlay implements SceneInterface {
         font.draw(batch,"Press V to transit to MainMenu Scene.", 1, 250);
         font.draw(batch,"Press M to mute/unmute the audio.", 1, 200);
         entityManager.draw(batch, null);
+        //highScoreManager.rendercurrent();
+        String scoreDisplay = "Current Score: " + highScoreManager.getInstance().getCurrentScoreFormatted();
+        Gdx.app.log("GamePlay", "Rendering score: " + scoreDisplay);
+        GlyphLayout scoreLayout = new GlyphLayout(font, scoreDisplay);
+        float scoreX = viewport.getWorldWidth() - scoreLayout.width - 20;
+        float scoreY = viewport.getWorldHeight() - scoreLayout.height - 25;
+        font.draw(batch, scoreDisplay, scoreX, scoreY);
         batch.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -96,9 +116,12 @@ public class GamePlay implements SceneInterface {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
+        camera.position.set(viewport.getWorldWidth()/2, viewport.getWorldHeight()/2, 0);
         camera.update();
+
     }
+
+
 
     @Override
     public void handleInput() {

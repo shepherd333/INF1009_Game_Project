@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.InputManagement.InputManager;
 
 public class BucketEntity extends TextureObject {
+    private InputManager inputManager;
 
     // Constructor
     public BucketEntity(Texture texture, float x, float y, double speed, SpriteBatch spriteBatch) {
@@ -18,18 +20,7 @@ public class BucketEntity extends TextureObject {
     @Override
     public void move() {
         // Player-controlled movement logic
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            x -= speed * Gdx.graphics.getDeltaTime();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            x += speed * Gdx.graphics.getDeltaTime();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            y += speed * Gdx.graphics.getDeltaTime();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            y -= speed * Gdx.graphics.getDeltaTime();
-        }
+        inputManager.handlePlayerInput(this);
     }
 
     public Rectangle getBounds() {
