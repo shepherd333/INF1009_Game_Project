@@ -70,12 +70,12 @@ public class GamePlay implements SceneInterface {
     }
     @Override
     public void update(float deltaTime) {
-        inputManager.handleInput();
-        spawnTimer += deltaTime;
-        if (spawnTimer >= spawnInterval) {
-            aiManager.spawnRaindrop(raindropTexture);
-            spawnTimer = 0;
-        }
+        //inputManager.handleInput();
+        //spawnTimer += deltaTime;
+        //if (spawnTimer >= spawnInterval) {
+            //aiManager.spawnRaindrop(raindropTexture);
+            //spawnTimer = 0;
+        //}
     }
     @Override
     public void render() {
