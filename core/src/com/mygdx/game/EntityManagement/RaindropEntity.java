@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class RaindropEntity extends MovingEntities {
     public RaindropEntity(Texture texture, float x, float y, float speed) {
-        super(texture.toString(), x, y, speed, true); // Droplets are AI-controlled
+        super(texture.toString(), x, y, speed, true);
     }
 
     @Override

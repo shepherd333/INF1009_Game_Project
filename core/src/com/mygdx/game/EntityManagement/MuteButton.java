@@ -2,22 +2,23 @@ package com.mygdx.game.EntityManagement;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public class StartButton extends ButtonEntity {
-    public StartButton(Texture texture, float x, float y) {
+public class MuteButton extends ButtonEntity {
+
+    public MuteButton(Texture texture, float x, float y) {
         super(texture, x, y);
     }
 
     @Override
     public void activate() {
-        // Implement start button activation logic
-        System.out.println("Start Button Activated");
+        // Implement mute button activation logic
+        System.out.println("Mute Button Deactivated");
         setActivated(true);
     }
 
     @Override
     public void deactivate() {
-        // Implement start button deactivation logic
-        System.out.println("Start Button Deactivated");
+        // Implement mute button deactivation logic
+        System.out.println("Mute Button Deactivated");
         setActivated(false);
     }
 

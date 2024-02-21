@@ -10,72 +10,86 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.EntityManagement.*;
 import com.badlogic.gdx.Input.Keys;
+import com.mygdx.game.EntityManagement.StartButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game_Engine extends ApplicationAdapter {
 	private SpriteBatch batch;
-	private ShapeRenderer shapeRenderer;
 	private List<Entity> entityList;
 	private BucketEntity bucket;
-	private RaindropEntity droplets[];
-	private StartButton startButton;
+	private RaindropEntity droplets;
 	private EntityManager entityManager;
+	private StartButton startButton;
+	private PlayButton playButton;
+	private MuteButton muteButton;
+	private PauseButton pauseButton;
+	private ContinueButton continueButton;
+	private LeaderboardButton leaderboardButton;
 
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		shapeRenderer = new ShapeRenderer();
 		entityList = new ArrayList<>();
 		entityManager = new EntityManager(entityList);
 
-		droplets = new RaindropEntity[1];
-		for (int i = 0; i < droplets.length; i++) {
-			float dropletWidth = 50;
-			float randomX = MathUtils.random(dropletWidth / 2, Gdx.graphics.getWidth() - dropletWidth / 2);
-			float randomY = MathUtils.random(Gdx.graphics.getHeight(), Gdx.graphics.getHeight() * 2);
-			droplets[i] = new RaindropEntity(new Texture("droplet.png"), randomX, randomY, 2f);
-			entityList.add(droplets[i]);
-		}
+		// Initialize and add droplets
+		droplets = new RaindropEntity(new Texture("droplet.png"), 100, 100, 0);
+		entityList.add(droplets);
 
-		bucket = new BucketEntity(new Texture("bucket.png"), 200, 100, 0);
+		// Initialize and add bucket
+		bucket = new BucketEntity(new Texture("bucket.png"), 300, 100, 0);
 		entityList.add(bucket);
 
-//		startButton = new StartButton(new Texture("START.png"), 200, 200);
-//		entityList.add(startButton);
+		// Initialize and add start button
+		startButton = new StartButton(new Texture("start-button.png"), 200, 0);
+		entityList.add(startButton);
+
+		playButton = new PlayButton(new Texture("play-button.png"), 300,200);
+		entityList.add(playButton);
+
+		muteButton = new MuteButton(new Texture("mute-button.png"), 400, 300);
+		entityList.add(muteButton);
+
+		pauseButton = new PauseButton(new Texture("pause-button.png"), 500, 100);
+		entityList.add(pauseButton);
+
+		continueButton = new ContinueButton(new Texture("continue-button.png"), 150, 250);
+		entityList.add(continueButton);
+
+		leaderboardButton = new LeaderboardButton(new Texture("leaderboard-button.png"), 200,200);
+		entityList.add(leaderboardButton);
+
+
 	}
 
 	@Override
 	public void render() {
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		batch.begin();
 		for (Entity entity : entityList) {
 			entity.update();
-			batch.draw(entity.getTexture(), entity.getX(), entity.getY());
+			batch.draw(entity.getTexture(), entity.getX(), entity.getY()); // Draw entity texture
 		}
 		batch.end();
 
 		entityManager.updateEntities();
-
-//		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-//			bucket.setX(bucket.getX() - 200 * Gdx.graphics.getDeltaTime());
-//		}
-//		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-//			bucket.setX(bucket.getX() + 200 * Gdx.graphics.getDeltaTime());
-//		}
 	}
 
 	@Override
 	public void dispose() {
 		batch.dispose();
-		shapeRenderer.dispose();
-		for (RaindropEntity droplet : droplets) {
-			droplet.getTexture().dispose();
-		}
+		batch.dispose();
+		droplets.getTexture().dispose();
 		bucket.getTexture().dispose();
 		startButton.getTexture().dispose();
+		playButton.getTexture().dispose();
+		muteButton.getTexture().dispose();
+		pauseButton.getTexture().dispose();
+		continueButton.getTexture().dispose();
+		leaderboardButton.getTexture().dispose();
 	}
 }
