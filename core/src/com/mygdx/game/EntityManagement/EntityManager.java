@@ -52,7 +52,7 @@ public class EntityManager {
                             BucketEntity bucket = (BucketEntity) otherEntity;
                             if (drop.getBounds().overlaps(bucket.getBounds())) {
                                 System.out.println("Collision detected. Scheduling reset for entity.");
-                                highScoreManager.addToCurrentScore(50);
+                                highScoreManager.addToCurrentScore(2000);
                                 drop.setActive(false);
 
                                 // Schedule the reset task after a delay on the main LibGDX thread

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.Lifecycle.HighScoreManager;
 
 public class SceneManager {
     private Map<String, SceneInterface> scenes = new HashMap<>();
@@ -16,6 +17,7 @@ public class SceneManager {
     private boolean isPaused = false;
     private String currentSceneName = "";
     private String previousSceneName = "GamePlay";
+    public HighScoreManager highScoreManager = HighScoreManager.getInstance();
 
 
 
@@ -74,6 +76,7 @@ public class SceneManager {
     }
     // Other methods...
     public void transitionTo(String sceneName, float duration) {
+        highScoreManager.saveScores();
         transitionDuration = duration;
         isTransitioning = true; // set to true to activate if (isTransitioning) function in update
         nextSceneName = sceneName;

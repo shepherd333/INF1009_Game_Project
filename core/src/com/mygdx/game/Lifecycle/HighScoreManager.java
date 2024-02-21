@@ -78,7 +78,7 @@ public class HighScoreManager {
 
     private void loadScores() {
         // Implement loading logic here (e.g., from a file or preferences)
-        FileHandle file = Gdx.files.internal("highscores.txt");
+        FileHandle file = Gdx.files.local("highscores.txt");
         if (file.exists()) {
             String scoreString = file.readString();
             String[] scores = scoreString.split("\n");
@@ -94,20 +94,19 @@ public class HighScoreManager {
         }
     }
 
-    private void saveScores() {
+    public void saveScores() {
         // Implement saving logic here
-        FileHandle file = Gdx.files.internal("highscores.txt");
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Integer score : highScores) {
-            stringBuilder.append(score.toString());
-            stringBuilder.append("\n"); // New line for each score
+        FileHandle file = Gdx.files.local("highscores.txt");
+        try {
+            file.writeString(String.valueOf(currentScore), false); // false means overwrite
+        } catch (Exception e) {
+            Gdx.app.error("HighScoreManager", "Error writing high score", e);
         }
-        file.writeString(stringBuilder.toString(), false); // false to overwrite the file
     }
     // Method to add filler scores
     public void addFillerScores() {
         Random rand = new Random();
-        for (int i = 0; i < MAX_SCORES; i++) {
+        for (int i = 0; i < 1; i++) {
             // Generate a random score (for example, between 1000 and 10000)
             int score = 1000 + rand.nextInt(9000);
             highScores.add(score);
@@ -124,6 +123,14 @@ public class HighScoreManager {
         font.setColor(Color.WHITE); // Set the font color
         font.getData().setScale(1); // Set the scale if needed
     }
+
+    //public void updateHighScore(int newScore) {
+    //    if (newScore > this.highestScore) {
+    //        this.highestScore = newScore;
+    //        // Optionally, save the new high score to preferences or a file
+    //    }
+    //}
+
     public void render(){
         batch.setProjectionMatrix(new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         // Draw high score
@@ -143,17 +150,18 @@ public class HighScoreManager {
         batch.end();
     }
 
-    public void rendercurrent(){
-        font.getData().setScale(1.5f);
-        GlyphLayout layout = new GlyphLayout(); // Consider making this a field to avoid re-allocating each frame
-        String scoreDisplay = "Current Score: " + highScoreManager.getCurrentScoreFormatted();
-        layout.setText(font, scoreDisplay); // Set the text to the layout to calculate width and height
-        float width = layout.width; // Now you can use this for calculating xPosition
-        float xPosition = Gdx.graphics.getWidth() - width - 300;
-        float yPosition = Gdx.graphics.getHeight() - layout.height - 10;
-        font.draw(batch, scoreDisplay, xPosition, yPosition);
 
-    }
+
+    //public void rendercurrent(){
+    //    font.getData().setScale(1.5f);
+    //    GlyphLayout layout = new GlyphLayout(); // Consider making this a field to avoid re-allocating each frame
+    //    String scoreDisplay = "Current Score: " + highScoreManager.getCurrentScoreFormatted();
+    //    layout.setText(font, scoreDisplay); // Set the text to the layout to calculate width and height
+    //    float width = layout.width; // Now you can use this for calculating xPosition
+    //    float xPosition = Gdx.graphics.getWidth() - width - 300;
+    //    float yPosition = Gdx.graphics.getHeight() - layout.height - 10;
+    //    font.draw(batch, scoreDisplay, xPosition, yPosition);
+    //}
 
     public void dispose() {
         if (batch != null) batch.dispose();
