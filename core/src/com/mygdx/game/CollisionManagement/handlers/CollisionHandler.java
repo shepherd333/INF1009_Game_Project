@@ -15,17 +15,23 @@ public class CollisionHandler {
 
     public void handleCollision() {
         if (entity1.getBounds().overlaps(entity2.getBounds())) {
-            // Call the appropriate response method based on the type of collision
-            if (entity1 instanceof RaindropEntity && entity2 instanceof BucketEntity) {
-                CollectCollisionHandler collectHandler = new CollectCollisionHandler(entity1, entity2);
-                collectHandler.handleCollision();
-            } else if (entity1 instanceof BucketEntity && entity2 instanceof RaindropEntity) {
-                CollectCollisionHandler collectHandler = new CollectCollisionHandler(entity2, entity1);
-                collectHandler.handleCollision();
-            } else {
-                // Handle other types of collisions here
-                System.out.println("Other type of collision detected");
+            // Delegate the handling of the collision to the appropriate handler
+            ICollisionHandler handler = createCollisionHandler(entity1, entity2);
+            if (handler != null) {
+                handler.handleCollision();
             }
+        }
+    }
+
+    private ICollisionHandler createCollisionHandler(Entity entity1, Entity entity2) {
+        // Create the appropriate collision handler based on the types of the entities
+        if (entity1 instanceof RaindropEntity && entity2 instanceof BucketEntity) {
+            return new CollectCollisionHandler(entity1, entity2);
+        } else if (entity1 instanceof BucketEntity && entity2 instanceof RaindropEntity) {
+            return new CollectCollisionHandler(entity2, entity1);
+        } else {
+            // Return null or some default handler for other types of entities
+            return null;
         }
     }
 }
