@@ -8,6 +8,9 @@ public class EntityManager {
     public EntityManager(List<Entity> entityList) {
         this.entityList = entityList;
     }
+    public void addEntity(Entity entity) {
+        this.entityList.add(entity);
+    }
 
     public void updateEntities() {
         for (Entity entity : entityList) {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class Game_Engine extends ApplicationAdapter {
+	public static boolean isMusicMuted;
 	SpriteBatch batch;
 	Texture img;
 	

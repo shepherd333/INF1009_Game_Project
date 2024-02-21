@@ -10,7 +10,13 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.Input;
+import com.mygdx.game.AIManagement.AIManager;
+import com.mygdx.game.EntityManagement.BucketEntity;
+import com.mygdx.game.EntityManagement.EntityManager;
 import com.mygdx.game.Game_Engine;
+import com.mygdx.game.InputManagement.InputManager;
+
+import static com.badlogic.gdx.graphics.g3d.particles.ParticleShader.Setters.screenWidth;
 
 public class GamePlay implements SceneInterface {
     private SpriteBatch batch;
@@ -19,6 +25,15 @@ public class GamePlay implements SceneInterface {
     private Viewport viewport;
     private SceneManager sceneManager;
     private BitmapFont font;
+    // Example instantiation within a game scene
+    Texture raindropTexture = new Texture("assets/droplet.png");
+    float raindropSpeed = 200; // Example speed, adjust as needed
+    private EntityManager entityManager;
+    AIManager aiManager = new AIManager(entityManager, 800);
+
+    private float spawnTimer = 0;
+    private final float spawnInterval = 1.0f;
+    private InputManager inputManager;
 
     public void initialize() {
         batch = new SpriteBatch();
@@ -27,6 +42,9 @@ public class GamePlay implements SceneInterface {
         viewport = new StretchViewport(800, 600, camera); // Use your desired world size
         camera.position.set(400, 300, 0); // Adjust according to your viewport's world width/height
         font = new BitmapFont();
+        BucketEntity bucket = new BucketEntity(new Texture("bucket.png"), 100, 100, 5);
+        InputManager inputManager = new InputManager(bucket);
+
     }
     @Override
     public void setSceneManager(SceneManager sceneManager) {
@@ -34,7 +52,12 @@ public class GamePlay implements SceneInterface {
     }
     @Override
     public void update(float deltaTime) {
-        // Handle any animations or transitions in the menu.
+        inputManager.handleInput();
+        spawnTimer += deltaTime;
+        if (spawnTimer >= spawnInterval) {
+            aiManager.spawnRaindrop(raindropTexture);
+            spawnTimer = 0;
+        }
     }
     @Override
     public void render() {
