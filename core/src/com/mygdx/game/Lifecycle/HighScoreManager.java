@@ -15,14 +15,22 @@ import java.util.Random;
 public class HighScoreManager {
     private ArrayList<Integer> highScores;
     private static final int MAX_SCORES = 10; // Limit the number of stored scores if desired
-    private int currentScore = 0;
+    private int currentScore = 500;
     private BitmapFont font;
     private SpriteBatch batch;
     private HighScoreManager highScoreManager;
+    private static HighScoreManager instance;
 
     public HighScoreManager() {
         highScores = new ArrayList<Integer>();
         loadScores(); // Load scores from persistent storage
+    }
+
+    public static HighScoreManager getInstance() {
+        if (instance == null) {
+            instance = new HighScoreManager();
+        }
+        return instance;
     }
 
     public int getHighestScore() {
@@ -34,10 +42,14 @@ public class HighScoreManager {
 
     public void addToCurrentScore(int points) {
         currentScore += points;
-        // Optionally check for high score updates here
+        Gdx.app.log("HighScoreManager", "Added points: " + points + ", New score: " + currentScore);
     }
     public void resetCurrentScore() {
         currentScore = 0;
+    }
+
+    public int getCurrentScore() {
+        return currentScore;
     }
 
     //highScoreManager.resetCurrentScore();

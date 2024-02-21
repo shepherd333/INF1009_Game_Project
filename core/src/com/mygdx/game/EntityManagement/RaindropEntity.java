@@ -18,7 +18,7 @@ public class RaindropEntity extends TextureObject {
         while (this.x >= bucketX && this.x <= bucketX + bucketWidth) {
             this.x = MathUtils.random(0, Gdx.graphics.getWidth() - width);
         }
-        System.out.println("Raindrop created at position: " + this.x + ", " + this.y);
+        //System.out.println("Raindrop created at position: " + this.x + ", " + this.y);
     }
 
     @Override

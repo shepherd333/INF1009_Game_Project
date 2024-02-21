@@ -12,11 +12,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.Input;
-import com.mygdx.game.EntityManagement.EntityManager;
-import com.mygdx.game.EntityManagement.TextureObject;
+import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.Game_Engine;
-import com.mygdx.game.EntityManagement.BucketEntity;
-import com.mygdx.game.EntityManagement.RaindropEntity;
 import com.mygdx.game.Lifecycle.HighScoreManager;
 
 public class GamePlay implements SceneInterface {
@@ -28,7 +25,7 @@ public class GamePlay implements SceneInterface {
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
     private EntityManager entityManager;
-    private HighScoreManager highScoreManager;
+    public HighScoreManager highScoreManager = HighScoreManager.getInstance();
     private float scoreDisplayX;
     private float scoreDisplayY;
 
@@ -42,9 +39,10 @@ public class GamePlay implements SceneInterface {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         entityManager = new EntityManager();
-        highScoreManager = new HighScoreManager();
-        highScoreManager.resetCurrentScore();
         highScoreManager.create();
+        highScoreManager.resetCurrentScore();
+
+
 
 
         Texture bucketTexture = new Texture(Gdx.files.internal("bucket.png"));
@@ -62,7 +60,7 @@ public class GamePlay implements SceneInterface {
             drop.setWidth(dropTexture.getWidth());
             drop.setHeight(dropTexture.getHeight());
             drop.setActive(true);
-            System.out.println("Raindrop created. Active: " + drop.isActive());
+            //System.out.println("Raindrop created. Active: " + drop.isActive());
             entityManager.addEntity(drop);
         }
     }
@@ -78,10 +76,16 @@ public class GamePlay implements SceneInterface {
         entityManager.updateEntities();
     }
 
+
+    public void setHighScoreManager(HighScoreManager highScoreManager) {
+        this.highScoreManager = highScoreManager;
+    }
+
     @Override
     public void render() {
         ScreenUtils.clear(1, 0, 0, 1);
         camera.update();
+
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
@@ -94,14 +98,12 @@ public class GamePlay implements SceneInterface {
         font.draw(batch,"Press M to mute/unmute the audio.", 1, 200);
         entityManager.draw(batch, null);
         //highScoreManager.rendercurrent();
-        GlyphLayout layout = new GlyphLayout(); // Consider making this a field to avoid re-allocating each frame
-        String scoreDisplay = "Current Score: " + highScoreManager.getCurrentScoreFormatted();
-        layout.setText(font, scoreDisplay); // Set the text to the layout to calculate width and height
-        float width = layout.width; // Now you can use this for calculating xPosition
-        float xPosition = viewport.getWorldWidth() - layout.width - 20;
-        float yPosition = viewport.getWorldHeight() - layout.height - 25;
-        font.draw(batch, scoreDisplay, xPosition, yPosition);
-
+        String scoreDisplay = "Current Score: " + highScoreManager.getInstance().getCurrentScoreFormatted();
+        Gdx.app.log("GamePlay", "Rendering score: " + scoreDisplay);
+        GlyphLayout scoreLayout = new GlyphLayout(font, scoreDisplay);
+        float scoreX = viewport.getWorldWidth() - scoreLayout.width - 20;
+        float scoreY = viewport.getWorldHeight() - scoreLayout.height - 25;
+        font.draw(batch, scoreDisplay, scoreX, scoreY);
         batch.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
