@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.AIManagement.AIManager;
 
 public class RaindropEntity extends TextureObject {
+    private AIManager aiManager;
 
     // Constructor
     public RaindropEntity(Texture texture, float x, float y, double speed, SpriteBatch spriteBatch, float bucketX, float bucketWidth) {
@@ -21,21 +23,7 @@ public class RaindropEntity extends TextureObject {
 
     @Override
     public void move() {
-        // AI-controlled movement logic
-        // For drops, simply moving down could be the AI behavior
-        if (this.speed > 0) {
-            // Move the texture object downward based on its speed
-            y -= speed;
-
-            // Check if the texture object (drop) has reached the bottom of the screen
-            if (y <= 0) {
-                // Reset the position to the top with a new random X coordinate
-                x = MathUtils.random(0, Gdx.graphics.getWidth() - width); // Ensure the new X is within screen bounds
-                y = Gdx.graphics.getHeight();
-                setActive(true); // Set the drop to active again
-                System.out.println("Raindrop reset to position: " + x + ", " + y);
-            }
-        }
+        aiManager.moveRaindrop(this);
     }
 
     @Override

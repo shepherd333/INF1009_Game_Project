@@ -1,5 +1,6 @@
 package com.mygdx.game.CollisionManagement.handlers;
 
+import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.EntityManagement.Entity;
 
 public class CollectCollisionHandler {
