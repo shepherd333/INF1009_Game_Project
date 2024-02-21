@@ -78,7 +78,7 @@ public class Game_Engine extends ApplicationAdapter {
 		if (isMusicMuted) {
 			backgroundMusic.setVolume(0); // Mute the music
 		} else {
-			backgroundMusic.setVolume(0.2F); // Set volume back to normal
+			backgroundMusic.setVolume(0.05F); // Set volume back to normal
 		}
 
 		highScoreManager.render();

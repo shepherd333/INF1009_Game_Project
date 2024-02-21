@@ -3,6 +3,7 @@ package com.mygdx.game.Scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -16,6 +17,7 @@ import com.mygdx.game.EntityManagement.TextureObject;
 import com.mygdx.game.Game_Engine;
 import com.mygdx.game.EntityManagement.BucketEntity;
 import com.mygdx.game.EntityManagement.RaindropEntity;
+import com.mygdx.game.Lifecycle.HighScoreManager;
 
 public class GamePlay implements SceneInterface {
     private SpriteBatch batch;
@@ -26,6 +28,9 @@ public class GamePlay implements SceneInterface {
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
     private EntityManager entityManager;
+    private HighScoreManager highScoreManager;
+    private float scoreDisplayX;
+    private float scoreDisplayY;
 
     public void initialize() {
         batch = new SpriteBatch();
@@ -37,12 +42,16 @@ public class GamePlay implements SceneInterface {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         entityManager = new EntityManager();
+        highScoreManager = new HighScoreManager();
+        highScoreManager.resetCurrentScore();
+        highScoreManager.create();
+
 
         Texture bucketTexture = new Texture(Gdx.files.internal("bucket.png"));
         BucketEntity bucket = new BucketEntity(bucketTexture, 0, 0, 200, batch);
         entityManager.addEntity(bucket);
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 5; i++) {
             float randomX = MathUtils.random(0, Gdx.graphics.getWidth());
             float randomY = MathUtils.random(0, Gdx.graphics.getHeight());
             double dropSpeed = MathUtils.random(1,5);
@@ -84,6 +93,15 @@ public class GamePlay implements SceneInterface {
         font.draw(batch,"Press V to transit to MainMenu Scene.", 1, 250);
         font.draw(batch,"Press M to mute/unmute the audio.", 1, 200);
         entityManager.draw(batch, null);
+        //highScoreManager.rendercurrent();
+        GlyphLayout layout = new GlyphLayout(); // Consider making this a field to avoid re-allocating each frame
+        String scoreDisplay = "Current Score: " + highScoreManager.getCurrentScoreFormatted();
+        layout.setText(font, scoreDisplay); // Set the text to the layout to calculate width and height
+        float width = layout.width; // Now you can use this for calculating xPosition
+        float xPosition = viewport.getWorldWidth() - layout.width - 20;
+        float yPosition = viewport.getWorldHeight() - layout.height - 25;
+        font.draw(batch, scoreDisplay, xPosition, yPosition);
+
         batch.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -96,9 +114,12 @@ public class GamePlay implements SceneInterface {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
+        camera.position.set(viewport.getWorldWidth()/2, viewport.getWorldHeight()/2, 0);
         camera.update();
+
     }
+
+
 
     @Override
     public void handleInput() {

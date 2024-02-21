@@ -42,8 +42,12 @@ public class HighScoreManager {
 
     //highScoreManager.resetCurrentScore();
 
-    public String getCurrentScoreFormatted() {
+    public String getHighestScoreFormatted() {
         return String.format("%06d", getHighestScore());
+    }
+
+    public String getCurrentScoreFormatted(){
+        return String.format("%06d", currentScore);
     }
 
     //highScoreManager.addToCurrentScore(pointsEarned);
@@ -121,10 +125,22 @@ public class HighScoreManager {
         float xPosition = Gdx.graphics.getWidth() - width - 200;
         float yPosition = Gdx.graphics.getHeight() - layout.height - 10;
 
-        String scoreDisplay = "High Score: " + highScoreManager.getCurrentScoreFormatted();
+        String scoreDisplay = "High Score: " + highScoreManager.getHighestScoreFormatted();
         layout.setText(font, scoreDisplay);
         font.draw(batch, scoreDisplay, xPosition, yPosition);
         batch.end();
+    }
+
+    public void rendercurrent(){
+        font.getData().setScale(1.5f);
+        GlyphLayout layout = new GlyphLayout(); // Consider making this a field to avoid re-allocating each frame
+        String scoreDisplay = "Current Score: " + highScoreManager.getCurrentScoreFormatted();
+        layout.setText(font, scoreDisplay); // Set the text to the layout to calculate width and height
+        float width = layout.width; // Now you can use this for calculating xPosition
+        float xPosition = Gdx.graphics.getWidth() - width - 300;
+        float yPosition = Gdx.graphics.getHeight() - layout.height - 10;
+        font.draw(batch, scoreDisplay, xPosition, yPosition);
+
     }
 
     public void dispose() {
