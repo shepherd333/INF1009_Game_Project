@@ -12,9 +12,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.AIManagement.AIManager;
 import com.mygdx.game.EntityManagement.BucketEntity;
+import com.mygdx.game.EntityManagement.Entity;
 import com.mygdx.game.EntityManagement.EntityManager;
 import com.mygdx.game.Game_Engine;
 import com.mygdx.game.InputManagement.InputManager;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.badlogic.gdx.graphics.g3d.particles.ParticleShader.Setters.screenWidth;
 
@@ -27,7 +30,7 @@ public class GamePlay implements SceneInterface {
     private BitmapFont font;
     // Example instantiation within a game scene
     Texture raindropTexture = new Texture("assets/droplet.png");
-    float raindropSpeed = 200; // Example speed, adjust as needed
+    float raindropSpeed = 200;
     private EntityManager entityManager;
     AIManager aiManager = new AIManager(entityManager, 800);
 
@@ -42,8 +45,23 @@ public class GamePlay implements SceneInterface {
         viewport = new StretchViewport(800, 600, camera); // Use your desired world size
         camera.position.set(400, 300, 0); // Adjust according to your viewport's world width/height
         font = new BitmapFont();
+        // Initialize the list of entities
+        List<Entity> entities = new ArrayList<>();
+
+        // Create a BucketEntity
         BucketEntity bucket = new BucketEntity(new Texture("bucket.png"), 100, 100, 5);
-        InputManager inputManager = new InputManager(bucket);
+
+        // Add the BucketEntity to the list
+        entities.add(bucket);
+
+        // Initialize the EntityManager with the list of entities
+        entityManager = new EntityManager(entities);
+
+        // Initialize the InputManager with the bucket
+        inputManager = new InputManager(bucket);
+
+        // Now, the AIManager can be initialized with the properly initialized EntityManager
+        aiManager = new AIManager(entityManager, 800);
 
     }
     @Override
@@ -73,6 +91,8 @@ public class GamePlay implements SceneInterface {
         font.draw(batch,"Press C to transit to EndMenu Scene.", 1, 300);
         font.draw(batch,"Press V to transit to MainMenu Scene.", 1, 250);
         font.draw(batch,"Press M to mute/unmute the audio.", 1, 200);
+
+
         batch.end();
     }
 

@@ -9,7 +9,7 @@ import java.util.Random;
 public class AIManager {
     private EntityManager entityManager;
     private Random random = new Random();
-    private final int screenWidth;
+    private int screenWidth = 800;
 
     private Texture raindropTexture;
     private float raindropSpeed;
