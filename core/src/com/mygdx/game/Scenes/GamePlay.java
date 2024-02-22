@@ -110,7 +110,7 @@ public class GamePlay implements SceneInterface {
         Gdx.app.log("GamePlay", "Rendering score: " + scoreDisplay);
         GlyphLayout scoreLayout = new GlyphLayout(font, scoreDisplay);
         float scoreX = viewport.getWorldWidth() - scoreLayout.width - 20;
-        float scoreY = viewport.getWorldHeight() - scoreLayout.height - 25;
+        float scoreY = viewport.getWorldHeight() - scoreLayout.height - 40;
         font.draw(batch, scoreDisplay, scoreX, scoreY);
 
         GlyphLayout layout = new GlyphLayout(); // Consider making this a field to avoid re-allocating each frame
