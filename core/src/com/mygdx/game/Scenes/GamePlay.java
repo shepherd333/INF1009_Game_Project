@@ -17,6 +17,9 @@ import com.mygdx.game.Game_Engine;
 import com.mygdx.game.Lifecycle.HighScoreManager;
 import com.mygdx.game.Lifecycle.LifeManager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GamePlay implements SceneInterface {
     private SpriteBatch batch;
     private Texture img;
@@ -28,9 +31,13 @@ public class GamePlay implements SceneInterface {
     private EntityManager entityManager;
     public HighScoreManager highScoreManager = HighScoreManager.getInstance();
     public LifeManager lifeManager = LifeManager.getInstance();
-
+    private SceneManager sm;
+    private SceneInterface currentScene;
+    private Map<String, SceneInterface> scenes = new HashMap<>();
     private float scoreDisplayX;
     private float scoreDisplayY;
+
+
 
     public void initialize() {
         batch = new SpriteBatch();
@@ -45,12 +52,7 @@ public class GamePlay implements SceneInterface {
         highScoreManager.create();
         highScoreManager.resetCurrentScore();
         this.lifeManager = new LifeManager(10);
-        SceneManager sm = new SceneManager();
         lifeManager.initializeSceneManager(sceneManager);
-
-
-
-
 
         Texture bucketTexture = new Texture(Gdx.files.internal("bucket.png"));
         BucketEntity bucket = new BucketEntity(bucketTexture, 0, 0, 200, batch);
@@ -123,7 +125,6 @@ public class GamePlay implements SceneInterface {
 
         entityManager.moveEntities();
 
-        lifeManager.isGameOver();
     }
 
     @Override

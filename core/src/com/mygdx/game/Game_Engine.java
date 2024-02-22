@@ -3,6 +3,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.InputManagement.InputManager;
+import com.mygdx.game.Lifecycle.LifeManager;
 import com.mygdx.game.Scenes.SceneManager;
 import com.mygdx.game.Scenes.PauseMenu;
 import com.badlogic.gdx.audio.Music;
@@ -21,9 +22,7 @@ public class Game_Engine extends ApplicationAdapter {
 	public static boolean isMusicMuted = false;
 	private HighScoreManager highScoreManager;
 	private InputManager inputManager;
-
-
-
+	public LifeManager lifeManager;
 
 	@Override
 	public void create() { // Called when the Application is first created
@@ -34,6 +33,7 @@ public class Game_Engine extends ApplicationAdapter {
 		backgroundMusic.setLooping(true);
 		backgroundMusic.play();
 		inputManager = new InputManager(sm);
+		this.lifeManager = new LifeManager(10);
 
 		highScoreManager = new HighScoreManager();
 		highScoreManager.create();
@@ -67,6 +67,12 @@ public class Game_Engine extends ApplicationAdapter {
 		if (!sm.isPaused()) {
 			inputManager.handleOpeningInput();
 		}
+
+		if (lifeManager.isGameOver()){
+			sm.transitionTo("EndMenu", 1);
+		}
+
+
 		if (isMusicMuted) {
 			backgroundMusic.setVolume(0); // Mute the music
 		} else {
@@ -74,6 +80,7 @@ public class Game_Engine extends ApplicationAdapter {
 		}
 
 		highScoreManager.render();
+
 	}
 	public void toggleMusic() {
 		isMusicMuted = !isMusicMuted;

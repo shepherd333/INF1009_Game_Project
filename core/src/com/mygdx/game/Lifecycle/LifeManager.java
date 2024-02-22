@@ -36,8 +36,9 @@ public class LifeManager {
             lives--;
             System.out.println("Life lost! Remaining lives: " + lives);
         }
-        if (lives == 0) {
+        if (lives <= 0) {
             setGameOver();
+            isGameOver = true;
         }
     }
 

@@ -18,6 +18,7 @@ public class SceneManager {
     private String currentSceneName = "";
     private String previousSceneName = "GamePlay";
     public HighScoreManager highScoreManager = HighScoreManager.getInstance();
+    private SceneManager sm;
 
 
 
