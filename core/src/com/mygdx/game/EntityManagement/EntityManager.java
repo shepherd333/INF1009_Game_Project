@@ -27,6 +27,9 @@ public class EntityManager {
         this.entityList.add(entity);
     }
 
+    public List<Entity> getEntities() {
+        return this.entityList;
+    }
 
     public void resetEntityToTop(Entity entity) {
         // Corrected to use the passed entity and not the raindrop field
@@ -39,46 +42,12 @@ public class EntityManager {
     }
 
     public void updateEntities() {
-        List<Entity> entitiesToRemove = new ArrayList<>();
         for (Entity entity : entityList) {
             if (entity.isActive()) {
                 entity.update();
-                if (entity instanceof RaindropEntity) {
-                    RaindropEntity drop = (RaindropEntity) entity;
-                    for (Entity otherEntity : entityList) {
-                        if (otherEntity instanceof BucketEntity) {
-                            BucketEntity bucket = (BucketEntity) otherEntity;
-                            if (drop.getBounds().overlaps(bucket.getBounds())) {
-                                System.out.println("Collision detected. Scheduling reset for entity.");
-                                highScoreManager.addToCurrentScore(2000);
-                                drop.setActive(false);
-
-                                // Schedule the reset task after a delay on the main LibGDX thread
-                                Timer.schedule(new Timer.Task() {
-                                    @Override
-                                    public void run() {
-                                        // Post the task to be run on the main LibGDX thread
-                                        Gdx.app.postRunnable(new Runnable() {
-                                            @Override
-                                            public void run() {
-
-                                                resetEntityToTop(drop);
-                                            }
-                                        });
-                                    }
-                                }, 1f); // Delay in seconds
-                            } else {
-                                // Print debug information
-                                //System.out.println("No collision. Drop bounds: " + drop.getBounds() + ", Bucket bounds: " + bucket.getBounds());
-                            }
-                        }
-                    }
-                }
             }
         }
-        entityList.removeAll(entitiesToRemove);
     }
-
 
     public void moveEntities() {
         for (Entity entity : entityList) {
@@ -100,3 +69,4 @@ public class EntityManager {
         this.entityList.remove(entity);
     }
 }
+

@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.Input;
+import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.Game_Engine;
 import com.mygdx.game.Lifecycle.HighScoreManager;
@@ -36,6 +37,7 @@ public class GamePlay implements SceneInterface {
     private Map<String, SceneInterface> scenes = new HashMap<>();
     private float scoreDisplayX;
     private float scoreDisplayY;
+    private CollisionManager collisionManager;
 
 
 
@@ -53,6 +55,7 @@ public class GamePlay implements SceneInterface {
         highScoreManager.resetCurrentScore();
         this.lifeManager = new LifeManager(10);
         lifeManager.initializeSceneManager(sceneManager);
+        collisionManager = new CollisionManager(entityManager.getEntities());
 
         Texture bucketTexture = new Texture(Gdx.files.internal("bucket.png"));
         BucketEntity bucket = new BucketEntity(bucketTexture, 0, 0, 200, batch);
@@ -83,6 +86,8 @@ public class GamePlay implements SceneInterface {
     public void update(float deltaTime) {
         // Update entities
         entityManager.updateEntities();
+        // Handle collisions
+        collisionManager.handleCollisions();
     }
 
 
