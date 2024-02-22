@@ -17,8 +17,6 @@ public class SceneManager {
     private boolean isPaused = false;
     private String currentSceneName = "";
     private String previousSceneName = "GamePlay";
-    public HighScoreManager highScoreManager = HighScoreManager.getInstance();
-    private SceneManager sm;
 
 
 
@@ -77,7 +75,6 @@ public class SceneManager {
     }
     // Other methods...
     public void transitionTo(String sceneName, float duration) {
-        highScoreManager.saveScores();
         transitionDuration = duration;
         isTransitioning = true; // set to true to activate if (isTransitioning) function in update
         nextSceneName = sceneName;

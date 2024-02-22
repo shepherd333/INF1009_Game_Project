@@ -14,10 +14,6 @@ import java.util.List;
 
 public class EntityManager {
     private List<Entity> entityList;
-    private RaindropEntity raindrop;
-    public CollectCollisionHandler CCH;
-    public HighScoreManager highScoreManager = HighScoreManager.getInstance();
-    private int points;
 
     public EntityManager() {
         this.entityList = new ArrayList<>();

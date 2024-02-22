@@ -59,6 +59,7 @@ public class Game_Engine extends ApplicationAdapter {
 
 
 		if (lifeManager.getInstance().getLives() == 0){
+			highScoreManager.saveScores();
 			lifeManager.getInstance().endLife();
 			sm.transitionTo("Leaderboard", 1);
 		}
