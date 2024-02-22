@@ -26,7 +26,7 @@ public class LifeManager {
 
     public static synchronized LifeManager getInstance() {
         if (instance == null) {
-            instance = new LifeManager(5);
+            instance = new LifeManager(-1);
         }
         return instance;
     }
@@ -58,7 +58,11 @@ public class LifeManager {
     }
 
     public void addLife() {
-        lives = lives + 5;
+        lives = lives + 6;
+    }
+
+    public void endLife() {
+        lives = -1;
     }
 
     public void render(){

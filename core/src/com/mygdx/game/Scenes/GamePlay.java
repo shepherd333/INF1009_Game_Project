@@ -42,6 +42,7 @@ public class GamePlay implements SceneInterface {
 
 
     public void initialize() {
+        lifeManager.getInstance().addLife();
         batch = new SpriteBatch();
         img = new Texture(Gdx.files.internal("GamePlay.png"));
         camera = new OrthographicCamera();
@@ -53,7 +54,6 @@ public class GamePlay implements SceneInterface {
         entityManager = new EntityManager();
         highScoreManager.create();
         highScoreManager.resetCurrentScore();
-        this.lifeManager = new LifeManager(10);
         lifeManager.initializeSceneManager(sceneManager);
         collisionManager = new CollisionManager(entityManager.getEntities());
 
@@ -116,7 +116,7 @@ public class GamePlay implements SceneInterface {
 
         GlyphLayout layout = new GlyphLayout(); // Consider making this a field to avoid re-allocating each frame
         float width = layout.width; // Use this for calculating xPosition
-        float xPosition = viewport.getWorldWidth() - width - 300;
+        float xPosition = viewport.getWorldWidth() - width - 400;
         float yPosition = viewport.getWorldHeight() - layout.height - 10;
 
         String lifeDisplay = "LIVES: " + lifeManager.getInstance().getLives();

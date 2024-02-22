@@ -19,7 +19,7 @@ public class AIManager {
             if (raindrop.getY() <= 0) {
                 // Reset the raindrop's position to the top with a new random X coordinate
                 raindrop.setX(MathUtils.random(0, Gdx.graphics.getWidth() - raindrop.getX())); // Ensure the new X is within screen bounds
-                raindrop.setY(Gdx.graphics.getHeight());
+                raindrop.setY(Gdx.graphics.getHeight()+ 150);
                 raindrop.setActive(true); // Set the raindrop to active again
                 System.out.println("Raindrop reset to position: " + raindrop.getX() + ", " + raindrop.getY());
                 lifeManager.loseLife();

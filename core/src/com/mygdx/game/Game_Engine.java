@@ -33,7 +33,7 @@ public class Game_Engine extends ApplicationAdapter {
 		backgroundMusic.setLooping(true);
 		backgroundMusic.play();
 		inputManager = new InputManager(sm);
-		this.lifeManager = new LifeManager(10);
+		this.lifeManager = new LifeManager(-1);
 
 		highScoreManager = new HighScoreManager();
 		highScoreManager.create();
@@ -69,7 +69,7 @@ public class Game_Engine extends ApplicationAdapter {
 		}
 
 		if (lifeManager.getInstance().getLives() == 0){
-			lifeManager.getInstance().addLife();
+			lifeManager.getInstance().endLife();
 			sm.transitionTo("Leaderboard", 1);
 		}
 

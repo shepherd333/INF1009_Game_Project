@@ -31,16 +31,6 @@ public class EntityManager {
         return this.entityList;
     }
 
-    public void resetEntityToTop(Entity entity) {
-        // Corrected to use the passed entity and not the raindrop field
-
-        float newX = MathUtils.random(0, Gdx.graphics.getWidth() - entity.getX());
-        entity.setActive(true);
-        entity.setX(newX);
-        entity.setY(Gdx.graphics.getHeight());
-        //System.out.println("Entity reset to position: " + entity.getX() + ", " + entity.getY());
-    }
-
     public void updateEntities() {
         for (Entity entity : entityList) {
             if (entity.isActive()) {
