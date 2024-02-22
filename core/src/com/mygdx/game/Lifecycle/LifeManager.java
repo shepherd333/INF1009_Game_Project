@@ -58,7 +58,7 @@ public class LifeManager {
     }
 
     public void addLife() {
-        lives++;
+        lives = lives + 5;
     }
 
     public void render(){
