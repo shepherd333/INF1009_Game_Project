@@ -49,7 +49,15 @@ public class Game_Engine extends ApplicationAdapter {
 		if (sm != null && !sm.isPaused()) {
 			sm.getCurrentScene().handleInput();
 			sm.update(Gdx.graphics.getDeltaTime()); // Update the scene manager and entities
-			inputManager.handleOpeningInput(); // Update the scene manager
+			if (sm.getCurrentSceneName() == "MainMenu"){
+				inputManager.handleMMInput(); // Update the scene manager
+			}
+			if (sm.getCurrentSceneName() == "Leaderboard"){
+				inputManager.handleLBInput();
+			}
+			if (sm.getCurrentSceneName() == "EndMenu"){
+				inputManager.handleEndInput();
+			}
 		}
 
 		// Always render the current scene
@@ -57,11 +65,10 @@ public class Game_Engine extends ApplicationAdapter {
 			sm.render(); // Render the scene manager and thus the current scene
 		}
 
-
 		if (lifeManager.getInstance().getLives() == 0){
 			highScoreManager.saveScores();
 			lifeManager.getInstance().endLife();
-			sm.transitionTo("Leaderboard", 1);
+			sm.transitionTo("EndMenu", 1);
 		}
 
 

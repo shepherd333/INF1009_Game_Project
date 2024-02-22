@@ -42,7 +42,7 @@ public class InputManager {
     }
 
     // Handles inputs related to opening different scenes like gameplay, leaderboard, etc.
-    public void handleOpeningInput() {
+    public void handleMMInput() {
         // Transition to the GamePlay scene if the Z key is pressed.
         if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
             sm.transitionTo("GamePlay", 1);
@@ -52,6 +52,29 @@ public class InputManager {
             sm.transitionTo("Leaderboard", 1);
         }
         // Additional scene transitions can be added here for other keys.
+    }
+
+    public void handleLBInput() {
+        // Transition to the GamePlay scene if the Z key is pressed.
+        if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
+            sm.transitionTo("GamePlay", 1);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            sm.transitionTo("MainMenu", 1);
+        }
+        // Additional scene transitions can be added here for other keys.
+    }
+
+    public void handleEndInput(){
+        if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
+            sm.transitionTo("GamePlay", 1);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            sm.transitionTo("MainMenu", 1);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.X)) {
+            sm.transitionTo("Leaderboard", 1);
+        }
     }
 
     // The following methods are placeholders for touch and mouse events.

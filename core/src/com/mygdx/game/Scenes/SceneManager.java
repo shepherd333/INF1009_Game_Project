@@ -60,8 +60,8 @@ public class SceneManager {
                 currentScene.dispose();
             }
             currentScene = scenes.get(sceneName);
+            currentSceneName = sceneName; // Update the currentSceneName to reflect the new current scene
             currentScene.initialize();
-
             currentScene.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
     }
@@ -78,6 +78,7 @@ public class SceneManager {
         transitionDuration = duration;
         isTransitioning = true; // set to true to activate if (isTransitioning) function in update
         nextSceneName = sceneName;
+        //currentSceneName = sceneName;
         // Start fade out effect, adjust alpha over time in update()
     }
 
@@ -102,9 +103,13 @@ public class SceneManager {
                 alpha += deltaTime / transitionDuration;
                 alpha = Math.min(alpha, 1); // Clamp alpha to not exceed 1
             } else {
-                setCurrentScene(nextSceneName);
+                setCurrentScene(nextSceneName); // Transition to the next scene
+                currentSceneName = nextSceneName; // Update the currentSceneName after the transition is complete
                 isTransitioning = false;
                 alpha = 0; // Reset for next transition
+
+                // Log the current scene name for debugging
+                Gdx.app.log("SceneManager", "Transition complete. Current scene: " + currentSceneName);
             }
         }
 
