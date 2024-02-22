@@ -26,7 +26,7 @@ public class LifeManager {
 
     public static synchronized LifeManager getInstance() {
         if (instance == null) {
-            instance = new LifeManager(-1);
+            instance = new LifeManager(5);
         }
         return instance;
     }
@@ -39,6 +39,12 @@ public class LifeManager {
         if (lives <= 0) {
             setGameOver();
             isGameOver = true;
+        }
+    }
+
+    public void gamecheckStart(){
+        if (getLives() == -1){
+            addLife();
         }
     }
 

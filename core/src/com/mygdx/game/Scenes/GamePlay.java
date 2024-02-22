@@ -42,7 +42,7 @@ public class GamePlay implements SceneInterface {
 
 
     public void initialize() {
-        lifeManager.getInstance().addLife();
+        lifeManager.getInstance().gamecheckStart();
         batch = new SpriteBatch();
         img = new Texture(Gdx.files.internal("GamePlay.png"));
         camera = new OrthographicCamera();
@@ -56,7 +56,6 @@ public class GamePlay implements SceneInterface {
         highScoreManager.resetCurrentScore();
         lifeManager.initializeSceneManager(sceneManager);
         collisionManager = new CollisionManager(entityManager.getEntities());
-
         Texture bucketTexture = new Texture(Gdx.files.internal("bucket.png"));
         BucketEntity bucket = new BucketEntity(bucketTexture, 0, 0, 200, batch);
         entityManager.addEntity(bucket);
@@ -91,9 +90,9 @@ public class GamePlay implements SceneInterface {
     }
 
 
-    public void setHighScoreManager(HighScoreManager highScoreManager) {
-        this.highScoreManager = highScoreManager;
-    }
+    //public void setHighScoreManager(HighScoreManager highScoreManager) {
+    //    this.highScoreManager = highScoreManager;
+    //}
 
     @Override
     public void render() {

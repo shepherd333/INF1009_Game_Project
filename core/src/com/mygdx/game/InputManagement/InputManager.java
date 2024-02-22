@@ -15,16 +15,16 @@ public class InputManager {
     public static void handlePlayerInput(BucketEntity bucket) {
         float deltaTime = Gdx.graphics.getDeltaTime();
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            bucket.setX((float) (bucket.getX() - bucket.getSpeed() * deltaTime));
+            bucket.setX((float) (bucket.getX() - bucket.getSpeed() * deltaTime - 2));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            bucket.setX((float) (bucket.getX() + bucket.getSpeed() * deltaTime));
+            bucket.setX((float) (bucket.getX() + bucket.getSpeed() * deltaTime + 2));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            bucket.setY((float) (bucket.getY() + bucket.getSpeed() * deltaTime));
+            bucket.setY((float) (bucket.getY() + bucket.getSpeed() * deltaTime + 2));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            bucket.setY((float) (bucket.getY() - bucket.getSpeed() * deltaTime));
+            bucket.setY((float) (bucket.getY() - bucket.getSpeed() * deltaTime - 2));
         }
     }
 

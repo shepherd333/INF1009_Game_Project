@@ -7,12 +7,6 @@ import com.mygdx.game.Lifecycle.LifeManager;
 import com.mygdx.game.Scenes.SceneManager;
 import com.mygdx.game.Scenes.PauseMenu;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix4;
 import com.mygdx.game.Lifecycle.HighScoreManager;
 
 
@@ -34,7 +28,6 @@ public class Game_Engine extends ApplicationAdapter {
 		backgroundMusic.play();
 		inputManager = new InputManager(sm);
 		this.lifeManager = new LifeManager(-1);
-
 		highScoreManager = new HighScoreManager();
 		highScoreManager.create();
 
@@ -55,7 +48,8 @@ public class Game_Engine extends ApplicationAdapter {
 		// Only update and handle input if the game is not paused
 		if (sm != null && !sm.isPaused()) {
 			sm.getCurrentScene().handleInput();
-			sm.update(Gdx.graphics.getDeltaTime()); // Update the scene manager
+			sm.update(Gdx.graphics.getDeltaTime()); // Update the scene manager and entities
+			inputManager.handleOpeningInput(); // Update the scene manager
 		}
 
 		// Always render the current scene
@@ -63,10 +57,6 @@ public class Game_Engine extends ApplicationAdapter {
 			sm.render(); // Render the scene manager and thus the current scene
 		}
 
-		// Handle scene transitions based on key presses, but ensure they're not processed when paused
-		if (!sm.isPaused()) {
-			inputManager.handleOpeningInput();
-		}
 
 		if (lifeManager.getInstance().getLives() == 0){
 			lifeManager.getInstance().endLife();
