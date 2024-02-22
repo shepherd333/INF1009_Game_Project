@@ -50,7 +50,7 @@ public class Leaderboard implements SceneInterface{
         font.draw(batch,"This is the LeaderBoard Scene.", 1, 450);
         font.draw(batch,"Press Z to transit to GamePlay Scene.", 1, 400);
         font.draw(batch,"Press C to transit to EndMenu Scene.", 1, 350);
-        font.draw(batch,"Press V to transit to MainMenu Scene.", 1, 300);
+        font.draw(batch,"Press SPACEBAR to transit to MainMenu Scene.", 1, 300);
         font.draw(batch,"Press M to mute/unmute the audio.", 1, 250);
         batch.end();
     }
