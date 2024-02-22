@@ -2,6 +2,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Input;
+import com.mygdx.game.InputManagement.InputManager;
 import com.mygdx.game.Scenes.SceneManager;
 import com.mygdx.game.Scenes.PauseMenu;
 import com.badlogic.gdx.audio.Music;
@@ -19,6 +20,7 @@ public class Game_Engine extends ApplicationAdapter {
 	private Music backgroundMusic;
 	public static boolean isMusicMuted = false;
 	private HighScoreManager highScoreManager;
+	private InputManager inputManager;
 
 
 
@@ -31,6 +33,7 @@ public class Game_Engine extends ApplicationAdapter {
 		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("bgmusic2.mp3"));
 		backgroundMusic.setLooping(true);
 		backgroundMusic.play();
+		inputManager = new InputManager(sm);
 
 		highScoreManager = new HighScoreManager();
 		highScoreManager.create();
@@ -62,18 +65,7 @@ public class Game_Engine extends ApplicationAdapter {
 
 		// Handle scene transitions based on key presses, but ensure they're not processed when paused
 		if (!sm.isPaused()) {
-			if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
-				sm.transitionTo("GamePlay", 1);
-			}
-			if (Gdx.input.isKeyPressed(Input.Keys.X)) {
-				sm.transitionTo("Leaderboard", 1);
-			}
-			if (Gdx.input.isKeyPressed(Input.Keys.C)) {
-				sm.transitionTo("EndMenu", 1);
-			}
-			if (Gdx.input.isKeyPressed(Input.Keys.V)) {
-				sm.transitionTo("MainMenu", 1);
-			}
+			inputManager.handleOpeningInput();
 		}
 		if (isMusicMuted) {
 			backgroundMusic.setVolume(0); // Mute the music

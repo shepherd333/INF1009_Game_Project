@@ -98,11 +98,6 @@ public class GamePlay implements SceneInterface {
         batch.begin();
         batch.draw(img, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         font.draw(batch,"This is the GamePlay Scene.", 1, 450);
-        font.draw(batch,"Press P to toggle the Pause Menu on/off.", 1, 400);
-        font.draw(batch,"Press X to transit to LeaderBoard Scene.", 1, 350);
-        font.draw(batch,"Press C to transit to EndMenu Scene.", 1, 300);
-        font.draw(batch,"Press V to transit to MainMenu Scene.", 1, 250);
-        font.draw(batch,"Press M to mute/unmute the audio.", 1, 200);
         entityManager.draw(batch, null);
         //highScoreManager.rendercurrent();
         String scoreDisplay = "Current Score: " + highScoreManager.getInstance().getCurrentScoreFormatted();
