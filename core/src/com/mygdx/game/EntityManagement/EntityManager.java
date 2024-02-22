@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.CollisionManagement.handlers.CollectCollisionHandler;
 import com.mygdx.game.Lifecycle.HighScoreManager;
+import com.mygdx.game.Lifecycle.LifeManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +26,6 @@ public class EntityManager {
     public void addEntity(Entity entity) {
         this.entityList.add(entity);
     }
-
-
-
 
 
     public void resetEntityToTop(Entity entity) {

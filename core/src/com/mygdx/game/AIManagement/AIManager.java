@@ -2,9 +2,13 @@ package com.mygdx.game.AIManagement;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.EntityManagement.RaindropEntity;
+import com.mygdx.game.Lifecycle.LifeManager;
 
 public class AIManager {
+    protected Viewport viewport;
+    public static LifeManager lifeManager = LifeManager.getInstance();
     public static void moveRaindrop(RaindropEntity raindrop) {
         // AI-controlled movement logic for the raindrop
         if (raindrop.getSpeed() > 0) {
@@ -18,6 +22,7 @@ public class AIManager {
                 raindrop.setY(Gdx.graphics.getHeight());
                 raindrop.setActive(true); // Set the raindrop to active again
                 System.out.println("Raindrop reset to position: " + raindrop.getX() + ", " + raindrop.getY());
+                lifeManager.loseLife();
             }
         }
     }

@@ -15,6 +15,7 @@ import com.badlogic.gdx.Input;
 import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.Game_Engine;
 import com.mygdx.game.Lifecycle.HighScoreManager;
+import com.mygdx.game.Lifecycle.LifeManager;
 
 public class GamePlay implements SceneInterface {
     private SpriteBatch batch;
@@ -26,6 +27,8 @@ public class GamePlay implements SceneInterface {
     private ShapeRenderer shapeRenderer;
     private EntityManager entityManager;
     public HighScoreManager highScoreManager = HighScoreManager.getInstance();
+    public LifeManager lifeManager = LifeManager.getInstance();
+
     private float scoreDisplayX;
     private float scoreDisplayY;
 
@@ -41,6 +44,10 @@ public class GamePlay implements SceneInterface {
         entityManager = new EntityManager();
         highScoreManager.create();
         highScoreManager.resetCurrentScore();
+        this.lifeManager = new LifeManager(10);
+        SceneManager sm = new SceneManager();
+        lifeManager.initializeSceneManager(sceneManager);
+
 
 
 
@@ -49,7 +56,7 @@ public class GamePlay implements SceneInterface {
         BucketEntity bucket = new BucketEntity(bucketTexture, 0, 0, 200, batch);
         entityManager.addEntity(bucket);
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 2; i++) {
             float randomX = MathUtils.random(0, Gdx.graphics.getWidth());
             float randomY = MathUtils.random(0, Gdx.graphics.getHeight());
             double dropSpeed = MathUtils.random(1,5);
@@ -104,6 +111,15 @@ public class GamePlay implements SceneInterface {
         float scoreX = viewport.getWorldWidth() - scoreLayout.width - 20;
         float scoreY = viewport.getWorldHeight() - scoreLayout.height - 25;
         font.draw(batch, scoreDisplay, scoreX, scoreY);
+
+        GlyphLayout layout = new GlyphLayout(); // Consider making this a field to avoid re-allocating each frame
+        float width = layout.width; // Use this for calculating xPosition
+        float xPosition = viewport.getWorldWidth() - width - 300;
+        float yPosition = viewport.getWorldHeight() - layout.height - 10;
+
+        String lifeDisplay = "LIVES: " + lifeManager.getInstance().getLives();
+        layout.setText(font, lifeDisplay);
+        font.draw(batch, lifeDisplay, xPosition, yPosition);
         batch.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -111,6 +127,8 @@ public class GamePlay implements SceneInterface {
         shapeRenderer.end();
 
         entityManager.moveEntities();
+
+        lifeManager.isGameOver();
     }
 
     @Override
