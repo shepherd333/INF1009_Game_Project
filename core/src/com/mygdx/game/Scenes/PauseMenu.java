@@ -1,53 +1,32 @@
 package com.mygdx.game.Scenes;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Game_Engine;
 
-public class PauseMenu implements SceneInterface {
-    private SceneManager sceneManager;
-    private SpriteBatch batch;
-    private Texture img;
-    public OrthographicCamera camera;
-    public Viewport viewport;
+public class PauseMenu extends Scene {
 
-    // Implement necessary methods from SceneInterface
+    public PauseMenu(SceneManager sceneManager) {
+        super(sceneManager, "PauseMenu.png", "This is the PauseMenu Scene.");
+    }
+
     @Override
     public void initialize() {
-        batch = new SpriteBatch();
-        img = new Texture(Gdx.files.internal("PauseMenu.png"));
-        camera = new OrthographicCamera();
-        viewport = new StretchViewport(800, 600, camera); // Use your desired world size
-        camera.position.set(400, 300, 0); // Adjust according to your viewport's world width/height
+        // Initialize any additional resources if needed
     }
-    @Override
-    public void setSceneManager(SceneManager sceneManager) {
-        this.sceneManager = sceneManager;
-    }
+
     @Override
     public void update(float deltaTime) {
         // Handle any animations or transitions in the menu.
     }
+
     @Override
     public void render() {
-        ScreenUtils.clear(1, 0, 0, 1);
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-
+        super.render();
         batch.begin();
-        batch.draw(img, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        // Draw any additional elements specific to PauseMenu
         batch.end();
-    }
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height, true);
-        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
-        camera.update();
     }
 
     @Override
@@ -55,14 +34,11 @@ public class PauseMenu implements SceneInterface {
         if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
             Game_Engine.isMusicMuted = !Game_Engine.isMusicMuted;
         }
+        // Handle other inputs specific to PauseMenu...
     }
 
     @Override
     public void dispose() {
-        img.dispose();
-        batch.dispose();
+        super.dispose();
     }
-
-
-    // Implement other required methods...
 }

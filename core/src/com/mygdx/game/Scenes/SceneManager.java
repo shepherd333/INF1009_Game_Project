@@ -15,82 +15,71 @@ public class SceneManager {
     private float transitionDuration;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private boolean isPaused = false;
-    private String currentSceneName = "";
     private String previousSceneName = "GamePlay";
     public HighScoreManager highScoreManager = HighScoreManager.getInstance();
-    private SceneManager sm;
-
-
 
     public SceneManager() {
+        Gdx.app.log("SceneManager", "Initializing SceneManager");
         scenes = new HashMap<>();
         initializeScenes();
     }
+
     public SceneInterface getCurrentScene() {
         return currentScene;
     }
+
     public void initializeScenes() {
-        MainMenu mainMenu = new MainMenu();
-        mainMenu.setSceneManager(this); // Pass reference to SceneManager
+        Gdx.app.log("SceneManager", "Initializing scenes");
+        MainMenu mainMenu = new MainMenu(this);
         addScene("MainMenu", mainMenu);
 
-        GamePlay gamePlay = new GamePlay();
-        gamePlay.setSceneManager(this); // Pass reference to SceneManager
+        GamePlay gamePlay = new GamePlay(this);
         addScene("GamePlay", gamePlay);
 
-        PauseMenu pauseMenu = new PauseMenu();
-        pauseMenu.setSceneManager(this); // Pass reference to SceneManager
+        PauseMenu pauseMenu = new PauseMenu(this);
         addScene("PauseMenu", pauseMenu);
 
-        Leaderboard lb = new Leaderboard();
-        lb.setSceneManager(this); // Pass reference to SceneManager
+        Leaderboard lb = new Leaderboard(this);
         addScene("Leaderboard", lb);
 
-        EndMenu em = new EndMenu();
-        em.setSceneManager(this); // Pass reference to SceneManager
+        EndMenu em = new EndMenu(this);
         addScene("EndMenu", em);
     }
 
     public void addScene(String name, SceneInterface scene) {
+        Gdx.app.log("SceneManager", "Adding scene: " + name);
         scenes.put(name, scene);
     }
 
-    // Ensure this method is correctly defined
     public void setCurrentScene(String sceneName) {
+        Gdx.app.log("SceneManager", "Setting current scene to " + sceneName);
         if (scenes.containsKey(sceneName)) {
-            if (currentScene != null) {
-                currentScene.dispose();
-            }
+            previousSceneName = currentScene == null ? "" : currentScene.getClass().getSimpleName();
             currentScene = scenes.get(sceneName);
             currentScene.initialize();
-
             currentScene.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
     }
 
-    public String getCurrentSceneName() {
-        return currentSceneName;
-    }
     public boolean isCurrentSceneGamePlay() {
-        // Assuming you have a way to get the name or type of the current scene
-        return currentScene instanceof GamePlay; // Or compare a stored scene name, etc.
+        return currentScene instanceof GamePlay;
     }
-    // Other methods...
+
     public void transitionTo(String sceneName, float duration) {
+        Gdx.app.log("SceneManager", "Transitioning to " + sceneName);
         highScoreManager.saveScores();
         transitionDuration = duration;
-        isTransitioning = true; // set to true to activate if (isTransitioning) function in update
+        isTransitioning = true;
         nextSceneName = sceneName;
-        // Start fade out effect, adjust alpha over time in update()
     }
 
     public void togglePause() {
+        Gdx.app.log("SceneManager", "Toggling pause");
         isPaused = !isPaused;
         if (isPaused) {
-            // Assuming PauseMenu is only accessible from GamePlay
+            previousSceneName = currentScene.getClass().getSimpleName();
             setCurrentScene("PauseMenu");
         } else {
-            // Make sure this transitions back to GamePlay or the appropriate scene
             setCurrentScene(previousSceneName);
         }
     }
@@ -98,29 +87,27 @@ public class SceneManager {
     public boolean isPaused() {
         return isPaused;
     }
+
     public void update(float deltaTime) {
+        Gdx.app.log("SceneManager", "Updating SceneManager");
         if (isTransitioning) {
-            // Update alpha for fade effect, check transition state
             if (alpha < 1) {
                 alpha += deltaTime / transitionDuration;
-                alpha = Math.min(alpha, 1); // Clamp alpha to not exceed 1
+                alpha = Math.min(alpha, 1);
             } else {
                 setCurrentScene(nextSceneName);
                 isTransitioning = false;
-                alpha = 0; // Reset for next transition
+                alpha = 0;
             }
         }
 
         if (currentScene != null && !isTransitioning) {
             currentScene.update(deltaTime);
         }
-
-        if(isPaused){
-            setCurrentScene("PauseMenu");
-        }
     }
 
     public void render() {
+        Gdx.app.log("SceneManager", "Rendering SceneManager");
         if (currentScene != null) {
             currentScene.render();
         }
@@ -128,22 +115,23 @@ public class SceneManager {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            // Adjust the color and alpha as needed; here it's black with variable alpha
             shapeRenderer.setColor(0, 0, 0, alpha);
             shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
     }
+
     public void resize(int width, int height) {
+        Gdx.app.log("SceneManager", "Resizing SceneManager");
         if (currentScene != null) {
-            currentScene.resize(width, height); // Delegate to the current active scene
+            currentScene.resize(width, height);
         }
     }
 
     public void dispose() {
-        if (currentScene != null) {
-            currentScene.dispose();
+        for (SceneInterface scene : scenes.values()) {
+            scene.dispose();
         }
         shapeRenderer.dispose();
     }

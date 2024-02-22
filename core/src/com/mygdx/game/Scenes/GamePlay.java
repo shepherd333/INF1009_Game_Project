@@ -1,7 +1,6 @@
 package com.mygdx.game.Scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,13 +20,7 @@ import com.mygdx.game.Lifecycle.LifeManager;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GamePlay implements SceneInterface {
-    private SpriteBatch batch;
-    private Texture img;
-    private OrthographicCamera camera;
-    private Viewport viewport;
-    private SceneManager sceneManager;
-    private BitmapFont font;
+public class GamePlay extends Scene {
     private ShapeRenderer shapeRenderer;
     private EntityManager entityManager;
     public HighScoreManager highScoreManager = HighScoreManager.getInstance();
@@ -38,18 +31,17 @@ public class GamePlay implements SceneInterface {
     private float scoreDisplayX;
     private float scoreDisplayY;
     private CollisionManager collisionManager;
+    private boolean isDisposed = false;
 
-
+    public GamePlay(SceneManager sceneManager) {
+        super(sceneManager, "GamePlay.png", "This is the GamePlay Scene.");
+        viewport = new StretchViewport(800, 600, camera);
+        camera.position.set(400, 300, 0);
+        initialize();
+    }
 
     public void initialize() {
         lifeManager.getInstance().gamecheckStart();
-        batch = new SpriteBatch();
-        img = new Texture(Gdx.files.internal("GamePlay.png"));
-        camera = new OrthographicCamera();
-        viewport = new StretchViewport(800, 600, camera);
-        camera.position.set(400, 300, 0);
-        font = new BitmapFont();
-        batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         entityManager = new EntityManager();
         highScoreManager.create();
@@ -71,14 +63,8 @@ public class GamePlay implements SceneInterface {
             drop.setWidth(dropTexture.getWidth());
             drop.setHeight(dropTexture.getHeight());
             drop.setActive(true);
-            //System.out.println("Raindrop created. Active: " + drop.isActive());
             entityManager.addEntity(drop);
         }
-    }
-
-    @Override
-    public void setSceneManager(SceneManager sceneManager) {
-        this.sceneManager = sceneManager;
     }
 
     @Override
@@ -89,38 +75,35 @@ public class GamePlay implements SceneInterface {
         collisionManager.handleCollisions();
     }
 
-
-    //public void setHighScoreManager(HighScoreManager highScoreManager) {
-    //    this.highScoreManager = highScoreManager;
-    //}
-
     @Override
     public void render() {
-        ScreenUtils.clear(1, 0, 0, 1);
+        super.render();
+        // Ensure camera updates are happening.
         camera.update();
-
         batch.setProjectionMatrix(camera.combined);
 
+
         batch.begin();
-        batch.draw(img, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
-        font.draw(batch,"This is the GamePlay Scene.", 1, 450);
         entityManager.draw(batch, null);
-        //highScoreManager.rendercurrent();
+
         String scoreDisplay = "Current Score: " + highScoreManager.getInstance().getCurrentScoreFormatted();
-        Gdx.app.log("GamePlay", "Rendering score: " + scoreDisplay);
         GlyphLayout scoreLayout = new GlyphLayout(font, scoreDisplay);
         float scoreX = viewport.getWorldWidth() - scoreLayout.width - 20;
         float scoreY = viewport.getWorldHeight() - scoreLayout.height - 25;
         font.draw(batch, scoreDisplay, scoreX, scoreY);
 
-        GlyphLayout layout = new GlyphLayout(); // Consider making this a field to avoid re-allocating each frame
-        float width = layout.width; // Use this for calculating xPosition
-        float xPosition = viewport.getWorldWidth() - width - 400;
-        float yPosition = viewport.getWorldHeight() - layout.height - 10;
-
         String lifeDisplay = "LIVES: " + lifeManager.getInstance().getLives();
-        layout.setText(font, lifeDisplay);
-        font.draw(batch, lifeDisplay, xPosition, yPosition);
+        GlyphLayout lifeLayout = new GlyphLayout(font, lifeDisplay);
+        float lifeX = viewport.getWorldWidth() - lifeLayout.width - 400;
+        float lifeY = viewport.getWorldHeight() - lifeLayout.height - 10;
+        font.draw(batch, lifeDisplay, lifeX, lifeY);
+
+        String highScoreDisplay = "High Score: " + highScoreManager.getInstance().getHighestScoreFormatted();
+        GlyphLayout highScoreLayout = new GlyphLayout(font, highScoreDisplay);
+        float highScoreX = viewport.getWorldWidth() - highScoreLayout.width - 20;
+        float highScoreY = scoreY - highScoreLayout.height - 10;
+        font.draw(batch, highScoreDisplay, highScoreX, highScoreY);
+
         batch.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -128,30 +111,26 @@ public class GamePlay implements SceneInterface {
         shapeRenderer.end();
 
         entityManager.moveEntities();
-
     }
-
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height, true);
-        camera.position.set(viewport.getWorldWidth()/2, viewport.getWorldHeight()/2, 0);
-        camera.update();
-
-    }
-
-
-
     @Override
     public void handleInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
-            Game_Engine.isMusicMuted = !Game_Engine.isMusicMuted;
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            // Handle left key press
+        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            // Handle right key press
         }
+        // Add more input handling as needed
     }
 
     @Override
     public void dispose() {
-        img.dispose();
-        batch.dispose();
-        shapeRenderer.dispose();
+        if (!isDisposed) {
+            super.dispose();
+            Gdx.app.log("GamePlay", "Disposing ShapeRenderer in GamePlay");
+            shapeRenderer.dispose();
+            isDisposed = true;
+        } else {
+            Gdx.app.log("GamePlay", "ShapeRenderer in GamePlay already disposed");
+        }
     }
 }

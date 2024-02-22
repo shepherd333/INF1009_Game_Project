@@ -1,56 +1,63 @@
 package com.mygdx.game.Scenes;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.Game_Engine;
 
 public abstract class Scene implements SceneInterface {
-    protected SceneManager sceneManager;
-
-    protected SpriteBatch batch;
     protected OrthographicCamera camera;
     protected Viewport viewport;
+    protected SceneManager sceneManager;
+    protected SpriteBatch batch;
+    protected Texture img;
+    protected BitmapFont font;
+    protected String sceneText;
 
-    public Scene(SceneManager sceneManager) {
+    protected Scene(SceneManager sceneManager, String texturePath, String sceneText) {
         this.sceneManager = sceneManager;
-        batch = new SpriteBatch();
-        camera = new OrthographicCamera();
-        viewport = new StretchViewport(800, 600, camera);
-        camera.position.set(400, 300, 0);
+        this.camera = new OrthographicCamera();
+        this.batch = new SpriteBatch();
+        this.img = new Texture(Gdx.files.internal(texturePath));
+        this.font = new BitmapFont();
+        this.sceneText = sceneText;
+        this.viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
     }
 
-    @Override
-    public void initialize() {
-        // Common initialization logic for all scenes
+    public abstract void initialize();
+
+    public abstract void update(float deltaTime);
+
+    public void render() {
+        ScreenUtils.clear(1, 0, 0, 1);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+
+        batch.begin();
+        batch.draw(img, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        font.draw(batch, sceneText, 1, 450);
+        batch.end();
     }
 
-    @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
-        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
+        viewport.update(width, height, true);
     }
 
-    @Override
     public void dispose() {
         batch.dispose();
-        // Dispose of other shared resources here
+        img.dispose();
+        font.dispose();
     }
 
-    @Override
     public void setSceneManager(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
     }
 
-    // Abstract methods to be implemented by each specific scene
-    @Override
-    public abstract void update(float deltaTime);
-
-    @Override
-    public abstract void render();
-
-    @Override
     public abstract void handleInput();
 }
-
-

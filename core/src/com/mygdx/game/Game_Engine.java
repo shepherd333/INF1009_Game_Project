@@ -99,9 +99,6 @@ public class Game_Engine extends ApplicationAdapter {
 		if (sm != null) {
 			sm.dispose(); // Dispose resources managed by the scene manager
 		}
-		if (sm != null) {
-			sm.dispose();
-		}
 		if (backgroundMusic != null) {
 			backgroundMusic.dispose();
 		}
