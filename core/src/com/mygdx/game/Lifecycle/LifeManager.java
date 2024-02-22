@@ -59,7 +59,6 @@ public class LifeManager {
 
     public void addLife() {
         lives++;
-        System.out.println("Extra life gained! Lives: " + lives);
     }
 
     public void render(){

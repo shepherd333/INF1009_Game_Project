@@ -68,8 +68,9 @@ public class Game_Engine extends ApplicationAdapter {
 			inputManager.handleOpeningInput();
 		}
 
-		if (lifeManager.isGameOver()){
-			sm.transitionTo("EndMenu", 1);
+		if (lifeManager.getInstance().getLives() == 0){
+			lifeManager.getInstance().addLife();
+			sm.transitionTo("Leaderboard", 1);
 		}
 
 
