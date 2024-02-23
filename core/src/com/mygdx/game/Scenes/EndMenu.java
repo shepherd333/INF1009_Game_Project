@@ -23,10 +23,11 @@ public class EndMenu extends Scene {
     public void render() {
         super.render();
         batch.begin();
-        font.draw(batch,"Press Z to transit to Gameplay Scene.", 1, 250);
+
+        batch.draw(img, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        font.draw(batch,"This is the EndMenu Scene.", 1, 450);
         font.draw(batch,"Press X to transit to LeaderBoard Scene.", 1, 400);
         font.draw(batch,"Press SPACEBAR to transit to MainMenu Scene.", 1, 300);
-        font.draw(batch,"Press M to mute/unmute the audio.", 1, 200);
         batch.end();
     }
 
