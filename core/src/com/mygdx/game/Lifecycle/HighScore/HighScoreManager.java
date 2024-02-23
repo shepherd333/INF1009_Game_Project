@@ -2,11 +2,14 @@ package com.mygdx.game.Lifecycle.HighScore;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import javax.swing.text.View;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -17,6 +20,7 @@ public class HighScoreManager {
     private static HighScoreManager instance;
     private ScoreRenderer scoreRenderer;
     private ScoreFormatter scoreFormatter;
+
 
     private HighScoreManager() {
         highScores = new ArrayList<>();
@@ -41,6 +45,10 @@ public class HighScoreManager {
 
     public void addToCurrentScore(int points) {
         currentScore += points;
+    }
+
+    public void minusToCurrentScore(int points) {
+        currentScore -= 20;
     }
 
     public void resetCurrentScore() {
@@ -78,11 +86,12 @@ public class HighScoreManager {
 
     public void renderHighestScore(SpriteBatch batch, BitmapFont font, Viewport viewport) {
         if (!highScores.isEmpty()) {
+            font.getData().setScale(2f);
             String highScoreDisplay = "High Score: " + scoreFormatter.formatScore(highScores.get(0));
             GlyphLayout highScoreLayout = new GlyphLayout(font, highScoreDisplay);
             float highScoreX = viewport.getWorldWidth() - highScoreLayout.width - 250;
-            float highScoreY = viewport.getWorldHeight() - highScoreLayout.height - 200;
-            scoreRenderer.render(Integer.parseInt(scoreFormatter.formatScore(highScores.get(0))), batch, highScoreX, highScoreY);
+            float highScoreY = viewport.getWorldHeight() - highScoreLayout.height - 250;
+            scoreRenderer.render(highScoreDisplay, batch, highScoreX, highScoreY);
         }
     }
 

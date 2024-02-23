@@ -73,7 +73,7 @@ public class LifeManager {
 
     // Adds lives (used for initializing or adding bonus lives).
     public void addLife() {
-        lives += 6; // Example increment, adjust according to game design.
+        lives += 4; // Example increment, adjust according to game design.
     }
     public void addPLife() {
         lives += 0; // Example increment, adjust according to game design.

@@ -10,7 +10,7 @@ import com.mygdx.game.Lifecycle.LifeManager;
 public class AIManager {
     // The viewport can be used to ensure movements and positions are calculated within the game's visible area.
     // However, it's not used in the current implementation.
-    protected Viewport viewport;
+    private Viewport viewport;
 
     // Singleton instance of the LifeManager to manage game life state.
     public static LifeManager lifeManager = LifeManager.getInstance();

@@ -15,9 +15,9 @@ public class ScoreRenderer {
         font.getData().setScale(1);
     }
 
-    public void render(int score, SpriteBatch batch, float x, float y) {
+    public void render(String score, SpriteBatch batch, float x, float y) {
         batch.begin();
-        font.draw(batch, String.valueOf(score), 10, 20);
+        font.draw(batch, score, x, y);
         batch.end();
     }
 

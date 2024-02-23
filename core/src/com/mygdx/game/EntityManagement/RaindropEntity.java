@@ -6,12 +6,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.AIManagement.AIManager;
 
 // RaindropEntity extends TextureObject to represent a raindrop in the game.
 public class RaindropEntity extends TextureObject {
     private AIManager aiManager; // Reference to AIManager to control the raindrop's movement.
-
+    private Viewport viewport;
     // Constructor
     public RaindropEntity(Texture texture, float x, float y, double speed, SpriteBatch spriteBatch, float bucketX, float bucketWidth) {
         super(texture, x, y, speed, spriteBatch); // Calls the constructor of the superclass, TextureObject.
