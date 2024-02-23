@@ -67,7 +67,7 @@ public class GamePlay extends Scene {
         Texture bucketTexture = new Texture(Gdx.files.internal("Fairy.png"));
         float bucketX = Gdx.graphics.getWidth() / 2f - bucketTexture.getWidth() / 20f; // Centered horizontally
         float bucketY = 0; // At the bottom of the screen
-        BucketEntity bucket = new BucketEntity(bucketTexture, bucketX, bucketY, 200, batch);
+        BucketEntity bucket = new BucketEntity(bucketTexture, bucketX, bucketY, 200, batch,viewport);
         bucket.setWidth(bucketTexture.getWidth() / 10);
         bucket.setHeight(bucketTexture.getHeight() / 10);
         entityManager.addEntity(bucket);
