@@ -1,5 +1,6 @@
 package com.mygdx.game.Scenes;
 
+// Defines the essential structure and lifecycle methods for scenes in a LibGDX game.
 public interface SceneInterface {
 
     public void initialize(); // Initialize scene resources and setups

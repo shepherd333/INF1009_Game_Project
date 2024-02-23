@@ -29,7 +29,7 @@ public class LifeManager {
     // Singleton pattern to ensure only one instance of LifeManager exists.
     public static synchronized LifeManager getInstance() {
         if (instance == null) {
-            instance = new LifeManager(5); // Default initial lives set to 5.
+            instance = new LifeManager(3); // Default initial lives set to 5.
         }
         return instance;
     }
@@ -76,7 +76,7 @@ public class LifeManager {
         lives += 6; // Example increment, adjust according to game design.
     }
     public void addPLife() {
-        lives += 2; // Example increment, adjust according to game design.
+        lives += 0; // Example increment, adjust according to game design.
     }
 
     // Resets the life count to indicate game over or pre-game state.
