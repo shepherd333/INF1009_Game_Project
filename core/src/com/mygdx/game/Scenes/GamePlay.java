@@ -59,17 +59,18 @@ public class GamePlay extends Scene {
         highScoreManager.create();
         highScoreManager.getHighScores().addAll(scoreFileHandler.loadScores());
         highScoreManager.resetCurrentScore();
+        highScoreManager.minusToCurrentScore(20);
 
 
         lifeManager.initializeSceneManager(sceneManager);
         collisionManager = new CollisionManager(entityManager.getEntities());
 
-        Texture bucketTexture = new Texture(Gdx.files.internal("Fairy.png"));
+        Texture bucketTexture = new Texture(Gdx.files.internal("fairy.png"));
         float bucketX = Gdx.graphics.getWidth() / 2f - bucketTexture.getWidth() / 20f; // Centered horizontally
         float bucketY = 0; // At the bottom of the screen
         BucketEntity bucket = new BucketEntity(bucketTexture, bucketX, bucketY, 200, batch,viewport);
-        bucket.setWidth(bucketTexture.getWidth() / 10);
-        bucket.setHeight(bucketTexture.getHeight() / 10);
+        bucket.setWidth(bucketTexture.getWidth());
+        bucket.setHeight(bucketTexture.getHeight());
         entityManager.addEntity(bucket);
 
         for (int i = 0; i < 2; i++) {
@@ -82,12 +83,12 @@ public class GamePlay extends Scene {
                 randomX = MathUtils.random(0, Gdx.graphics.getWidth());
             } while (randomX >= minDropX && randomX <= maxDropX);
 
-            float randomY = MathUtils.random(Gdx.graphics.getHeight(), Gdx.graphics.getHeight() * 2);
-            double dropSpeed = MathUtils.random(1, 5);
+            float randomY = Gdx.graphics.getHeight()* 2;
+            double dropSpeed = MathUtils.random(1, 6);
             Texture dropTexture = new Texture(Gdx.files.internal("dust.png"));
             RaindropEntity drop = new RaindropEntity(dropTexture, randomX, randomY, dropSpeed, batch, bucketX, bucket.getWidth());
-            drop.setWidth(dropTexture.getWidth() / 5);
-            drop.setHeight(dropTexture.getHeight() / 5);
+            drop.setWidth(dropTexture.getWidth());
+            drop.setHeight(dropTexture.getHeight());
             drop.setActive(true);
             entityManager.addEntity(drop);
         }

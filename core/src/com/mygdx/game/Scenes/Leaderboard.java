@@ -3,14 +3,19 @@ package com.mygdx.game.Scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
 
 public class Leaderboard extends Scene {
     public Vector3 tmp = new Vector3();
     public HighScoreManager highScoreManager = HighScoreManager.getInstance();
 
+
     public Leaderboard(SceneManager sceneManager) {
         super(sceneManager, "Leaderboard.png", "This is the LeaderBoard Scene.");
+        viewport = new StretchViewport(800, 600, camera);
+        camera.position.set(400, 300, 0);
     }
 
     @Override
@@ -26,10 +31,7 @@ public class Leaderboard extends Scene {
     @Override
     public void render() {
         super.render();
-        batch.begin();
-        font.getData().setScale(1.3f);
-        highScoreManager.renderHighestScore(batch, font, viewport);
-        batch.end();
+        highScoreManager.getInstance().renderHighestScore(batch, font, viewport);
     }
 
     @Override

@@ -42,11 +42,11 @@ public class Game_Engine extends ApplicationAdapter {
 
 	@Override
 	public void render() {
-		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-			if (sm.getCurrentScene() instanceof PauseMenu || sm.isCurrentSceneGamePlay()) {
-				sm.togglePause();
-			}
-		}
+		//if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+		//	if (sm.getCurrentScene() instanceof PauseMenu || sm.isCurrentSceneGamePlay()) {
+		//		sm.togglePause();
+		//	}
+		//}
 
 		if (sm != null && !sm.isPaused()) {
 			sm.getCurrentScene().handleInput();
