@@ -14,6 +14,7 @@ import com.badlogic.gdx.Input;
 import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.Game_Engine;
+import com.mygdx.game.InputManagement.InputManager;
 import com.mygdx.game.Lifecycle.HighScoreManager;
 import com.mygdx.game.Lifecycle.LifeManager;
 
@@ -30,6 +31,7 @@ public class GamePlay extends Scene {
     private Map<String, SceneInterface> scenes = new HashMap<>();
     private CollisionManager collisionManager;
     private boolean isDisposed = false;
+    private InputManager inputManager;
 
     public GamePlay(SceneManager sceneManager) {
         super(sceneManager, "GamePlay.png", "This is the GamePlay Scene.");

@@ -5,6 +5,7 @@ import java.util.Map;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.Lifecycle.HighScoreManager;
+import com.mygdx.game.Lifecycle.LifeManager;
 
 public class SceneManager {
     private Map<String, SceneInterface> scenes = new HashMap<>();
@@ -18,6 +19,7 @@ public class SceneManager {
     private String currentSceneName = "";
     private String previousSceneName = "GamePlay";
     public HighScoreManager highScoreManager = HighScoreManager.getInstance();
+    public LifeManager lifeManager = LifeManager.getInstance();
 
     public SceneManager() {
         Gdx.app.log("SceneManager", "Initializing SceneManager");
@@ -85,6 +87,7 @@ public class SceneManager {
             setCurrentScene("PauseMenu");
         } else {
             setCurrentScene(previousSceneName);
+            lifeManager.addPLife();
         }
     }
 

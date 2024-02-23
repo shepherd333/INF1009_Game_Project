@@ -75,6 +75,9 @@ public class LifeManager {
     public void addLife() {
         lives += 6; // Example increment, adjust according to game design.
     }
+    public void addPLife() {
+        lives += 2; // Example increment, adjust according to game design.
+    }
 
     // Resets the life count to indicate game over or pre-game state.
     public void endLife() {

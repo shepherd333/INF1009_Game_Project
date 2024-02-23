@@ -37,6 +37,15 @@ public class Game_Engine extends ApplicationAdapter {
 
 	@Override
 	public void render() {
+		//if (sm != null){
+		//	if (sm.getCurrentSceneName() == "PauseMenu"){
+		//		inputManager.handleGameInput();
+		//	}
+		//	if (sm.getCurrentSceneName() == "GamePlay"){
+		//		inputManager.handleGameInput();
+		//	}
+		//}
+
 		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
 			// The condition here assumes isCurrentSceneGamePlay() returns true if GamePlay scene is active
 			// For unpausing, this check is not strictly necessary unless you want to restrict it further
@@ -44,13 +53,12 @@ public class Game_Engine extends ApplicationAdapter {
 				sm.togglePause();
 			}
 		}
-//		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
-//			toggleMusic();
-//		}
+
 		// Only update and handle input if the game is not paused
 		if (sm != null && !sm.isPaused()) {
 			sm.getCurrentScene().handleInput();
 			sm.update(Gdx.graphics.getDeltaTime()); // Update the scene manager and entities
+
 			if (sm.getCurrentSceneName() == "MainMenu"){
 				inputManager.handleMMInput(); // Update the scene manager
 			}
@@ -72,7 +80,6 @@ public class Game_Engine extends ApplicationAdapter {
 			lifeManager.getInstance().endLife();
 			sm.transitionTo("EndMenu", 1);
 		}
-
 
 		if (isMusicMuted) {
 			backgroundMusic.setVolume(0); // Mute the music

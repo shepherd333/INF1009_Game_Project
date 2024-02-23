@@ -3,6 +3,7 @@ package com.mygdx.game.InputManagement;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.EntityManagement.BucketEntity;
+import com.mygdx.game.Scenes.PauseMenu;
 import com.mygdx.game.Scenes.SceneManager;
 
 // InputManager is responsible for handling all input-related functionality across the game.
@@ -74,6 +75,16 @@ public class InputManager {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.X)) {
             sm.transitionTo("Leaderboard", 1);
+        }
+    }
+
+    public void handleGameInput(){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+            // The condition here assumes isCurrentSceneGamePlay() returns true if GamePlay scene is active
+            // For unpausing, this check is not strictly necessary unless you want to restrict it further
+            if (sm.getCurrentScene() instanceof PauseMenu || sm.isCurrentSceneGamePlay()) {
+                sm.togglePause();
+            }
         }
     }
 
