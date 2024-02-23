@@ -28,8 +28,6 @@ public class GamePlay extends Scene {
     private SceneManager sm;
     private SceneInterface currentScene;
     private Map<String, SceneInterface> scenes = new HashMap<>();
-    private float scoreDisplayX;
-    private float scoreDisplayY;
     private CollisionManager collisionManager;
     private boolean isDisposed = false;
 
@@ -89,7 +87,7 @@ public class GamePlay extends Scene {
         String scoreDisplay = "Current Score: " + highScoreManager.getInstance().getCurrentScoreFormatted();
         GlyphLayout scoreLayout = new GlyphLayout(font, scoreDisplay);
         float scoreX = viewport.getWorldWidth() - scoreLayout.width - 20;
-        float scoreY = viewport.getWorldHeight() - scoreLayout.height - 25;
+        float scoreY = viewport.getWorldHeight() - scoreLayout.height - 20;
         font.draw(batch, scoreDisplay, scoreX, scoreY);
 
         String lifeDisplay = "LIVES: " + lifeManager.getInstance().getLives();
@@ -114,11 +112,6 @@ public class GamePlay extends Scene {
     }
     @Override
     public void handleInput() {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            // Handle left key press
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            // Handle right key press
-        }
         // Add more input handling as needed
     }
 

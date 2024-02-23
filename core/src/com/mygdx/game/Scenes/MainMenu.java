@@ -28,8 +28,10 @@ public class MainMenu extends Scene {
         batch.begin();
         font.draw(batch, "Press Z on keyboard to transit to Gameplay Scene.", 1, 400);
         font.draw(batch, "Press X to transit to LeaderBoard Scene.", 1, 350);
-        font.draw(batch, "Press C to transit to EndMenu Scene.", 1, 300);
+        font.draw(batch, "Press SPACEBAR to transit to EndMenu Scene.", 1, 300);
         font.draw(batch,"Press M to mute/unmute the audio.", 1, 250);
+
+
         batch.end();
     }
 

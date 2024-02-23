@@ -15,6 +15,7 @@ public class SceneManager {
     private float transitionDuration;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private boolean isPaused = false;
+    private String currentSceneName = "";
     private String previousSceneName = "GamePlay";
     public HighScoreManager highScoreManager = HighScoreManager.getInstance();
 
@@ -56,11 +57,14 @@ public class SceneManager {
         if (scenes.containsKey(sceneName)) {
             previousSceneName = currentScene == null ? "" : currentScene.getClass().getSimpleName();
             currentScene = scenes.get(sceneName);
+            currentSceneName = sceneName; // Update the currentSceneName to reflect the new current scene
             currentScene.initialize();
             currentScene.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
     }
-
+    public String getCurrentSceneName() {
+        return currentSceneName;
+    }
     public boolean isCurrentSceneGamePlay() {
         return currentScene instanceof GamePlay;
     }
@@ -98,6 +102,9 @@ public class SceneManager {
                 setCurrentScene(nextSceneName);
                 isTransitioning = false;
                 alpha = 0;
+
+                // Log the current scene name for debugging
+                Gdx.app.log("SceneManager", "Transition complete. Current scene: " + currentSceneName);
             }
         }
 
