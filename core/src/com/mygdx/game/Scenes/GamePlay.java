@@ -3,10 +3,13 @@ package com.mygdx.game.Scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -32,7 +35,8 @@ public class GamePlay extends Scene {
     private CollisionManager collisionManager; // Handles collision detection and response.
     private boolean isDisposed = false; // Tracks whether resources have been disposed of
     private InputManager inputManager; // Manages input from the player.
-
+    private Sprite BackgroundSprite;
+    private Stage stage;
     // Constructor initializes the gameplay scene with a specific viewport and camera setup.
     public GamePlay(SceneManager sceneManager) {
         super(sceneManager, "GamePlay.png", "This is the GamePlay Scene.");
@@ -51,7 +55,7 @@ public class GamePlay extends Scene {
         lifeManager.initializeSceneManager(sceneManager);
         collisionManager = new CollisionManager(entityManager.getEntities());
         Texture bucketTexture = new Texture(Gdx.files.internal("Fairy.png"));
-        BucketEntity bucket = new BucketEntity(bucketTexture, 0, 0, 200, batch);
+        BucketEntity bucket = new BucketEntity(bucketTexture, 0, 0, 200, batch, viewport);
         bucket.setWidth(bucketTexture.getWidth()/10);
         bucket.setHeight(bucketTexture.getHeight()/10);
         entityManager.addEntity(bucket);

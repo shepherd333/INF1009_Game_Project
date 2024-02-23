@@ -37,7 +37,7 @@ public abstract class Scene implements SceneInterface {
         this.font = new BitmapFont(); // Initializes the font for text rendering.
         this.sceneText = sceneText; // Sets the text to be displayed within the scene.
         // Creates a FitViewport to maintain aspect ratio across different screen sizes.
-        this.viewport = new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+        this.viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
     }
     // Abstract method for initializing any scene-specific elements or logic.
     public abstract void initialize();
