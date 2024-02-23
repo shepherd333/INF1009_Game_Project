@@ -71,4 +71,7 @@ public abstract class Scene implements SceneInterface {
     }
     // Abstract method for handling input; specifics depend on the scene implementation.
     public abstract void handleInput();
+    public void onShow() {
+        // This method will be called when the scene is shown
+    }
 }

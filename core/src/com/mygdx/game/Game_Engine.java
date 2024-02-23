@@ -9,56 +9,51 @@ import com.mygdx.game.Scenes.SceneInterface;
 import com.mygdx.game.Scenes.SceneManager;
 import com.mygdx.game.Scenes.PauseMenu;
 import com.badlogic.gdx.audio.Music;
-import com.mygdx.game.Lifecycle.HighScoreManager;
-
+import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
+import com.mygdx.game.Lifecycle.HighScore.ScoreFileHandler;
 
 public class Game_Engine extends ApplicationAdapter {
-	SceneManager sm; // SceneManager to manage different scenes (like menus, game levels).
-	private Music backgroundMusic; // Background music for the game.
-	public static boolean isMusicMuted = false;  // Global flag to mute/unmute the game music.
-	private HighScoreManager highScoreManager; // High score manager for the game.
-	private InputManager inputManager; // Input manager for handling user input across different scenes.
-	public LifeManager lifeManager; // Life manager for tracking player lives.
+	SceneManager sm;
+	private Music backgroundMusic;
+	public static boolean isMusicMuted = false;
+	private HighScoreManager highScoreManager;
+	private InputManager inputManager;
+	public LifeManager lifeManager;
+	private ScoreFileHandler scoreFileHandler;
 
-	// Called when the Application is first created.
 	@Override
-	public void create() { // Called when the Application is first created
-		// Initialize the scene manager and set the initial scene to MainMenu.
+	public void create() {
 		sm = new SceneManager();
 		sm.initializeScenes();
 		sm.setCurrentScene("MainMenu");
-		// Setup background music to loop and start playing.
+
 		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("bgmusic2.mp3"));
 		backgroundMusic.setLooping(true);
 		backgroundMusic.play();
-		// Initialize input, life, and high score managers.
+
 		inputManager = new InputManager(sm);
 		this.lifeManager = new LifeManager(-1);
-		highScoreManager = new HighScoreManager();
-		highScoreManager.create();
 
+		scoreFileHandler = new ScoreFileHandler();
+		highScoreManager = HighScoreManager.getInstance();
+		highScoreManager.create();
+		highScoreManager.getHighScores().addAll(scoreFileHandler.loadScores());
 	}
 
-	// Main game loop method, called continuously to render the game.
 	@Override
 	public void render() {
-		// Handle toggling pause state with the P key.
 		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-			// The condition here assumes isCurrentSceneGamePlay() returns true if GamePlay scene is active
-			// For unpausing, this check is not strictly necessary unless you want to restrict it further
 			if (sm.getCurrentScene() instanceof PauseMenu || sm.isCurrentSceneGamePlay()) {
 				sm.togglePause();
 			}
 		}
 
-
-		// Only update and handle input if the game is not paused
 		if (sm != null && !sm.isPaused()) {
 			sm.getCurrentScene().handleInput();
-			sm.update(Gdx.graphics.getDeltaTime()); // Update the scene manager and entities
+			sm.update(Gdx.graphics.getDeltaTime());
 
 			if (sm.getCurrentSceneName() == "MainMenu"){
-				inputManager.handleMMInput(); // Update the scene manager
+				inputManager.handleMMInput();
 			}
 			if (sm.getCurrentSceneName() == "Leaderboard"){
 				inputManager.handleLBInput();
@@ -72,25 +67,24 @@ public class Game_Engine extends ApplicationAdapter {
 			isMusicMuted = !isMusicMuted;
 		}
 
-		// Always render the current scene
 		if (sm != null) {
-			sm.render(); // Render the scene manager and thus the current scene
+			sm.render();
 		}
 
 		if (lifeManager.getInstance().getLives() == 0){
-			highScoreManager.saveScores();
+			highScoreManager.addScore(highScoreManager.getCurrentScore());
+			scoreFileHandler.saveScores(highScoreManager.getHighScores());
 			lifeManager.getInstance().endLife();
 			sm.transitionTo("EndMenu", 1);
 		}
 
 		if (isMusicMuted) {
-			backgroundMusic.setVolume(0); // Mute the music
+			backgroundMusic.setVolume(0);
 		} else {
-			backgroundMusic.setVolume(0.05F); // Set volume back to normal
+			backgroundMusic.setVolume(0.05F);
 		}
-
 	}
-	// Toggle the mute state of the game music.
+
 	public void toggleMusic() {
 		isMusicMuted = !isMusicMuted;
 		if (isMusicMuted) {
@@ -100,36 +94,30 @@ public class Game_Engine extends ApplicationAdapter {
 		}
 	}
 
-	// Check if the music is currently muted.
 	public boolean isMusicMuted() {
 		return isMusicMuted;
 	}
 
-	// Handle screen resize events, ensuring the current scene adjusts to the new size.
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
 		if (sm != null) {
-			sm.resize(width, height); // Ensure SceneManager handles resize
+			sm.resize(width, height);
 		}
 	}
 
-	// Dispose of game resources when closing.
 	@Override
-	public void dispose() { // Called when the Application is destroyed. get rid of textures created
+	public void dispose() {
 		if (sm != null) {
-			sm.dispose(); // Dispose resources managed by the scene manager
+			sm.dispose();
 		}
 		if (backgroundMusic != null) {
 			backgroundMusic.dispose();
 		}
-
 		if (highScoreManager != null) {
+			highScoreManager.addScore(highScoreManager.getCurrentScore());
+			scoreFileHandler.saveScores(highScoreManager.getHighScores());
 			highScoreManager.dispose();
 		}
 	}
 }
-
-
-
-

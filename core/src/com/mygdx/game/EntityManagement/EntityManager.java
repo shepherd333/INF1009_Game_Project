@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.CollisionManagement.handlers.CollectCollisionHandler;
-import com.mygdx.game.Lifecycle.HighScoreManager;
 import com.mygdx.game.Lifecycle.LifeManager;
 
 import java.util.ArrayList;

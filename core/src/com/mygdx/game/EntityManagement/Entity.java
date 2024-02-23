@@ -48,6 +48,11 @@ public abstract class Entity {
     // Getter for the entity's speed.
     public double getSpeed() { return speed; }
 
+    // Getter for the entity's width.
+    public float getWidth() {
+        return getBounds().width;
+    }
+
     // Setter for the entity's speed.
     public void setSpeed(double speed) { this.speed = speed; }
 

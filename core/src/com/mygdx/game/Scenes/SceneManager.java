@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.mygdx.game.Lifecycle.HighScoreManager;
+import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
 import com.mygdx.game.Lifecycle.LifeManager;
 
 // Manages all scenes within the game, including transitions between scenes.
@@ -70,6 +70,12 @@ public class SceneManager {
             previousSceneName = currentScene == null ? "" : currentScene.getClass().getSimpleName();
             currentScene = scenes.get(sceneName);
             currentSceneName = sceneName; // Update the currentSceneName to reflect the new current scene
+
+            // If the new scene is GamePlay, reset the score
+            if (currentScene instanceof GamePlay) {
+                highScoreManager.resetCurrentScore();
+            }
+
             currentScene.initialize();
             currentScene.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
