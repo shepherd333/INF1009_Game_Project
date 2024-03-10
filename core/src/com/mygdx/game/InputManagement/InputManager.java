@@ -3,7 +3,7 @@ package com.mygdx.game.InputManagement;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.EntityManagement.BucketEntity;
-import com.mygdx.game.Scenes.PauseMenu;
+
 import com.mygdx.game.Scenes.SceneManager;
 
 // InputManager is responsible for handling all input-related functionality across the game.
@@ -42,51 +42,51 @@ public class InputManager {
         }
     }
 
-    // Handles inputs related to opening different scenes like gameplay, leaderboard, etc.
-    public void handleMMInput() {
-        // Transition to the GamePlay scene if the Z key is pressed.
-        if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
-            sm.transitionTo("GamePlay", 1);
-        }
-        // Transition to the Leaderboard scene if the X key is pressed.
-        if (Gdx.input.isKeyPressed(Input.Keys.X)) {
-            sm.transitionTo("Leaderboard", 1);
-        }
-        // Additional scene transitions can be added here for other keys.
-    }
-
-    public void handleLBInput() {
-        // Transition to the GamePlay scene if the Z key is pressed.
-        if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
-            sm.transitionTo("GamePlay", 1);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            sm.transitionTo("MainMenu", 1);
-        }
-        // Additional scene transitions can be added here for other keys.
-    }
-
-    public void handleEndInput(){
-        if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
-            sm.transitionTo("GamePlay", 1);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            sm.transitionTo("MainMenu", 1);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.X)) {
-            sm.transitionTo("Leaderboard", 1);
-        }
-    }
-
-    public void handleGameInput(){
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-            // The condition here assumes isCurrentSceneGamePlay() returns true if GamePlay scene is active
-            // For unpausing, this check is not strictly necessary unless you want to restrict it further
-            if (sm.getCurrentScene() instanceof PauseMenu || sm.isCurrentSceneGamePlay()) {
-                sm.togglePause();
-            }
-        }
-    }
+     //Handles inputs related to opening different scenes like gameplay, leaderboard, etc.
+//    public void handleMMInput() {
+//        // Transition to the GamePlay scene if the Z key is pressed.
+//        if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
+//            sm.transitionTo("GamePlay", 1);
+//        }
+//        // Transition to the Leaderboard scene if the X key is pressed.
+//        if (Gdx.input.isKeyPressed(Input.Keys.X)) {
+//            sm.transitionTo("Leaderboard", 1);
+//        }
+//        // Additional scene transitions can be added here for other keys.
+//    }
+//
+//    public void handleLBInput() {
+//        // Transition to the GamePlay scene if the Z key is pressed.
+//        if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
+//            sm.transitionTo("GamePlay", 1);
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+//            sm.transitionTo("MainMenu", 1);
+//        }
+//        // Additional scene transitions can be added here for other keys.
+//    }
+//
+//    public void handleEndInput(){
+//        if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
+//            sm.transitionTo("GamePlay", 1);
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+//            sm.transitionTo("MainMenu", 1);
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.X)) {
+//            sm.transitionTo("Leaderboard", 1);
+//        }
+//    }
+//
+//    public void handleGameInput(){
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+//            // The condition here assumes isCurrentSceneGamePlay() returns true if GamePlay scene is active
+//            // For unpausing, this check is not strictly necessary unless you want to restrict it further
+//            if (sm.getCurrentScene() instanceof PauseMenu || sm.isCurrentSceneGamePlay()) {
+//                sm.togglePause();
+//            }
+//        }
+//    }
 
     // The following methods are placeholders for touch and mouse events.
     // Currently, they return false to indicate they do not handle the event,

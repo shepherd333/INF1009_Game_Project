@@ -2,60 +2,101 @@ package com.mygdx.game.Scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-// MainMenu class extends the Scene class to represent the main menu of the game.
 public class MainMenu extends Scene {
-    public Vector3 tmp = new Vector3(); // Temporary vector for unprojecting touch coordinates
+    public Vector3 tmp = new Vector3();
+    private Stage stage;
+    private Skin skin;
+    private SpriteBatch batch;
+    private Texture bg;
+    private Sprite bgSprite;
 
-    // Constructor for MainMenu. Calls the superclass constructor with parameters specific to the MainMenu.
     public MainMenu(SceneManager sceneManager) {
-        super(sceneManager, "MainMenu.png", "Welcome to the MainMenu.");
-        // "MainMenu.png" is assumed to be the background texture for the menu,
-        // and "Welcome to the MainMenu." is a description or title for this scene.
+        super(sceneManager);
+        batch = new SpriteBatch();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        Gdx.input.setInputProcessor(stage);
+        skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
+
+        bg = new Texture(Gdx.files.internal("MainMenu.png"));
+        bgSprite = new Sprite(bg);
+        bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        int buttonWidth = 200;
+        int buttonHeight = 50;
+        int buttonSpacing = 5;
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+        int totalHeight = (buttonHeight + buttonSpacing) * 5;
+
+        int verticalOffset = (screenHeight - totalHeight) / 2;
+        TextButton playButton = new TextButton("Play", skin);
+        playButton.setSize(buttonWidth, buttonHeight);
+        playButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 100); // Adjust Y position as needed
+        playButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Transition to the PlayScene
+                sceneManager.set(new GamePlay(sceneManager));
+            }
+        });
+        stage.addActor(playButton);
+
+        TextButton leaderBoardBtn = new TextButton("Leaderboard", skin);
+        leaderBoardBtn.setSize(buttonWidth, buttonHeight);
+        leaderBoardBtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 150); // Adjust Y position as needed
+        leaderBoardBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Transition to the PlayScene
+                sceneManager.set(new Leaderboard(sceneManager));
+            }
+        });
+        stage.addActor(leaderBoardBtn);
+
     }
 
     @Override
     public void initialize() {
-        // Initialize any additional resources if needed
     }
 
     @Override
     public void update(float deltaTime) {
-        // Handle any animations or transitions in the menu.
     }
 
     @Override
     public void render() {
-        // Render the MainMenu scene.
         super.render();
         batch.begin();
-        // Draw menu options or instructions for the player using the font. These could be replaced with interactive UI elements.
-        font.draw(batch, "Press Z on keyboard to transit to Gameplay Scene.", 1, 400);
-        font.draw(batch, "Press X to transit to LeaderBoard Scene.", 1, 350);
-        font.draw(batch, "Press SPACEBAR to transit to EndMenu Scene.", 1, 300);
-        font.draw(batch,"Press M to mute/unmute the audio.", 1, 250);
-
-
+        bgSprite.draw(batch);
         batch.end();
+        stage.draw();
     }
 
     @Override
-    public void handleInput() {
-        // Handle user input specific to the MainMenu.
-        // For example, touch or click input can be processed here to navigate to other scenes based on the location of the touch.
-        if (Gdx.input.justTouched()) {
-            // Convert screen coordinates of the touch input to world coordinates.
-            camera.unproject(tmp.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-            // Based on the coordinates, you could determine which menu item was selected and transition to a different scene.
-        }
+    public void resize(int width, int height) {
+        // Update the stage's viewport when the screen size changes
+        stage.getViewport().update(width, height, true);
+        // Optionally, you can also adjust the positions of UI elements here if necessary
+        // This ensures the viewport is recalculated to match the new screen size
     }
-
     @Override
     public void dispose() {
-        // Dispose of any resources specific to the MainMenu when they are no longer needed or when the application is closing.
-        // Always call the superclass dispose method to ensure proper cleanup.
         super.dispose();
+        stage.dispose();
+        skin.dispose();
+        batch.dispose();
+
     }
 }

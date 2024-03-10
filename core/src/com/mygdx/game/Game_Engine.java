@@ -1,38 +1,38 @@
 package com.mygdx.game;
-import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.mygdx.game.InputManagement.InputManager;
-import com.mygdx.game.Lifecycle.LifeManager;
-import com.mygdx.game.Scenes.Scene;
-import com.mygdx.game.Scenes.SceneInterface;
-import com.mygdx.game.Scenes.SceneManager;
-import com.mygdx.game.Scenes.PauseMenu;
 import com.badlogic.gdx.audio.Music;
+import com.mygdx.game.Scenes.MainMenu;
+import com.mygdx.game.Scenes.SceneManager;
 import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
 import com.mygdx.game.Lifecycle.HighScore.ScoreFileHandler;
+import com.mygdx.game.Lifecycle.LifeManager;
 
 public class Game_Engine extends ApplicationAdapter {
 	SceneManager sm;
 	private Music backgroundMusic;
 	public static boolean isMusicMuted = false;
 	private HighScoreManager highScoreManager;
-	private InputManager inputManager;
-	public LifeManager lifeManager;
+	private LifeManager lifeManager;
 	private ScoreFileHandler scoreFileHandler;
 
 	@Override
 	public void create() {
 		sm = new SceneManager();
-		sm.initializeScenes();
-		sm.setCurrentScene("MainMenu");
+		sm.pushScene(new MainMenu(sm)); // Initialize the game with the main menu scene.
 
 		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("bgmusic2.mp3"));
 		backgroundMusic.setLooping(true);
 		backgroundMusic.play();
+		if (isMusicMuted) {
+			backgroundMusic.setVolume(0);
+		} else {
+			backgroundMusic.setVolume(0.5f); // Adjust volume as needed
+		}
 
-		inputManager = new InputManager(sm);
-		this.lifeManager = new LifeManager(-1);
+		lifeManager = new LifeManager(-1);
 
 		scoreFileHandler = new ScoreFileHandler();
 		highScoreManager = HighScoreManager.getInstance();
@@ -42,47 +42,24 @@ public class Game_Engine extends ApplicationAdapter {
 
 	@Override
 	public void render() {
-		//if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-		//	if (sm.getCurrentScene() instanceof PauseMenu || sm.isCurrentSceneGamePlay()) {
-		//		sm.togglePause();
-		//	}
-		//}
+//		if (!sm.isPaused()) {
+//			sm.getCurrentScene().handleInput();
+//			sm.update(Gdx.graphics.getDeltaTime());
+//		}
+//
+//		// Toggle music mute with the M key
+//		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+//			toggleMusic();
+//		}
 
-		if (sm != null && !sm.isPaused()) {
-			sm.getCurrentScene().handleInput();
-			sm.update(Gdx.graphics.getDeltaTime());
+		sm.render();
 
-			if (sm.getCurrentSceneName() == "MainMenu"){
-				inputManager.handleMMInput();
-			}
-			if (sm.getCurrentSceneName() == "Leaderboard"){
-				inputManager.handleLBInput();
-			}
-			if (sm.getCurrentSceneName() == "EndMenu"){
-				inputManager.handleEndInput();
-			}
-		}
-
-		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
-			isMusicMuted = !isMusicMuted;
-		}
-
-		if (sm != null) {
-			sm.render();
-		}
-
-		if (lifeManager.getInstance().getLives() == 0){
-			highScoreManager.addScore(highScoreManager.getCurrentScore());
-			scoreFileHandler.saveScores(highScoreManager.getHighScores());
-			lifeManager.getInstance().endLife();
-			sm.transitionTo("EndMenu", 1);
-		}
-
-		if (isMusicMuted) {
-			backgroundMusic.setVolume(0);
-		} else {
-			backgroundMusic.setVolume(0.05F);
-		}
+//		if (lifeManager.getLives() == 0) {
+//			highScoreManager.addScore(highScoreManager.getCurrentScore());
+//			scoreFileHandler.saveScores(highScoreManager.getHighScores());
+//			lifeManager.endLife();
+//			sm.pushScene(new com.mygdx.game.Scenes.EndMenu(sm)); // Assuming you have an EndMenu scene for game over
+//		}
 	}
 
 	public void toggleMusic() {
@@ -94,16 +71,10 @@ public class Game_Engine extends ApplicationAdapter {
 		}
 	}
 
-	public boolean isMusicMuted() {
-		return isMusicMuted;
-	}
-
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
-		if (sm != null) {
-			sm.resize(width, height);
-		}
+		sm.resize(width, height);
 	}
 
 	@Override
