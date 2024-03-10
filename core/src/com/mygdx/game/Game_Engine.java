@@ -24,7 +24,7 @@ public class Game_Engine extends ApplicationAdapter {
 	public void create() {
 		sm = new SceneManager();
 		sm.pushScene(new MainMenu(sm)); // Initialize the game with the main menu scene.
-		AudioManager.getInstance().playBackgroundMusic("bgmusic2.mp3", true, 0.01f);
+		AudioManager.getInstance().playBackgroundMusic("bgmusic2.mp3", true, 0.1f);
 
 		lifeManager = new LifeManager(-1);
 

@@ -39,7 +39,7 @@ public class AudioManager {
     public void toggleMusicMute() {
         isMusicMuted = !isMusicMuted;
         if (backgroundMusic != null) {
-            backgroundMusic.setVolume(isMusicMuted ? 0 : 0.01f); // Adjust volume as necessary
+            backgroundMusic.setVolume(isMusicMuted ? 0 : 0.1f); // Adjust volume as necessary
         }
     }
 
