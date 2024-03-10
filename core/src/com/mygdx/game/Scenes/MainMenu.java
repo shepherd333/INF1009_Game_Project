@@ -10,8 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class MainMenu extends Scene {
@@ -21,6 +19,7 @@ public class MainMenu extends Scene {
     private SpriteBatch batch;
     private Texture bg;
     private Sprite bgSprite;
+
 
     public MainMenu(SceneManager sceneManager) {
         super(sceneManager);
@@ -33,8 +32,8 @@ public class MainMenu extends Scene {
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        int buttonWidth = 200;
-        int buttonHeight = 50;
+        int buttonWidth = 100;
+        int buttonHeight = 25;
         int buttonSpacing = 5;
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
@@ -55,7 +54,7 @@ public class MainMenu extends Scene {
 
         TextButton leaderBoardBtn = new TextButton("Leaderboard", skin);
         leaderBoardBtn.setSize(buttonWidth, buttonHeight);
-        leaderBoardBtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 150); // Adjust Y position as needed
+        leaderBoardBtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 120); // Adjust Y position as needed
         leaderBoardBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

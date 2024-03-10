@@ -2,7 +2,6 @@ package com.mygdx.game.Scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
-import com.badlogic.gdx.Input;
 
 
 public class Leaderboard extends Scene {
@@ -24,6 +22,7 @@ public class Leaderboard extends Scene {
     private Texture bg;
     private Sprite bgSprite;
     public HighScoreManager highScoreManager = HighScoreManager.getInstance();
+
 
     public Leaderboard(SceneManager sceneManager) {
         super(sceneManager);
@@ -36,17 +35,17 @@ public class Leaderboard extends Scene {
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        int buttonWidth = 200;
-        int buttonHeight = 50;
+        int buttonWidth = 100;
+        int buttonHeight = 25;
         int buttonSpacing = 5;
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
         int totalHeight = (buttonHeight + buttonSpacing) * 5;
 
         int verticalOffset = (screenHeight - totalHeight) / 2;
-        TextButton backbtn = new TextButton("Back to Home Page", skin);
+        TextButton backbtn = new TextButton("Home", skin);
         backbtn.setSize(buttonWidth, buttonHeight);
-        backbtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 100); // Adjust Y position as needed
+        backbtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 100); // Center the button on the screen
         backbtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

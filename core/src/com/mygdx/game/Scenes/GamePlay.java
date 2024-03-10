@@ -1,24 +1,16 @@
 package com.mygdx.game.Scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.EntityManager;
 import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
@@ -44,6 +36,7 @@ public class GamePlay extends Scene {
     private Sprite bgSprite;
     private SceneManager sceneManager;
 
+
     public GamePlay(SceneManager sceneManager) {
         super(sceneManager);
         batch = new SpriteBatch();
@@ -55,9 +48,11 @@ public class GamePlay extends Scene {
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        int buttonWidth = 200;
-        int buttonHeight = 50;
-        int buttonSpacing = 5;
+        int buttonWidth = 100;
+        int buttonHeight = 25;
+        int buttonSpacing = 10;
+        int rightMargin = 10;
+        int topMargin = 10;
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
         int totalHeight = (buttonHeight + buttonSpacing) * 5;
@@ -67,7 +62,7 @@ public class GamePlay extends Scene {
         int horizontolOffset = (screenWidth - totalWidth) /2;
         TextButton pausebtn = new TextButton("Pause", skin);
         pausebtn.setSize(buttonWidth, buttonHeight);
-        pausebtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 100);
+        pausebtn.setPosition(screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin);
         pausebtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -79,7 +74,7 @@ public class GamePlay extends Scene {
 
         TextButton homebtn = new TextButton("Home", skin);
         homebtn.setSize(buttonWidth, buttonHeight);
-        homebtn.setPosition((440), 370); // Adjust Y position as needed
+        homebtn.setPosition(screenWidth - buttonWidth - rightMargin, screenHeight - 2*buttonHeight - topMargin - buttonSpacing);
         homebtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -1,0 +1,338 @@
+[33mcommit 57c986f32719ea98a9210211ecc39d2f6489359e[m[33m ([m[1;36mHEAD -> [m[1;32mScene[m[33m, [m[1;31morigin/Scene[m[33m)[m
+Author: Raja <uvarajasalvam@gmail.com>
+Date:   Sun Mar 10 15:36:34 2024 +0800
+
+    replaced hashmap with stack. added buttons
+
+[33mcommit 0aa8c62699026b41d8ae8c8cb8ebdd806803bea6[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: airyzachary <2303078@sit.singaporetech.edu.sg>
+Date:   Fri Feb 23 22:15:09 2024 +0800
+
+    commit
+
+[33mcommit 76b27400eca5e8b70497458df7b6a155bfb8716d[m
+Merge: 8b5fd07 f76f461
+Author: airyzachary <2303078@sit.singaporetech.edu.sg>
+Date:   Fri Feb 23 22:03:43 2024 +0800
+
+    commit
+
+[33mcommit f76f46114279c58f9e8bfc9bfd047d02c87e5a1d[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Fri Feb 23 21:07:00 2024 +0800
+
+    hope for the best..
+
+[33mcommit 551a896e33f77ac83d22834524a114031a15a6dd[m
+Author: Rifxt01 <145126679+Rifxt01@users.noreply.github.com>
+Date:   Fri Feb 23 19:47:23 2024 +0800
+
+    Borders for fairy
+
+[33mcommit 8b5fd070e2468fa2d72287e7614b1094f08b2c5c[m
+Author: airyzachary <2303078@sit.singaporetech.edu.sg>
+Date:   Fri Feb 23 19:41:55 2024 +0800
+
+    commit
+
+[33mcommit 4bb46f3cdca5f44290c5e5580523a92a8e4e7e1f[m[33m ([m[1;31morigin/HighScoreDevelopment_Julian[m[33m)[m
+Author: shepherd333 <julianteobiz@gmail.com>
+Date:   Fri Feb 23 19:24:41 2024 +0800
+
+    Highscore now works
+
+[33mcommit af04be68e363e1e8b3b4daa82ab7efe77fd6103e[m
+Author: Raja <uvarajasalvam@gmail.com>
+Date:   Fri Feb 23 15:22:23 2024 +0800
+
+    added comments for Scene folder, and Gameengine, added new filepaths for the bucket and droplets.
+
+[33mcommit 3588b51c46cc4678f9d54d8b1c49e4e6e599347d[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Fri Feb 23 12:33:56 2024 +0800
+
+    Pause Menu won't remove lives now.
+
+[33mcommit 5d9cd826d14692718aac35422d655dd39b04e412[m
+Merge: 65b4b06 efffda9
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Fri Feb 23 12:13:04 2024 +0800
+
+    resolved conflicts.
+
+[33mcommit 65b4b068451e8c99b21c5475c0d6cec4c196b743[m
+Merge: 7a98dcf f5844de
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Fri Feb 23 12:09:19 2024 +0800
+
+    Merged
+
+[33mcommit 7a98dcfd61cee46ad30ddd77fea0b9e8239cb2a8[m[33m ([m[1;31morigin/Scene_Development_Julian[m[33m)[m
+Author: shepherd333 <julianteobiz@gmail.com>
+Date:   Fri Feb 23 03:06:15 2024 +0800
+
+    Parent class works with childclasses in Scene Management
+
+[33mcommit efffda9941a11d48ac8d16744ad619518d179389[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Fri Feb 23 02:56:04 2024 +0800
+
+    cleaning scene draws
+
+[33mcommit f5844def3c5d1cb1fe4ddd7d461f1283f581d284[m[33m ([m[1;31morigin/SimulationLifecycleManager_Development[m[33m)[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Fri Feb 23 02:51:35 2024 +0800
+
+    Added Input and control logic for handling each scene.
+
+[33mcommit bba6cc077ff4befd0db1d2811c7e51e2aee7bef9[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Fri Feb 23 01:41:01 2024 +0800
+
+    Comments for all before Scene and Engine.
+
+[33mcommit 20c9cfa58fe0e19cd2e2dffd08184e8ccf608178[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Fri Feb 23 01:17:45 2024 +0800
+
+    cleanup
+
+[33mcommit b55c93a4fad36269480b79795fb03fc97a2b774c[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Thu Feb 22 22:28:34 2024 +0800
+
+    gamecheckstart
+
+[33mcommit b28f1f2834045295d5a4e32f60a1663bfb667c01[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Thu Feb 22 20:11:35 2024 +0800
+
+    Reset to Top aft Collision fixed
+
+[33mcommit 33eb9603c140c0bf30303170bbde2098c4f585eb[m
+Merge: edc75fb 9811ee1
+Author: shepherd333 <julianteobiz@gmail.com>
+Date:   Thu Feb 22 19:02:54 2024 +0800
+
+    Merge remote-tracking branch 'origin/main'
+
+[33mcommit edc75fb2dc34743b79f5dd9615df41e69eafbbaa[m[33m ([m[1;31morigin/CollisionManager_Development[m[33m)[m
+Author: shepherd333 <julianteobiz@gmail.com>
+Date:   Thu Feb 22 18:51:46 2024 +0800
+
+    Handle Collision solved, now handles from CollisionManager and not EntityManager - julian
+
+[33mcommit 9811ee1542d3969f30ec4b575a4ca16c84fbb9b0[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Thu Feb 22 18:20:45 2024 +0800
+
+    .
+
+[33mcommit d0355f876177d743d6b723ff886cfea7cfbc2a27[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Thu Feb 22 17:26:41 2024 +0800
+
+    Life = 0, transition to leaderboard
+
+[33mcommit 7beef9b4f1c153df3a23729875812f4834fdde17[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Thu Feb 22 16:42:08 2024 +0800
+
+    --.
+
+[33mcommit 831a3d3e8fb744f3616f2efb722f4caaa24ac6fc[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Thu Feb 22 15:22:13 2024 +0800
+
+    InputManager update.
+
+[33mcommit 68dca712dd142c9974af6544487d537527b6145d[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Thu Feb 22 15:09:09 2024 +0800
+
+    LifeManager.
+
+[33mcommit 14a38b8f7dae7e7084b44da2846f3e91c48d9bcf[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Thu Feb 22 04:14:38 2024 +0800
+
+    .
+
+[33mcommit 10d0c36b86730dcdd4c030a9e67d3f670a5997aa[m
+Merge: 3935d9a 7d3c6cc
+Author: shepherd333 <julianteobiz@gmail.com>
+Date:   Thu Feb 22 03:48:40 2024 +0800
+
+    Merge branch 'main' into CollisionManager_Development
+
+[33mcommit 3935d9a9a9caad38e9b3ecdbcaa4c914ec0167bf[m
+Author: shepherd333 <julianteobiz@gmail.com>
+Date:   Thu Feb 22 03:47:24 2024 +0800
+
+    Created Interface Class and Parent Class, Runs Successfully - julian
+
+[33mcommit 7d3c6ccc6d37b642df9bf4f4d2ffc571b2fb5bf2[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Thu Feb 22 03:38:13 2024 +0800
+
+    CurrentScore with collision update.
+
+[33mcommit 08bba3efe0a9d223cd944d6db41c8254ff073cc2[m
+Author: Raja <uvarajasalvam@gmail.com>
+Date:   Thu Feb 22 03:22:50 2024 +0800
+
+    added scene parent class
+
+[33mcommit 636e5f07b658794722ab08b64c7b214a6cc83ac3[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Thu Feb 22 02:30:58 2024 +0800
+
+    added Current Score into Gameplay Scene.
+
+[33mcommit 8d00e86d0b22e7bdec6e3accc4021e4aeb6ebe13[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Thu Feb 22 00:53:26 2024 +0800
+
+    Separated AIManager and InputManager, called in their respective entities.
+
+[33mcommit aadd444316c8c4eeff0c91248d23dc3c1ea74ce2[m
+Author: shepherd333 <julianteobiz@gmail.com>
+Date:   Thu Feb 22 00:23:12 2024 +0800
+
+    collision handling now happens successfully - julian
+
+[33mcommit 6e7afdf493744d22785b5eeb0551e1aad2491089[m
+Author: airyzachary <2303078@sit.singaporetech.edu.sg>
+Date:   Wed Feb 21 17:29:23 2024 +0800
+
+    commit
+
+[33mcommit 6dadd5d8a2e7c1233adeb8bc5bfa8a6cbc47cd32[m
+Author: airyzachary <2303078@sit.singaporetech.edu.sg>
+Date:   Wed Feb 21 16:29:58 2024 +0800
+
+    commit
+
+[33mcommit e215cf3a86c71afabf8530caf75d5500c83d5b36[m[33m ([m[1;31morigin/IOManager_Development[m[33m)[m
+Merge: 0dcdff5 459c5fa
+Author: airyzachary <2303078@sit.singaporetech.edu.sg>
+Date:   Wed Feb 21 16:27:41 2024 +0800
+
+    commit
+
+[33mcommit 0dcdff51fa2edb875b5b810382bc8c3fb9470ef5[m
+Author: airyzachary <2303078@sit.singaporetech.edu.sg>
+Date:   Wed Feb 21 15:35:32 2024 +0800
+
+    commit
+
+[33mcommit 459c5fa37d23bccee7eb0413f9b5778e67519a83[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Wed Feb 21 15:31:28 2024 +0800
+
+    Added HighScoreManager
+
+[33mcommit 4ff668ec5cebfb102803dfa233c0a5f175b304a8[m
+Merge: 3f9b67b 782aabf
+Author: airyzachary <2303078@sit.singaporetech.edu.sg>
+Date:   Wed Feb 21 14:26:43 2024 +0800
+
+    Merge remote-tracking branch 'origin/EntityManager_Development' into IOManager_Development
+    
+    # Conflicts:
+    #       core/src/com/mygdx/game/Game_Engine.java
+
+[33mcommit 782aabff355125deb71ffd5b070a38a6453a4de9[m[33m ([m[1;31morigin/EntityManager_Development[m[33m)[m
+Author: joelsee <joelseehy@gmail.com>
+Date:   Wed Feb 21 12:57:43 2024 +0800
+
+    created individual classes for the different entities
+
+[33mcommit 3f9b67b1a5694e3f07ebf875a4107438d05a6714[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Wed Feb 21 02:25:10 2024 +0800
+
+    Revert "Implementation of SimulationLifecycleManager (SMLM)."
+    
+    This reverts commit 6636858744ddab5c8f9d85907fb3005e2e893174.
+
+[33mcommit 6636858744ddab5c8f9d85907fb3005e2e893174[m
+Author: Jason <zk.jasonm@gmail.com>
+Date:   Wed Feb 21 02:06:22 2024 +0800
+
+    Implementation of SimulationLifecycleManager (SMLM).
+    
+    Placeholders added. Not yet tested.
+    
+    Next target:
+    1. Scene Detection, in order to move to the next state.
+    2. Simple functions such as Calculations and show high score to be created.
+
+[33mcommit cf13d395b9e8e7f67793cecde0dc039644ae923b[m
+Author: joelsee <joelseehy@gmail.com>
+Date:   Wed Feb 21 00:38:43 2024 +0800
+
+    test
+
+[33mcommit b4f7bada2862e4ec45951eea141b26c9b80dc97f[m
+Author: joelsee <joelseehy@gmail.com>
+Date:   Wed Feb 21 00:07:51 2024 +0800
+
+    test
+
+[33mcommit 5feedb7fbb3265592288afb306b5a7298aa517c6[m
+Author: joelsee <joelseehy@gmail.com>
+Date:   Tue Feb 20 23:51:22 2024 +0800
+
+    test
+
+[33mcommit b7a799a3d11c934d28d3b1fef6c7cf5314f597ae[m[33m ([m[1;31morigin/AIManager_Development[m[33m)[m
+Author: Raja <uvarajasalvam@gmail.com>
+Date:   Tue Feb 20 18:54:19 2024 +0800
+
+    test
+
+[33mcommit 9aebdd45ae79ca6a5dea33fe6947aa1e571a79bd[m
+Author: Raja <uvarajasalvam@gmail.com>
+Date:   Tue Feb 20 18:02:48 2024 +0800
+
+    All codes for Scene inclusive of SceneManager, Scene Interface, Assets used in Scene, Codes for Game_Engine related to Scenes
+
+[33mcommit 1d8333d4f7a08f009cd936137e462abc93747884[m
+Merge: 32dba0f e05ac2a
+Author: shepherd333 <julianteobiz@gmail.com>
+Date:   Tue Feb 20 06:10:30 2024 +0800
+
+    Merged changes from CollisionManager_Development branch
+
+[33mcommit e05ac2a60ed1f9e6bedbac5be957fbfb7ceab384[m
+Author: shepherd333 <julianteobiz@gmail.com>
+Date:   Tue Feb 20 05:50:13 2024 +0800
+
+    Collision Detection works now with Scene2D, includes junit testing (passed).
+
+[33mcommit 22ca4117e5f2535446421c3d56822e8ff4e781a0[m
+Author: shepherd333 <julianteobiz@gmail.com>
+Date:   Tue Feb 20 02:27:34 2024 +0800
+
+    Collision Detection works, includes junit testing (passed)
+
+[33mcommit 32dba0fba8ea11f4f0057d20e4fe4937179354c3[m[33m ([m[1;31morigin/PlayerControlsManager_Development[m[33m)[m
+Author: shepherd333 <julianteobiz@gmail.com>
+Date:   Mon Feb 19 01:31:56 2024 +0800
+
+    Revert "Test build and run works, mac compatitability success"
+    
+    This reverts commit e7b7bc9085b7be76b5231a48d8cc2f08234b9e75.
+
+[33mcommit e7b7bc9085b7be76b5231a48d8cc2f08234b9e75[m
+Author: shepherd333 <julianteobiz@gmail.com>
+Date:   Mon Feb 19 00:02:46 2024 +0800
+
+    Test build and run works, mac compatitability success
+
+[33mcommit 812b864bdf1a7c11f510b39a4b8fe1c53c1d8af7[m
+Author: shepherd333 <julianteobiz@gmail.com>
+Date:   Fri Feb 9 17:13:40 2024 +0800
+
+    Initial commit

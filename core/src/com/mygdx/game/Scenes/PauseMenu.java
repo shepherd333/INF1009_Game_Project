@@ -6,8 +6,11 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.Game_Engine;
 
@@ -29,17 +32,39 @@ public class PauseMenu extends Scene {
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
+        int buttonWidth = 100;
+        int buttonHeight = 25;
+        int buttonSpacing = 5;
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+        int totalHeight = (buttonHeight + buttonSpacing) * 5;
+        int totalWidth = (buttonWidth + buttonSpacing) * 5;
+        int verticalOffset = (screenHeight - totalHeight) / 2;
+        int horizontolOffset = (screenWidth - totalWidth) /2;
+
+        // Resume button setup
+        TextButton resumeBtn = new TextButton("Resume", skin);
+        resumeBtn.setSize(buttonWidth, buttonHeight); // Set the size of the button
+        resumeBtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 100); // Center the button on the screen
+        resumeBtn.addListener(new ClickListener() {
             @Override
-            public boolean keyDown(int keycode) {
-                if (keycode == Input.Keys.SPACE) {
-                    // Transition back to the MenuScene
-                    sceneManager.popScene();
-                    return true;
-                }
-                return false;
+            public void clicked(InputEvent event, float x, float y) {
+                sceneManager.popScene(); // Return to the gameplay scene
             }
         });
+        stage.addActor(resumeBtn);
+
+//        Gdx.input.setInputProcessor(new InputAdapter() {
+//            @Override
+//            public boolean keyDown(int keycode) {
+//                if (keycode == Input.Keys.SPACE) {
+//                    // Transition back to the MenuScene
+//                    sceneManager.popScene();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
     }
 
     @Override
