@@ -34,7 +34,7 @@ public class MainMenu extends Scene {
 
         int buttonWidth = 100;
         int buttonHeight = 25;
-        int buttonSpacing = 5;
+        int buttonSpacing = 10;
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
         int totalHeight = (buttonHeight + buttonSpacing) * 5;
@@ -52,7 +52,19 @@ public class MainMenu extends Scene {
         });
         stage.addActor(playButton);
 
-        TextButton mutebtn = new TextButton("Mute", skin);
+        TextButton leaderboardButton = new TextButton("Leaderboard", skin);
+        leaderboardButton.setSize(buttonWidth, buttonHeight);
+        leaderboardButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 120); // Adjust Y position as needed
+        leaderboardButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Transition to the PlayScene
+                sceneManager.set(new Leaderboard(sceneManager));
+            }
+        });
+        stage.addActor(leaderboardButton);
+
+        TextButton mutebtn = new TextButton(AudioManager.getInstance().isMusicMuted() ? "Unmute" : "Mute", skin);
         mutebtn.setSize(buttonWidth, buttonHeight);
         mutebtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 140); // Adjust Y position as needed
         mutebtn.addListener(new ClickListener() {
@@ -60,6 +72,7 @@ public class MainMenu extends Scene {
             public void clicked(InputEvent event, float x, float y) {
                 // Toggle the mute state of the audio
                 AudioManager.getInstance().toggleMusicMute();
+                mutebtn.setText(AudioManager.getInstance().isMusicMuted() ? "Unmute" : "Mute");
             }
         });
         stage.addActor(mutebtn);

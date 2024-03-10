@@ -7,7 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 public class AudioManager {
     private static AudioManager instance;
     private Music backgroundMusic;
-    private boolean isMusicMuted = false;
+    private boolean isMusicMuted;
 
     private AudioManager() {
         // Private constructor to prevent instantiation
@@ -54,6 +54,10 @@ public class AudioManager {
             backgroundMusic.dispose();
         }
         // Dispose other sounds if you're keeping references to them
+    }
+
+    public boolean isMusicMuted() {
+        return isMusicMuted;
     }
 }
 

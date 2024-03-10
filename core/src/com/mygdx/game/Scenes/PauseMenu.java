@@ -53,14 +53,16 @@ public class PauseMenu extends Scene {
             }
         });
         stage.addActor(resumeBtn);
-        TextButton mutebtn = new TextButton("Mute", skin);
+
+        TextButton mutebtn = new TextButton(AudioManager.getInstance().isMusicMuted() ? "Unmute" : "Mute", skin);
         mutebtn.setSize(buttonWidth, buttonHeight);
-        mutebtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 120); // Adjust Y position as needed
+        mutebtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 140); // Adjust Y position as needed
         mutebtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Toggle the mute state of the audio
                 AudioManager.getInstance().toggleMusicMute();
+                mutebtn.setText(AudioManager.getInstance().isMusicMuted() ? "Unmute" : "Mute");
             }
         });
         stage.addActor(mutebtn);
