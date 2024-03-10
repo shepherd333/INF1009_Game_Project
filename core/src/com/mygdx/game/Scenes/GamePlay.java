@@ -37,6 +37,7 @@ public class GamePlay extends Scene {
     private SceneManager sceneManager;
 
 
+
     public GamePlay(SceneManager sceneManager) {
         super(sceneManager);
         batch = new SpriteBatch();

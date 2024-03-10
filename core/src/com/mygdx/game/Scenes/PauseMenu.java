@@ -13,6 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.Game_Engine;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+
+
 
 public class PauseMenu extends Scene {
     private Stage stage;
@@ -20,6 +25,7 @@ public class PauseMenu extends Scene {
     private SpriteBatch batch;
     private Texture bg;
     private Sprite bgSprite;
+    private ShapeRenderer shapeRenderer;
 
     public PauseMenu(SceneManager sceneManager) {
         super(sceneManager);
@@ -27,6 +33,7 @@ public class PauseMenu extends Scene {
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
+        shapeRenderer = new ShapeRenderer();
 
         bg = new Texture(Gdx.files.internal("PauseMenu.png"));
         bgSprite = new Sprite(bg);
@@ -79,6 +86,28 @@ public class PauseMenu extends Scene {
 //            }
 //        });
     }
+    @Override
+    public void render() {
+        // Enable blending using LibGDX's GL20 wrapper
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        // Ensure the shape renderer's matrix is set correctly
+        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
+
+        // Draw a semi-transparent grey rectangle to serve as the overlay
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0.5f, 0.5f, 0.5f, 0.05f); // Semi-transparent grey
+        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shapeRenderer.end();
+
+        // Disable blending to reset state for other rendering operations
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
+        // Proceed with the rest of the pause menu rendering
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
+    }
 
     @Override
     public void initialize() {
@@ -90,14 +119,6 @@ public class PauseMenu extends Scene {
         // Update logic here, if any
     }
 
-    @Override
-    public void render() {
-        super.render();
-        batch.begin();
-        bgSprite.draw(batch);
-        batch.end();
-        stage.draw();
-    }
     @Override
     public void resize(int width, int height) {
         // Update the stage's viewport when the screen size changes
@@ -112,5 +133,6 @@ public class PauseMenu extends Scene {
         stage.dispose();
         skin.dispose();
         batch.dispose();
+        shapeRenderer.dispose();
     }
 }
