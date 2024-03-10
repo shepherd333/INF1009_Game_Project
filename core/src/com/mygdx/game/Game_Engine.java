@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
+import com.mygdx.game.Scenes.AudioManager;
 import com.mygdx.game.Scenes.MainMenu;
 import com.mygdx.game.Scenes.SceneManager;
 import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
@@ -17,20 +18,13 @@ public class Game_Engine extends ApplicationAdapter {
 	private HighScoreManager highScoreManager;
 	private LifeManager lifeManager;
 	private ScoreFileHandler scoreFileHandler;
+	private AudioManager Audiomanager;
 
 	@Override
 	public void create() {
 		sm = new SceneManager();
 		sm.pushScene(new MainMenu(sm)); // Initialize the game with the main menu scene.
-
-		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("bgmusic2.mp3"));
-		backgroundMusic.setLooping(true);
-		backgroundMusic.play();
-		if (isMusicMuted) {
-			backgroundMusic.setVolume(0);
-		} else {
-			backgroundMusic.setVolume(0.5f); // Adjust volume as needed
-		}
+		AudioManager.getInstance().playBackgroundMusic("bgmusic2.mp3", true, 0.1f);
 
 		lifeManager = new LifeManager(-1);
 
@@ -42,16 +36,6 @@ public class Game_Engine extends ApplicationAdapter {
 
 	@Override
 	public void render() {
-//		if (!sm.isPaused()) {
-//			sm.getCurrentScene().handleInput();
-//			sm.update(Gdx.graphics.getDeltaTime());
-//		}
-//
-//		// Toggle music mute with the M key
-//		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
-//			toggleMusic();
-//		}
-
 		sm.render();
 
 //		if (lifeManager.getLives() == 0) {

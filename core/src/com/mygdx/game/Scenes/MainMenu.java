@@ -52,17 +52,17 @@ public class MainMenu extends Scene {
         });
         stage.addActor(playButton);
 
-        TextButton leaderBoardBtn = new TextButton("Leaderboard", skin);
-        leaderBoardBtn.setSize(buttonWidth, buttonHeight);
-        leaderBoardBtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 120); // Adjust Y position as needed
-        leaderBoardBtn.addListener(new ClickListener() {
+        TextButton mutebtn = new TextButton("Mute", skin);
+        mutebtn.setSize(buttonWidth, buttonHeight);
+        mutebtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 140); // Adjust Y position as needed
+        mutebtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Transition to the PlayScene
-                sceneManager.set(new Leaderboard(sceneManager));
+                // Toggle the mute state of the audio
+                AudioManager.getInstance().toggleMusicMute();
             }
         });
-        stage.addActor(leaderBoardBtn);
+        stage.addActor(mutebtn);
 
     }
 
