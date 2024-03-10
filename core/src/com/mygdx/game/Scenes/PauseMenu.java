@@ -63,7 +63,7 @@ public class PauseMenu extends Scene {
 
         TextButton mutebtn = new TextButton(AudioManager.getInstance().isMusicMuted() ? "Unmute" : "Mute", skin);
         mutebtn.setSize(buttonWidth, buttonHeight);
-        mutebtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 140); // Adjust Y position as needed
+        mutebtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 120); // Adjust Y position as needed
         mutebtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -73,6 +73,18 @@ public class PauseMenu extends Scene {
             }
         });
         stage.addActor(mutebtn);
+
+        TextButton backbtn = new TextButton("Home", skin);
+        backbtn.setSize(buttonWidth, buttonHeight);
+        backbtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 140); // Center the button on the screen
+        backbtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Transition to the PlayScene
+                sceneManager.set(new MainMenu(sceneManager));
+            }
+        });
+        stage.addActor(backbtn);
 
 //        Gdx.input.setInputProcessor(new InputAdapter() {
 //            @Override

@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.CollisionManagement.CollisionManager;
+import com.mygdx.game.EntityManagement.BucketEntity;
 import com.mygdx.game.EntityManagement.EntityManager;
 import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
 import com.mygdx.game.Lifecycle.HighScore.ScoreFileHandler;
@@ -85,6 +86,7 @@ public class GamePlay extends Scene {
         });
         stage.addActor(homebtn);
     }
+
 
     @Override
     public void initialize() {

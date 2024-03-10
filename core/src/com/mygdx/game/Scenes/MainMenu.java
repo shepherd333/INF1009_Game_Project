@@ -77,6 +77,18 @@ public class MainMenu extends Scene {
         });
         stage.addActor(mutebtn);
 
+        TextButton exitButton = new TextButton("Exit Game", skin);
+        exitButton.setSize(buttonWidth, buttonHeight);
+        exitButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 160); // Adjust Y position as needed
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
+        stage.addActor(exitButton);
+
+
     }
 
     @Override
