@@ -7,17 +7,17 @@ import com.badlogic.gdx.audio.Music;
 import com.mygdx.game.Scenes.AudioManager;
 import com.mygdx.game.Scenes.MainMenu;
 import com.mygdx.game.Scenes.SceneManager;
-import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
-import com.mygdx.game.Lifecycle.HighScore.ScoreFileHandler;
-import com.mygdx.game.Lifecycle.LifeManager;
+//import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
+//import com.mygdx.game.Lifecycle.HighScore.ScoreFileHandler;
+//import com.mygdx.game.Lifecycle.LifeManager;
 
 public class Game_Engine extends ApplicationAdapter {
 	SceneManager sm;
 	private Music backgroundMusic;
 	public static boolean isMusicMuted = false;
-	private HighScoreManager highScoreManager;
-	private LifeManager lifeManager;
-	private ScoreFileHandler scoreFileHandler;
+//	private HighScoreManager highScoreManager;
+//	private LifeManager lifeManager;
+//	private ScoreFileHandler scoreFileHandler;
 	private AudioManager Audiomanager;
 
 	@Override
@@ -26,12 +26,12 @@ public class Game_Engine extends ApplicationAdapter {
 		sm.pushScene(new MainMenu(sm)); // Initialize the game with the main menu scene.
 		AudioManager.getInstance().playBackgroundMusic("bgmusic2.mp3", true, 0.1f);
 
-		lifeManager = new LifeManager(-1);
-
-		scoreFileHandler = new ScoreFileHandler();
-		highScoreManager = HighScoreManager.getInstance();
-		highScoreManager.create();
-		highScoreManager.getHighScores().addAll(scoreFileHandler.loadScores());
+//		lifeManager = new LifeManager(-1);
+//
+//		scoreFileHandler = new ScoreFileHandler();
+//		highScoreManager = HighScoreManager.getInstance();
+//		highScoreManager.create();
+//		highScoreManager.getHighScores().addAll(scoreFileHandler.loadScores());
 	}
 
 	@Override
@@ -69,10 +69,10 @@ public class Game_Engine extends ApplicationAdapter {
 		if (backgroundMusic != null) {
 			backgroundMusic.dispose();
 		}
-		if (highScoreManager != null) {
-			highScoreManager.addScore(highScoreManager.getCurrentScore());
-			scoreFileHandler.saveScores(highScoreManager.getHighScores());
-			highScoreManager.dispose();
-		}
+//		if (highScoreManager != null) {
+//			highScoreManager.addScore(highScoreManager.getCurrentScore());
+//			scoreFileHandler.saveScores(highScoreManager.getHighScores());
+//			highScoreManager.dispose();
+//		}
 	}
 }

@@ -1,66 +1,79 @@
 package com.mygdx.game.EntityManagement;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.InputManagement.InputManager;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 
-// BucketEntity extends TextureObject, representing a player-controlled bucket in the game.
-public class BucketEntity extends TextureObject {
-    private InputManager inputManager; // Reference to InputManager for handling player inputs.
-    private Viewport viewport;
+public class BucketEntity extends Actor {
+    private Texture texture;
+    private float speed; // Consider using Vector2 for speed if you need direction.
 
     // Constructor
-    public BucketEntity(Texture texture, float x, float y, double speed, SpriteBatch spriteBatch,Viewport viewport) {
-        super(texture, x, y, speed, spriteBatch); // Calls the superclass constructor to initialize common fields.
-        // Any additional initialization specific to BucketEntity can be done here.
-        // Note: inputManager needs to be initialized or passed to the BucketEntity to be functional.
-        this.viewport = viewport; // Initialize the viewport reference
+    public BucketEntity(Texture texture, float x, float y, float speed) {
+        this.texture = texture;
+        this.speed = speed;
+        this.setPosition(x, y);
+        this.setSize(texture.getWidth(), texture.getHeight());
+        setTouchable(Touchable.enabled);
     }
 
     @Override
-    public void move() {
-        // Player-controlled movement logic. This method should define how the bucket moves each frame based on player input.
-        // To function, inputManager must be properly initialized and set to this BucketEntity.
-        inputManager.handlePlayerInput(this);
-        float worldWidth = viewport.getWorldWidth();
-        float worldHeight = viewport.getWorldHeight();
+    public void act(float delta) {
+        super.act(delta);
+        // Example movement logic: move the bucket based on speed. Adjust as necessary.
+        // This is just a placeholder; actual movement logic will depend on your game's mechanics.
+        // For example, you might update the bucket's position based on user input.
 
         // Boundary checks
-        if (this.x < 0) {
-            this.x = 0;
-        } else if (this.x + this.width > worldWidth) {
-            this.x = worldWidth - this.width;
+        // Ensure the bucket doesn't move outside the left or right screen bounds
+        if (getX() < 0) {
+            setPosition(0, getY()); // Reset to left edge if out of bounds
+        } else if (getX() + getWidth() > getStage().getViewport().getWorldWidth()) {
+            setPosition(getStage().getViewport().getWorldWidth() - getWidth(), getY()); // Reset to right edge
         }
 
-        if (this.y < 0) {
-            this.y = 0;
-        } else if (this.y + this.height > worldHeight) {
-            this.y = worldHeight - this.height;
+        // Similarly, for top and bottom boundaries, if needed:
+        if (getY() < 0) {
+            setPosition(getX(), 0); // Reset to bottom edge if out of bounds
+        } else if (getY() + getHeight() > getStage().getViewport().getWorldHeight()) {
+            setPosition(getX(), getStage().getViewport().getWorldHeight() - getHeight()); // Reset to top edge
         }
     }
 
     @Override
+    public void draw(Batch batch, float parentAlpha) {
+        batch.draw(texture, getX(), getY(), getWidth(), getHeight());
+    }
+
+
+    // Provides a bounding box for the bucket, useful for collision detection.
     public Rectangle getBounds() {
-        // Provides a bounding box for the bucket, useful for collision detection.
-        // This returns a new Rectangle object based on the bucket's current position and size.
-        return new Rectangle(x, y, width, height);
+        Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
+        Gdx.app.log("BucketEntity", "Bounds: " + bounds.toString());
+        return bounds;
     }
 
 
-    public float getWidth() {
-        // Returns the width of the bucket. This could be used for collision detection or positioning logic.
-        return this.width;
+    @Override
+    public void setWidth(float width) {
+        super.setWidth(width);
     }
 
-    public float getHeight() {
-        return this.height; // Assuming 'height' is a member variable representing the height of the bucket.
+    @Override
+    public void setHeight(float height) {
+        super.setHeight(height);
     }
 
-    // If you need to override any other methods from TextureObject or Entity, you can do so here.
-    // For example, you might override the update method if the bucket has specific logic that needs to run each frame.
+    public void dispose() {
+        // Dispose of the texture when the object is no longer needed to free up resources.
+        if (texture != null) texture.dispose();
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
 }

@@ -1,52 +1,81 @@
 package com.mygdx.game.EntityManagement;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.AIManagement.AIManager;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 
-// RaindropEntity extends TextureObject to represent a raindrop in the game.
-public class RaindropEntity extends TextureObject {
-    private AIManager aiManager; // Reference to AIManager to control the raindrop's movement.
-    private Viewport viewport;
-    // Constructor
-    public RaindropEntity(Texture texture, float x, float y, double speed, SpriteBatch spriteBatch, float bucketX, float bucketWidth) {
-        super(texture, x, y, speed, spriteBatch); // Calls the constructor of the superclass, TextureObject.
+public class RaindropEntity extends Actor {
+    private Texture texture;
+    private float speed;
+    public float bucketX; // Added
+    public float bucketWidth; // Added
 
-        // Ensure the raindrop does not spawn overlapping with the bucket by adjusting its initial position.
-        while (this.x >= bucketX && this.x <= bucketX + bucketWidth) {
-            this.x = MathUtils.random(0, Gdx.graphics.getWidth() - width); // Randomize x position if it's within the bucket area.
+    public RaindropEntity(Texture texture, float speed, float bucketX, float bucketWidth) {
+        this.texture = texture;
+        this.speed = speed;
+        this.bucketX = bucketX; // Store the X position
+        this.bucketWidth = bucketWidth; // Store the width
+        this.setSize(texture.getWidth(), texture.getHeight());
+        setTouchable(Touchable.enabled);
+    }
+
+    public void resetPosition(float bucketX, float bucketWidth) {
+        // Use the stage's viewport to get the world width for positioning.
+        float stageWidth = this.getStage().getViewport().getWorldWidth();
+        float newX;
+
+        // Ensure the new X position is not within the bucket area.
+        do {
+            newX = MathUtils.random(0, stageWidth - this.getWidth());
+        } while (newX >= bucketX && newX <= bucketX + bucketWidth);
+
+        this.setPosition(newX, this.getStage().getViewport().getWorldHeight()); // Position at top of the viewport
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        // Move the raindrop down by its speed adjusted for delta time.
+        this.setY(this.getY() - speed * delta);
+
+        // If the raindrop moves off the bottom of the screen, reset its position.
+        if (this.getY() + this.getHeight() < 0) {
+            Gdx.app.log("Raindrop", "A raindrop hit the bottom and will be removed. Current Y position: " + this.getY());
+            // Here you could either reset the raindrop's position or remove it from the stage.
+            this.remove(); // For example, to remove the raindrop
+            // Or, to reset position, you might call resetPosition(bucketX, bucketWidth), with proper values.
         }
-        // Debug log for the initial creation of the raindrop, commented out for performance.
-        //System.out.println("Raindrop created at position: " + this.x + ", " + this.y);
     }
 
     @Override
-    public void move() {
-        // Delegates the movement logic to the AIManager.
-        // This method should define how the raindrop moves each frame.
-        aiManager.moveRaindrop(this);
+    public void draw(Batch batch, float parentAlpha) {
+        batch.draw(texture, getX(), getY(), getWidth(), getHeight());
     }
 
-    @Override
-    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        // Uses the draw method from TextureObject and optionally adds additional drawing logic.
-        // Currently, it only prints the position of the raindrop for debugging purposes.
-        super.draw(batch, shapeRenderer); // Call the superclass method to actually draw the raindrop.
-        System.out.println("Drawing raindrop at position: " + x + ", " + y);
-    }
-
-    @Override
     public Rectangle getBounds() {
-        // Provides a bounding box for the raindrop, useful for collision detection.
-        // This overrides the getBounds method from TextureObject if needed, or it can simply use the implementation from TextureObject.
-        return new Rectangle(x, y, width, height);
+        Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
+        // Log the current bounds
+        Gdx.app.log("RaindropEntity", "Bounds: " + bounds.toString());
+        return bounds;
     }
 
-    // If there's a need to override any other methods from TextureObject or Entity, those overrides would go here.
-    // For example, handling collisions or reacting to game events specific to the raindrop.
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public void dispose() {
+        if (texture != null) {
+            texture.dispose();
+        }
+    }
 }

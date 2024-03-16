@@ -1,35 +1,33 @@
 package com.mygdx.game.CollisionManagement;
 
-import com.mygdx.game.EntityManagement.Entity;
-import com.mygdx.game.CollisionManagement.handlers.CollisionHandler;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.EntityManagement.BucketEntity;
+import com.mygdx.game.EntityManagement.RaindropEntity;
 
-import java.util.List;
+import java.util.Iterator;
 
-// CollisionManager is responsible for managing and processing collisions between entities in the game.
 public class CollisionManager {
-    // List of all entities in the game that might collide with each other.
-    private List<Entity> entities;
+    private BucketEntity bucket;
+    private Array<RaindropEntity> raindrops;
 
-    // Constructor initializes the CollisionManager with a list of entities.
-    // This list should contain all entities that need to be checked for collisions.
-    public CollisionManager(List<Entity> entities) {
-        this.entities = entities;
+    public CollisionManager(BucketEntity bucket, Array<RaindropEntity> raindrops) {
+        this.bucket = bucket;
+        this.raindrops = raindrops;
     }
 
-    // Checks for collisions between all pairs of entities in the list.
-    // Each pair of entities is only checked once to avoid redundant checks.
-    public void handleCollisions() {
-        // Iterate over all entities using a nested loop to check each pair for collisions.
-        for (int i = 0; i < entities.size(); i++) {
-            for (int j = i + 1; j < entities.size(); j++) {
-                // Create a new CollisionHandler for each pair of entities.
-                CollisionHandler collisionHandler = new CollisionHandler(entities.get(i), entities.get(j));
-
-                // Call the handleCollision method of the CollisionHandler.
-                // This method will check if the two entities are colliding and handle the collision appropriately
-                // based on the specific types of entities involved.
-                collisionHandler.handleCollision();
+    public void checkCollisions() {
+        Iterator<RaindropEntity> iter = raindrops.iterator();
+        while (iter.hasNext()) {
+            RaindropEntity raindrop = iter.next();
+            if (raindrop.getBounds().overlaps(bucket.getBounds())) {
+                Gdx.app.log("Collision Check", "Bucket at " + bucket.getBounds() + " Raindrop at " + raindrop.getBounds());
+                raindrop.remove(); // Removes the actor from the stage
+                iter.remove(); // Safely removes the raindrop from the array
+                // Handle any additional collision response here
             }
         }
     }
+
+
 }
