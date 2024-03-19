@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
-public class BucketEntity extends Actor {
+public class BucketEntity extends GameActor implements Collidable {
     private Texture texture;
     private float speed; // Consider using Vector2 for speed if you need direction.
 
@@ -75,5 +75,14 @@ public class BucketEntity extends Actor {
 
     public float getSpeed() {
         return speed;
+    }
+
+    @Override
+    public void handleCollisionWith(Collidable collidable) {
+        if (collidable instanceof RaindropEntity) {
+            // Handle collision with RaindropEntity
+            Gdx.app.log("BucketEntity", "Collision detected with RaindropEntity");
+        }
+        // Add more conditions here for other types of entities
     }
 }

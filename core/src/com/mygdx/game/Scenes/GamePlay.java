@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,27 +16,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-//import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.BucketEntity;
-import com.mygdx.game.EntityManagement.EntityManager;
+import com.mygdx.game.EntityManagement.Collidable;
 import com.mygdx.game.EntityManagement.RaindropEntity;
 import com.mygdx.game.InputManagement.InputManager;
-//import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
-//import com.mygdx.game.Lifecycle.HighScore.ScoreFileHandler;
-//import com.mygdx.game.Lifecycle.HighScore.ScoreFormatter;
-//import com.mygdx.game.Lifecycle.HighScore.ScoreRenderer;
-//import com.mygdx.game.Lifecycle.LifeManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GamePlay extends Scene {
     private ShapeRenderer shapeRenderer;
-    private EntityManager entityManager;
-//    private HighScoreManager highScoreManager;
-//    private ScoreFileHandler scoreFileHandler;
-//    private ScoreFormatter scoreFormatter;
-//    private ScoreRenderer scoreRenderer;
-//    private LifeManager lifeManager;
-    private CollisionManager collisionManager;
     private boolean isDisposed = false;
     private Stage stage;
     private Skin skin;
@@ -46,14 +36,12 @@ public class GamePlay extends Scene {
     private SceneManager sceneManager;
     private BucketEntity bucket;
     private Texture bucketTexture;
-    private Texture raindropTexture; // Assume you have a texture for raindrops.
+    private Texture raindropTexture;
     private float spawnTimer = 0;
     private InputManager inputManager;
     private Array<RaindropEntity> raindrops = new Array<>();
-
-
-
-
+    private List<Collidable> actors = new ArrayList<>();
+    private CollisionManager collisionManager;
 
     public GamePlay(SceneManager sceneManager) {
         super(sceneManager);
@@ -85,7 +73,6 @@ public class GamePlay extends Scene {
         pausebtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Transition to the PlayScene
                 sceneManager.pushScene(new PauseMenu(sceneManager));
             }
         });
@@ -97,76 +84,66 @@ public class GamePlay extends Scene {
         homebtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Transition to the PlayScene
                 sceneManager.pushScene(new MainMenu(sceneManager));
             }
         });
         stage.addActor(homebtn);
 
-
-        Texture bucketTexture = new Texture(Gdx.files.internal("Fairy.png")); // Ensure the path is correct
-        bucket = new BucketEntity(bucketTexture, 100, 100, 200); // Example parameters
+        bucketTexture = new Texture(Gdx.files.internal("Fairy.png"));
+        bucket = new BucketEntity(bucketTexture, 100, 100, 200);
+        actors.add(bucket); // Add the bucket to the actors list
+        collisionManager = new CollisionManager(actors, raindrops);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
-        bucket.debug(); // Call this on your actor
-        stage.setDebugAll(true); // Or call this on your stage to debug all actors
+        bucket.debug();
+        stage.setDebugAll(true);
 
-
-        // Load the raindrop texture.
-        raindropTexture = new Texture(Gdx.files.internal("dust.png")); // Replace with your raindrop texture path.
-        Array<RaindropEntity> raindrops = new Array<RaindropEntity>();
-        collisionManager = new CollisionManager(bucket, raindrops);
+        raindropTexture = new Texture(Gdx.files.internal("dust.png"));
+        collisionManager = new CollisionManager(actors, raindrops);
         shapeRenderer = new ShapeRenderer();
-
     }
-
 
     @Override
     public void initialize() {
     }
 
     private void spawnRaindrop() {
-        RaindropEntity raindrop = new RaindropEntity(raindropTexture, 100, 0, 0); // Example values
+        RaindropEntity raindrop = new RaindropEntity(raindropTexture, 100, 0, 0, this);
         raindrops.add(raindrop);
+        actors.add(raindrop);
         stage.addActor(raindrop);
-        raindrop.resetPosition(raindrop.bucketX, raindrop.bucketWidth); // Now you can call it directly
+        raindrop.resetPosition(raindrop.bucketX, raindrop.bucketWidth);
     }
 
-
-
+    public void removeRaindrop(RaindropEntity raindrop) {
+        raindrops.removeValue(raindrop, true);
+        raindrop.remove();
+    }
 
     @Override
     public void update(float deltaTime) {
-
-        // Handle raindrop spawning.
         spawnTimer += deltaTime;
-        if (spawnTimer >= 3) { // Spawn a new raindrop every second as an example.
+        if (spawnTimer >= 3) {
             spawnRaindrop();
             spawnTimer = 0;
         }
 
-        // Update the stage, which automatically updates all actors added to it.
         stage.act(deltaTime);
+        collisionManager.handleCollisions();
     }
 
     @Override
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // At the beginning of the render method in GamePlay
         Gdx.input.setInputProcessor(stage);
-        // Update logic here
         stage.act(Gdx.graphics.getDeltaTime());
 
-        // Clear the screen or draw the background first if needed.
         batch.begin();
         bgSprite.draw(batch);
         batch.end();
-        collisionManager.checkCollisions(); // Check for collisions after updating positions
 
+        collisionManager.handleCollisions();
 
-
-
-        // Draw the stage, which will draw the bucket and all raindrops.
         stage.draw();
         update(Gdx.graphics.getDeltaTime());
 
@@ -177,33 +154,27 @@ public class GamePlay extends Scene {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
 
-// Draw bounding box for the bucket
         Rectangle bucketBounds = bucket.getBounds();
         shapeRenderer.rect(bucketBounds.x, bucketBounds.y, bucketBounds.width, bucketBounds.height);
 
-// Draw bounding boxes for raindrops
         for (RaindropEntity raindrop : raindrops) {
             Rectangle dropBounds = raindrop.getBounds();
             shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
         }
         shapeRenderer.end();
 
-        // Handle input
         inputManager.handleInput(Gdx.graphics.getDeltaTime());
-
-
     }
+
     @Override
     public void resize(int width, int height) {
-        // Update the stage's viewport when the screen size changes
         stage.getViewport().update(width, height, true);
     }
+
     @Override
     public void dispose() {
         super.dispose();
-        // Dispose resources.
         if (bucketTexture != null) bucketTexture.dispose();
         if (raindropTexture != null) raindropTexture.dispose();
-        // Ensure you dispose of any other disposable resources you've used.
     }
 }

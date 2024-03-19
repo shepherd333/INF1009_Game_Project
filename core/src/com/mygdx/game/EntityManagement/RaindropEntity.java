@@ -8,19 +8,22 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.mygdx.game.Scenes.GamePlay;
 
-public class RaindropEntity extends Actor {
+public class RaindropEntity extends GameActor implements Collidable {
     private Texture texture;
     private float speed;
     public float bucketX; // Added
     public float bucketWidth; // Added
+    private GamePlay gamePlay;
 
-    public RaindropEntity(Texture texture, float speed, float bucketX, float bucketWidth) {
+    public RaindropEntity(Texture texture, float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
         this.texture = texture;
         this.speed = speed;
         this.bucketX = bucketX; // Store the X position
         this.bucketWidth = bucketWidth; // Store the width
         this.setSize(texture.getWidth(), texture.getHeight());
+        this.gamePlay = gamePlay;
         setTouchable(Touchable.enabled);
     }
 
@@ -77,5 +80,16 @@ public class RaindropEntity extends Actor {
         if (texture != null) {
             texture.dispose();
         }
+    }
+
+    @Override
+    public void handleCollisionWith(Collidable collidable) {
+        if (collidable instanceof BucketEntity) {
+            // Handle collision with BucketEntity
+            Gdx.app.log("RaindropEntity", "Collision detected with BucketEntity");
+            this.remove(); // Remove the raindrop from the stage
+            gamePlay.removeRaindrop(this); // Remove the raindrop from the raindrops list
+        }
+        // Add more conditions here for other types of entities
     }
 }

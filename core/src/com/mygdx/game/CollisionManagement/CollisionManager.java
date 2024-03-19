@@ -1,33 +1,31 @@
 package com.mygdx.game.CollisionManagement;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.EntityManagement.BucketEntity;
+import com.mygdx.game.CollisionManagement.handlers.CollisionHandler;
 import com.mygdx.game.EntityManagement.RaindropEntity;
+import com.mygdx.game.EntityManagement.Collidable;
 
-import java.util.Iterator;
+
+import java.util.List;
 
 public class CollisionManager {
-    private BucketEntity bucket;
+    private List<Collidable> actors;
     private Array<RaindropEntity> raindrops;
 
-    public CollisionManager(BucketEntity bucket, Array<RaindropEntity> raindrops) {
-        this.bucket = bucket;
+    public CollisionManager(List<Collidable> actors, Array<RaindropEntity> raindrops) {
+        this.actors = actors;
         this.raindrops = raindrops;
     }
 
-    public void checkCollisions() {
-        Iterator<RaindropEntity> iter = raindrops.iterator();
-        while (iter.hasNext()) {
-            RaindropEntity raindrop = iter.next();
-            if (raindrop.getBounds().overlaps(bucket.getBounds())) {
-                Gdx.app.log("Collision Check", "Bucket at " + bucket.getBounds() + " Raindrop at " + raindrop.getBounds());
-                raindrop.remove(); // Removes the actor from the stage
-                iter.remove(); // Safely removes the raindrop from the array
-                // Handle any additional collision response here
+    public void handleCollisions() {
+        for (int i = 0; i < actors.size(); i++) {
+            for (int j = i + 1; j < actors.size(); j++) {
+                if (actors.get(i).getBounds().overlaps(actors.get(j).getBounds())) {
+                    actors.get(i).handleCollisionWith(actors.get(j));
+                    actors.get(j).handleCollisionWith(actors.get(i));
+                }
             }
         }
     }
-
-
 }
