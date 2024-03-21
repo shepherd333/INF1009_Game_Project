@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -17,9 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.CollisionManagement.CollisionManager;
-import com.mygdx.game.EntityManagement.BucketEntity;
-import com.mygdx.game.EntityManagement.Collidable;
-import com.mygdx.game.EntityManagement.RaindropEntity;
+import com.mygdx.game.EntityManagement.BucketActor;
+import com.mygdx.game.EntityManagement.CollidableActor;
+import com.mygdx.game.EntityManagement.RaindropActor;
 import com.mygdx.game.InputManagement.InputManager;
 
 import java.util.ArrayList;
@@ -34,13 +33,13 @@ public class GamePlay extends Scene {
     private Texture bg;
     private Sprite bgSprite;
     private SceneManager sceneManager;
-    private BucketEntity bucket;
+    private BucketActor bucket;
     private Texture bucketTexture;
     private Texture raindropTexture;
     private float spawnTimer = 0;
     private InputManager inputManager;
-    private Array<RaindropEntity> raindrops = new Array<>();
-    private List<Collidable> actors = new ArrayList<>();
+    private Array<RaindropActor> raindrops = new Array<>();
+    private List<CollidableActor> actors = new ArrayList<>();
     private CollisionManager collisionManager;
 
     public GamePlay(SceneManager sceneManager) {
@@ -90,7 +89,7 @@ public class GamePlay extends Scene {
         stage.addActor(homebtn);
 
         bucketTexture = new Texture(Gdx.files.internal("Fairy.png"));
-        bucket = new BucketEntity(bucketTexture, 100, 100, 200);
+        bucket = new BucketActor(bucketTexture, 100, 100, 200);
         actors.add(bucket); // Add the bucket to the actors list
         collisionManager = new CollisionManager(actors, raindrops);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
@@ -108,14 +107,14 @@ public class GamePlay extends Scene {
     }
 
     private void spawnRaindrop() {
-        RaindropEntity raindrop = new RaindropEntity(raindropTexture, 100, 0, 0, this);
+        RaindropActor raindrop = new RaindropActor(raindropTexture, 100, 0, 0, this);
         raindrops.add(raindrop);
         actors.add(raindrop);
         stage.addActor(raindrop);
         raindrop.resetPosition(raindrop.bucketX, raindrop.bucketWidth);
     }
 
-    public void removeRaindrop(RaindropEntity raindrop) {
+    public void removeRaindrop(RaindropActor raindrop) {
         raindrops.removeValue(raindrop, true);
         raindrop.remove();
     }
@@ -157,7 +156,7 @@ public class GamePlay extends Scene {
         Rectangle bucketBounds = bucket.getBounds();
         shapeRenderer.rect(bucketBounds.x, bucketBounds.y, bucketBounds.width, bucketBounds.height);
 
-        for (RaindropEntity raindrop : raindrops) {
+        for (RaindropActor raindrop : raindrops) {
             Rectangle dropBounds = raindrop.getBounds();
             shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
         }

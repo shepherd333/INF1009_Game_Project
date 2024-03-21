@@ -1,23 +1,21 @@
 package com.mygdx.game.EntityManagement;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.mygdx.game.Scenes.GamePlay;
 
-public class RaindropEntity extends GameActor implements Collidable {
+public class RaindropActor extends CollidableActor {
     private Texture texture;
     private float speed;
     public float bucketX; // Added
     public float bucketWidth; // Added
     private GamePlay gamePlay;
 
-    public RaindropEntity(Texture texture, float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
+    public RaindropActor(Texture texture, float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
         this.texture = texture;
         this.speed = speed;
         this.bucketX = bucketX; // Store the X position
@@ -64,7 +62,7 @@ public class RaindropEntity extends GameActor implements Collidable {
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
         // Log the current bounds
-        Gdx.app.log("RaindropEntity", "Bounds: " + bounds.toString());
+        Gdx.app.log("RaindropActor", "Bounds: " + bounds.toString());
         return bounds;
     }
 
@@ -80,16 +78,5 @@ public class RaindropEntity extends GameActor implements Collidable {
         if (texture != null) {
             texture.dispose();
         }
-    }
-
-    @Override
-    public void handleCollisionWith(Collidable collidable) {
-        if (collidable instanceof BucketEntity) {
-            // Handle collision with BucketEntity
-            Gdx.app.log("RaindropEntity", "Collision detected with BucketEntity");
-            this.remove(); // Remove the raindrop from the stage
-            gamePlay.removeRaindrop(this); // Remove the raindrop from the raindrops list
-        }
-        // Add more conditions here for other types of entities
     }
 }
