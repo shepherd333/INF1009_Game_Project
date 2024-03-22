@@ -39,6 +39,10 @@ public class InputManager {
             bucket.moveBy(0, -speed * deltaTime); // Move down
         }
     }
+
+    public boolean isSpacePressed() {
+        return Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+    }
 }
 
      //Handles inputs related to opening different scenes like gameplay, leaderboard, etc.

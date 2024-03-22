@@ -19,6 +19,7 @@ import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.BucketActor;
 import com.mygdx.game.EntityManagement.CollidableActor;
 import com.mygdx.game.EntityManagement.RaindropActor;
+import com.mygdx.game.EntityManagement.PaperActor;
 import com.mygdx.game.InputManagement.InputManager;
 
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ public class GamePlay extends Scene {
     private BucketActor bucket;
     private Texture bucketTexture;
     private Texture raindropTexture;
+    private Texture paperTexture;
+    private PaperActor paper;
     private float spawnTimer = 0;
     private InputManager inputManager;
     private Array<RaindropActor> raindrops = new Array<>();
@@ -97,15 +100,22 @@ public class GamePlay extends Scene {
         bucket = new BucketActor(bucketTexture, 100, 100, 200);
         bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
-        collisionManager = new CollisionManager(actors, raindrops);
+        collisionManager = new CollisionManager(actors, raindrops, stage);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
         bucket.debug();
         stage.setDebugAll(true);
 
         raindropTexture = new Texture(Gdx.files.internal("dust.png"));
-        collisionManager = new CollisionManager(actors, raindrops);
+        collisionManager = new CollisionManager(actors, raindrops, stage);
         shapeRenderer = new ShapeRenderer();
+
+        paperTexture = new Texture(Gdx.files.internal("Walle.png")); // Replace "paper.png" with the path to your paper texture
+        paper = new PaperActor(paperTexture, 200, 200, 0); // Replace the parameters with the desired values
+        paper.setSize(50, 50); // Replace the parameters with the desired values
+        actors.add(paper); // Add the paper to the actors list
+        stage.addActor(paper); // Add the paper to the stage
+
     }
 
     @Override

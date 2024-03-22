@@ -6,18 +6,23 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
-public class BucketActor extends CollidableActor {
+public class PaperActor extends CollidableActor {
     private Texture texture;
     private float speed; // Consider using Vector2 for speed if you need direction.
-    private String possessionValue;
+    private String uniqueValue;
 
     // Constructor
-    public BucketActor(Texture texture, float x, float y, float speed) {
+    public PaperActor(Texture texture, float x, float y, float speed) {
         this.texture = texture;
         this.speed = speed;
         this.setPosition(x, y);
         this.setSize(texture.getWidth(), texture.getHeight());
         setTouchable(Touchable.enabled);
+        this.uniqueValue = "1";
+    }
+
+    public PaperActor() {
+        this.uniqueValue = "1";
     }
 
     @Override
@@ -49,10 +54,10 @@ public class BucketActor extends CollidableActor {
     }
 
 
-    // Provides a bounding box for the bucket, useful for collision detection.
+    // Provides a bounding box for the Paper, useful for collision detection.
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
-        Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
+        Gdx.app.log("PaperActor", "Bounds: " + bounds.toString());
         return bounds;
     }
 
@@ -76,11 +81,8 @@ public class BucketActor extends CollidableActor {
         return speed;
     }
 
-    public void setPossessionValue(String value) {
-        this.possessionValue = value;
+    public String getUniqueValue() {
+        return uniqueValue;
     }
 
-    public String getPossessionValue() {
-        return possessionValue;
-    }
 }

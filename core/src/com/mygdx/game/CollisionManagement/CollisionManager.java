@@ -1,5 +1,6 @@
 package com.mygdx.game.CollisionManagement;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.CollisionManagement.handlers.ICollisionHandler;
 import com.mygdx.game.EntityManagement.CollidableActor;
@@ -7,7 +8,8 @@ import com.mygdx.game.EntityManagement.RaindropActor;
 import com.mygdx.game.CollisionManagement.CollisionCriterias.Criterias;
 import com.mygdx.game.CollisionManagement.CollisionCriterias.CollectCollisionCriteria;
 import com.mygdx.game.CollisionManagement.handlers.CollectCollisionHandler;
-import com.mygdx.game.CollisionManagement.handlers.BaseCollisionHandler;
+import com.mygdx.game.CollisionManagement.CollisionCriterias.PickUpCollisionCriteria;
+import com.mygdx.game.CollisionManagement.handlers.PickUpCollisionHandler;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.HashMap;
@@ -17,15 +19,18 @@ import java.util.Map;
 public class CollisionManager {
     private List<CollidableActor> actors;
     private Array<RaindropActor> raindrops;
+    private Stage stage;
     private Map<Class<? extends Criterias>, Class<? extends ICollisionHandler>> criteriaToHandlers;
 
-    public CollisionManager(List<CollidableActor> actors, Array<RaindropActor> raindrops) {
+    public CollisionManager(List<CollidableActor> actors, Array<RaindropActor> raindrops, Stage stage) {
         this.actors = actors;
         this.raindrops = raindrops;
+        this.stage = stage;
         this.criteriaToHandlers = new HashMap<>();
 
         // Link each CollisionCriteria class to its corresponding CollisionHandler class
         this.criteriaToHandlers.put(CollectCollisionCriteria.class, CollectCollisionHandler.class);
+        this.criteriaToHandlers.put(PickUpCollisionCriteria.class, PickUpCollisionHandler.class);
         // Add more entries as needed...
     }
 
@@ -39,7 +44,12 @@ public class CollisionManager {
                     for (Map.Entry<Class<? extends Criterias>, Class<? extends ICollisionHandler>> entry : criteriaToHandlers.entrySet()) {
                         try {
                             // Create an instance of the current CollisionCriteria class.
-                            Criterias criteria = entry.getKey().newInstance();
+                            Criterias criteria;
+                            if (entry.getKey() == PickUpCollisionCriteria.class) {
+                                criteria = new PickUpCollisionCriteria(stage);
+                            } else {
+                                criteria = entry.getKey().newInstance();
+                            }
                             // Check if the collision meets the criteria defined by the current CollisionCriteria class.
                             if (criteria.meetsCriteria(actors.get(i), actors.get(j))) {
                                 // If the criteria are met, create an instance of the corresponding CollisionHandler class and call its handleCollision method.
