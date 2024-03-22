@@ -94,8 +94,8 @@ public class GamePlay extends Scene {
         stage.addActor(homebtn);
 
         bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
-        bucket = new BucketActor(bucketTexture, 100, 100, 200);
-        bucket.setSize(75,75);
+        bucket = new BucketActor( 100, 100, 200);
+//        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
         collisionManager = new CollisionManager(actors, raindrops);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
