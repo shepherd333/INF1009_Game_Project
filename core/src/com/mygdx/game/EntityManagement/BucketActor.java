@@ -26,7 +26,7 @@ public class BucketActor extends CollidableActor {
         textureDown = new Texture(Gdx.files.internal("WalleDown.png"));
         // Set the initial texture, for example, facing up
         currentSprite = new Sprite(textureDown);
-        currentSprite.setSize(75,75);
+        currentSprite.setSize(125,125);
         this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
         setTouchable(Touchable.enabled);
     }
