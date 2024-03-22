@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.mygdx.game.EntityManagement.BucketEntity;
+import com.mygdx.game.EntityManagement.BucketActor;
 
 public class InputManager {
     private Stage stage;
@@ -14,17 +14,17 @@ public class InputManager {
     }
 
     public void handleInput(float deltaTime) {
-        // Assuming you have a way to reference your BucketEntity, e.g., directly or through the stage's actors
+        // Assuming you have a way to reference your BucketActor, e.g., directly or through the stage's actors
         for (Actor actor : stage.getActors()) {
-            if (actor instanceof BucketEntity) {
-                BucketEntity bucket = (BucketEntity) actor;
+            if (actor instanceof BucketActor) {
+                BucketActor bucket = (BucketActor) actor;
                 processBucketMovement(bucket, deltaTime);
             }
         }
     }
 
-    private void processBucketMovement(BucketEntity bucket, float deltaTime) {
-        float speed = bucket.getSpeed(); // Ensure BucketEntity has a getSpeed method
+    private void processBucketMovement(BucketActor bucket, float deltaTime) {
+        float speed = bucket.getSpeed(); // Ensure BucketActor has a getSpeed method
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             bucket.moveBy(-speed * deltaTime, 0); // Move left

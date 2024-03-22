@@ -2,7 +2,7 @@ package com.mygdx.game.AIManagement;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.mygdx.game.EntityManagement.RaindropEntity;
+import com.mygdx.game.EntityManagement.RaindropActor;
 //import com.mygdx.game.Lifecycle.LifeManager;
 
 public class AIManager {
@@ -18,7 +18,7 @@ public class AIManager {
     }
 
     // Method to move a raindrop entity based on its speed and reset its position when it goes off-screen.
-    public void moveRaindrop(RaindropEntity raindrop, float deltaTime) {
+    public void moveRaindrop(RaindropActor raindrop, float deltaTime) {
         // Check if the raindrop's speed is greater than 0 to ensure movement.
         if (raindrop.getSpeed() > 0) {
             // Move the raindrop downward, considering deltaTime for frame-rate independence.

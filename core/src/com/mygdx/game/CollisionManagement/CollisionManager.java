@@ -1,29 +1,57 @@
 package com.mygdx.game.CollisionManagement;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.CollisionManagement.handlers.CollisionHandler;
-import com.mygdx.game.EntityManagement.RaindropEntity;
-import com.mygdx.game.EntityManagement.Collidable;
+import com.mygdx.game.CollisionManagement.handlers.ICollisionHandler;
+import com.mygdx.game.EntityManagement.CollidableActor;
+import com.mygdx.game.EntityManagement.RaindropActor;
+import com.mygdx.game.CollisionManagement.CollisionCriterias.Criterias;
+import com.mygdx.game.CollisionManagement.CollisionCriterias.CollectCollisionCriteria;
+import com.mygdx.game.CollisionManagement.handlers.CollectCollisionHandler;
+import com.mygdx.game.CollisionManagement.handlers.BaseCollisionHandler;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CollisionManager {
-    private List<Collidable> actors;
-    private Array<RaindropEntity> raindrops;
+    private List<CollidableActor> actors;
+    private Array<RaindropActor> raindrops;
+    private Map<Class<? extends Criterias>, Class<? extends ICollisionHandler>> criteriaToHandlers;
 
-    public CollisionManager(List<Collidable> actors, Array<RaindropEntity> raindrops) {
+    public CollisionManager(List<CollidableActor> actors, Array<RaindropActor> raindrops) {
         this.actors = actors;
         this.raindrops = raindrops;
+        this.criteriaToHandlers = new HashMap<>();
+
+        // Link each CollisionCriteria class to its corresponding CollisionHandler class
+        this.criteriaToHandlers.put(CollectCollisionCriteria.class, CollectCollisionHandler.class);
+        // Add more entries as needed...
     }
 
     public void handleCollisions() {
+        // Iterate over all pairs of actors.
         for (int i = 0; i < actors.size(); i++) {
             for (int j = i + 1; j < actors.size(); j++) {
+                // Check if the two actors are colliding.
                 if (actors.get(i).getBounds().overlaps(actors.get(j).getBounds())) {
-                    actors.get(i).handleCollisionWith(actors.get(j));
-                    actors.get(j).handleCollisionWith(actors.get(i));
+                    // Iterate over all entries in the criteriaToHandlers map.
+                    for (Map.Entry<Class<? extends Criterias>, Class<? extends ICollisionHandler>> entry : criteriaToHandlers.entrySet()) {
+                        try {
+                            // Create an instance of the current CollisionCriteria class.
+                            Criterias criteria = entry.getKey().newInstance();
+                            // Check if the collision meets the criteria defined by the current CollisionCriteria class.
+                            if (criteria.meetsCriteria(actors.get(i), actors.get(j))) {
+                                // If the criteria are met, create an instance of the corresponding CollisionHandler class and call its handleCollision method.
+                                ICollisionHandler handler = entry.getValue().getConstructor(Actor.class, Actor.class, Array.class).newInstance(actors.get(i), actors.get(j), raindrops);
+                                handler.handleCollision();
+                                break;
+                            }
+                        } catch (Exception e) {
+                            // Print any exceptions that occur during the collision handling process.
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }

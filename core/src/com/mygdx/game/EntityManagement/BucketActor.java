@@ -1,19 +1,17 @@
 package com.mygdx.game.EntityManagement;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
-public class BucketEntity extends GameActor implements Collidable {
+public class BucketActor extends CollidableActor {
     private Texture texture;
     private float speed; // Consider using Vector2 for speed if you need direction.
 
     // Constructor
-    public BucketEntity(Texture texture, float x, float y, float speed) {
+    public BucketActor(Texture texture, float x, float y, float speed) {
         this.texture = texture;
         this.speed = speed;
         this.setPosition(x, y);
@@ -53,7 +51,7 @@ public class BucketEntity extends GameActor implements Collidable {
     // Provides a bounding box for the bucket, useful for collision detection.
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
-        Gdx.app.log("BucketEntity", "Bounds: " + bounds.toString());
+        Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
         return bounds;
     }
 
@@ -77,12 +75,4 @@ public class BucketEntity extends GameActor implements Collidable {
         return speed;
     }
 
-    @Override
-    public void handleCollisionWith(Collidable collidable) {
-        if (collidable instanceof RaindropEntity) {
-            // Handle collision with RaindropEntity
-            Gdx.app.log("BucketEntity", "Collision detected with RaindropEntity");
-        }
-        // Add more conditions here for other types of entities
-    }
 }

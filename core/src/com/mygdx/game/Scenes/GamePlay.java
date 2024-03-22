@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -17,9 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.CollisionManagement.CollisionManager;
-import com.mygdx.game.EntityManagement.BucketEntity;
-import com.mygdx.game.EntityManagement.Collidable;
-import com.mygdx.game.EntityManagement.RaindropEntity;
+import com.mygdx.game.EntityManagement.BucketActor;
+import com.mygdx.game.EntityManagement.CollidableActor;
+import com.mygdx.game.EntityManagement.RaindropActor;
 import com.mygdx.game.InputManagement.InputManager;
 
 import java.util.ArrayList;
@@ -33,14 +32,16 @@ public class GamePlay extends Scene {
     private SpriteBatch batch;
     private Texture bg;
     private Sprite bgSprite;
+    private Sprite bgSprite2; // Additional background sprite for scrolling effect
+
     private SceneManager sceneManager;
-    private BucketEntity bucket;
+    private BucketActor bucket;
     private Texture bucketTexture;
     private Texture raindropTexture;
     private float spawnTimer = 0;
     private InputManager inputManager;
-    private Array<RaindropEntity> raindrops = new Array<>();
-    private List<Collidable> actors = new ArrayList<>();
+    private Array<RaindropActor> raindrops = new Array<>();
+    private List<CollidableActor> actors = new ArrayList<>();
     private CollisionManager collisionManager;
 
     public GamePlay(SceneManager sceneManager) {
@@ -51,9 +52,12 @@ public class GamePlay extends Scene {
         inputManager = new InputManager(stage);
         skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
 
-        bg = new Texture(Gdx.files.internal("GamePlay.png"));
+        bg = new Texture(Gdx.files.internal("DystopianWorld.png"));
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        bgSprite2 = new Sprite(bg);
+        bgSprite2.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        bgSprite2.setPosition(bgSprite.getWidth(), 0);
 
         int buttonWidth = 100;
         int buttonHeight = 25;
@@ -89,8 +93,9 @@ public class GamePlay extends Scene {
         });
         stage.addActor(homebtn);
 
-        bucketTexture = new Texture(Gdx.files.internal("Fairy.png"));
-        bucket = new BucketEntity(bucketTexture, 100, 100, 200);
+        bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
+        bucket = new BucketActor(bucketTexture, 100, 100, 200);
+        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
         collisionManager = new CollisionManager(actors, raindrops);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
@@ -108,14 +113,14 @@ public class GamePlay extends Scene {
     }
 
     private void spawnRaindrop() {
-        RaindropEntity raindrop = new RaindropEntity(raindropTexture, 100, 0, 0, this);
+        RaindropActor raindrop = new RaindropActor(raindropTexture, 100, 0, 0, this);
         raindrops.add(raindrop);
         actors.add(raindrop);
         stage.addActor(raindrop);
         raindrop.resetPosition(raindrop.bucketX, raindrop.bucketWidth);
     }
 
-    public void removeRaindrop(RaindropEntity raindrop) {
+    public void removeRaindrop(RaindropActor raindrop) {
         raindrops.removeValue(raindrop, true);
         raindrop.remove();
     }
@@ -136,10 +141,24 @@ public class GamePlay extends Scene {
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.input.setInputProcessor(stage);
+
+        // Scroll the background
+        bgSprite.setX(bgSprite.getX() - 1);
+        bgSprite2.setX(bgSprite2.getX() - 1);
+
+        // Reset position if the background sprite is out of view
+        if (bgSprite.getX() + bgSprite.getWidth() < 0) {
+            bgSprite.setX(bgSprite2.getX() + bgSprite2.getWidth());
+        }
+        if (bgSprite2.getX() + bgSprite2.getWidth() < 0) {
+            bgSprite2.setX(bgSprite.getX() + bgSprite.getWidth());
+        }
+
         stage.act(Gdx.graphics.getDeltaTime());
 
         batch.begin();
         bgSprite.draw(batch);
+        bgSprite2.draw(batch); // Draw the second background sprite as well
         batch.end();
 
         collisionManager.handleCollisions();
@@ -150,14 +169,14 @@ public class GamePlay extends Scene {
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
 
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        // It's more efficient to reuse the ShapeRenderer instance if possible
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
 
         Rectangle bucketBounds = bucket.getBounds();
         shapeRenderer.rect(bucketBounds.x, bucketBounds.y, bucketBounds.width, bucketBounds.height);
 
-        for (RaindropEntity raindrop : raindrops) {
+        for (RaindropActor raindrop : raindrops) {
             Rectangle dropBounds = raindrop.getBounds();
             shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
         }
