@@ -94,7 +94,7 @@ public class GamePlay extends Scene {
         stage.addActor(homebtn);
 
         bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
-        bucket = new BucketActor(bucketTexture, 100, 100, 200);
+        bucket = new BucketActor(bucketTexture, 100, 100, 400);
         bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
         collisionManager = new CollisionManager(actors, raindrops);
@@ -103,7 +103,7 @@ public class GamePlay extends Scene {
         bucket.debug();
         stage.setDebugAll(true);
 
-        raindropTexture = new Texture(Gdx.files.internal("dust.png"));
+        raindropTexture = new Texture(Gdx.files.internal("Paper.png"));
         collisionManager = new CollisionManager(actors, raindrops);
         shapeRenderer = new ShapeRenderer();
     }
@@ -113,7 +113,7 @@ public class GamePlay extends Scene {
     }
 
     private void spawnRaindrop() {
-        RaindropActor raindrop = new RaindropActor(raindropTexture, 100, 0, 0, this);
+        RaindropActor raindrop = new RaindropActor(raindropTexture, 250, 0, 0, this);
         raindrops.add(raindrop);
         actors.add(raindrop);
         stage.addActor(raindrop);
