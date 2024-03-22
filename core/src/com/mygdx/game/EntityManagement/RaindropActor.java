@@ -28,31 +28,34 @@ public class RaindropActor extends CollidableActor {
     public void resetPosition(float bucketX, float bucketWidth) {
         // Use the stage's viewport to get the world width for positioning.
         float stageWidth = this.getStage().getViewport().getWorldWidth();
-        float newX;
 
-        // Ensure the new X position is not within the bucket area.
-        do {
-            newX = MathUtils.random(0, stageWidth - this.getWidth());
-        } while (newX >= bucketX && newX <= bucketX + bucketWidth);
+        // Generate a random Y position within the stage height
+        float randomY = MathUtils.random(0, this.getStage().getViewport().getWorldHeight() - this.getHeight());
 
-        this.setPosition(newX, this.getStage().getViewport().getWorldHeight()); // Position at top of the viewport
+        // Set the initial X position to be just outside the right edge of the stage
+        float initialX = stageWidth;
+
+        // Set the new position
+        this.setPosition(initialX, randomY);
     }
+
 
     @Override
     public void act(float delta) {
         super.act(delta);
 
-        // Move the raindrop down by its speed adjusted for delta time.
-        this.setY(this.getY() - speed * delta);
+        // Move the raindrop horizontally by subtracting its speed adjusted for delta time.
+        this.setX(this.getX() - speed * delta);
 
-        // If the raindrop moves off the bottom of the screen, reset its position.
-        if (this.getY() + this.getHeight() < 0) {
-            Gdx.app.log("Raindrop", "A raindrop hit the bottom and will be removed. Current Y position: " + this.getY());
+        // If the raindrop moves off the left side of the screen, reset its position.
+        if (this.getX() + this.getWidth() < 0) {
+            Gdx.app.log("Raindrop", "A raindrop moved off the left side and will be removed. Current X position: " + this.getX());
             // Here you could either reset the raindrop's position or remove it from the stage.
             this.remove(); // For example, to remove the raindrop
             // Or, to reset position, you might call resetPosition(bucketX, bucketWidth), with proper values.
         }
     }
+
 
     @Override
     public void draw(Batch batch, float parentAlpha) {

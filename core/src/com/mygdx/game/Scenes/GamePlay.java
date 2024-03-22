@@ -32,6 +32,8 @@ public class GamePlay extends Scene {
     private SpriteBatch batch;
     private Texture bg;
     private Sprite bgSprite;
+    private Sprite bgSprite2; // Additional background sprite for scrolling effect
+
     private SceneManager sceneManager;
     private BucketActor bucket;
     private Texture bucketTexture;
@@ -53,6 +55,9 @@ public class GamePlay extends Scene {
         bg = new Texture(Gdx.files.internal("GamePlay.png"));
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        bgSprite2 = new Sprite(bg);
+        bgSprite2.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        bgSprite2.setPosition(bgSprite.getWidth(), 0);
 
         int buttonWidth = 100;
         int buttonHeight = 25;
@@ -88,7 +93,7 @@ public class GamePlay extends Scene {
         });
         stage.addActor(homebtn);
 
-        bucketTexture = new Texture(Gdx.files.internal("Fairy.png"));
+        bucketTexture = new Texture(Gdx.files.internal("WalleJetpack.png"));
         bucket = new BucketActor(bucketTexture, 100, 100, 200);
         actors.add(bucket); // Add the bucket to the actors list
         collisionManager = new CollisionManager(actors, raindrops);
@@ -135,10 +140,24 @@ public class GamePlay extends Scene {
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.input.setInputProcessor(stage);
+
+        // Scroll the background
+        bgSprite.setX(bgSprite.getX() - 1);
+        bgSprite2.setX(bgSprite2.getX() - 1);
+
+        // Reset position if the background sprite is out of view
+        if (bgSprite.getX() + bgSprite.getWidth() < 0) {
+            bgSprite.setX(bgSprite2.getX() + bgSprite2.getWidth());
+        }
+        if (bgSprite2.getX() + bgSprite2.getWidth() < 0) {
+            bgSprite2.setX(bgSprite.getX() + bgSprite.getWidth());
+        }
+
         stage.act(Gdx.graphics.getDeltaTime());
 
         batch.begin();
         bgSprite.draw(batch);
+        bgSprite2.draw(batch); // Draw the second background sprite as well
         batch.end();
 
         collisionManager.handleCollisions();
@@ -149,7 +168,7 @@ public class GamePlay extends Scene {
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
 
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        // It's more efficient to reuse the ShapeRenderer instance if possible
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
 
