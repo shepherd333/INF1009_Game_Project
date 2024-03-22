@@ -1,60 +1,87 @@
 package com.mygdx.game.Scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.Lifecycle.HighScoreManager;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+//import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
 
-// The Leaderboard class extends Scene to represent the leaderboard scene of the game.
-// This is where players can view high scores.
+
 public class Leaderboard extends Scene {
-    public Vector3 tmp = new Vector3();  // Temporary vector for handling touch input coordinates.
-    public HighScoreManager highScoreManager = HighScoreManager.getInstance(); // Access to the singleton HighScoreManager.
+    public Vector3 tmp = new Vector3();
+    private Stage stage;
+    private Skin skin;
+    private SpriteBatch batch;
+    private Texture bg;
+    private Sprite bgSprite;
+//    public HighScoreManager highScoreManager = HighScoreManager.getInstance();
 
-    // Constructor for the Leaderboard scene. Sets up the scene with a specific background and description.
+
     public Leaderboard(SceneManager sceneManager) {
-        super(sceneManager, "Leaderboard.png", "This is the LeaderBoard Scene.");
+        super(sceneManager);
+        batch = new SpriteBatch();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        Gdx.input.setInputProcessor(stage);
+        skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
+
+        bg = new Texture(Gdx.files.internal("LeaderBoard.png"));
+        bgSprite = new Sprite(bg);
+        bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        int buttonWidth = 100;
+        int buttonHeight = 25;
+        int buttonSpacing = 5;
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+        int totalHeight = (buttonHeight + buttonSpacing) * 5;
+
+        int verticalOffset = (screenHeight - totalHeight) / 2;
+        TextButton backbtn = new TextButton("Home", skin);
+        backbtn.setSize(buttonWidth, buttonHeight);
+        backbtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 100); // Center the button on the screen
+        backbtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Transition to the PlayScene
+                sceneManager.set(new MainMenu(sceneManager));
+            }
+        });
+        stage.addActor(backbtn);
     }
 
     @Override
     public void initialize() {
-        // Initialize any additional resources if needed
+        // Initialize leaderboard resources here
     }
 
     @Override
     public void update(float deltaTime) {
-        // Handle any animations or transitions in the menu.
+        // Update logic for leaderboard here
     }
 
     @Override
     public void render() {
-        super.render(); // Calls render method from the Scene superclass to handle common rendering, such as drawing the background.
+        super.render();
         batch.begin();
-        // Scaling font (reduce quality, consider using a larger font as mentioned)
-        font.getData().setScale(1.3f);
-        // Display the high score on the leaderboard.
-        String highScoreDisplay = "High Score: " + highScoreManager.getInstance().getHighestScoreFormatted();
-        GlyphLayout highScoreLayout = new GlyphLayout(font, highScoreDisplay);
-        float highScoreX = viewport.getWorldWidth() - highScoreLayout.width - 250;
-        float highScoreY = viewport.getWorldHeight() - highScoreLayout.height - 200;
-        font.draw(batch, highScoreDisplay, highScoreX, highScoreY);
-
+        bgSprite.draw(batch);
         batch.end();
+        stage.draw();
     }
-    // Input handling, specifically for touch input.
-    @Override
-    public void handleInput() {
-        if (Gdx.input.justTouched()) {
-            // Unprojects the screen touch coordinates to the world coordinates.
-            camera.unproject(tmp.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-            // Here, you can add additional logic to respond to touch input, such as buttons on the leaderboard scene.
-        }
-    }
+
+
 
     @Override
     public void dispose() {
-        // Dispose of resources when they are no longer needed or when the scene is being destroyed.
-        // Always call the superclass dispose to ensure proper cleanup.
         super.dispose();
+        stage.dispose();
+        skin.dispose();
+        batch.dispose();
     }
 }

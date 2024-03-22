@@ -1,143 +1,199 @@
 package com.mygdx.game.Scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.Input;
 import com.mygdx.game.CollisionManagement.CollisionManager;
-import com.mygdx.game.EntityManagement.*;
+import com.mygdx.game.EntityManagement.BucketActor;
+import com.mygdx.game.EntityManagement.CollidableActor;
+import com.mygdx.game.EntityManagement.RaindropActor;
 import com.mygdx.game.InputManagement.InputManager;
-import com.mygdx.game.Lifecycle.HighScoreManager;
-import com.mygdx.game.Lifecycle.LifeManager;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-// The GamePlay class extends Scene to represent the main gameplay scene of the game.
 public class GamePlay extends Scene {
-    private ShapeRenderer shapeRenderer; // Used for drawing shapes, such as debug outlines.
-    private EntityManager entityManager; // Manages entities (like players or enemies) within the game.
-    public HighScoreManager highScoreManager = HighScoreManager.getInstance();  // Singleton for managing high scores.
-    public LifeManager lifeManager = LifeManager.getInstance(); // Singleton for managing player lives.
-    private SceneManager sm; // Manages switching between different scenes
-    private SceneInterface currentScene; // The current active scene.
-    private Map<String, SceneInterface> scenes = new HashMap<>(); // Manages switching between different scenes
-    private CollisionManager collisionManager; // Handles collision detection and response.
-    private boolean isDisposed = false; // Tracks whether resources have been disposed of
-    private InputManager inputManager; // Manages input from the player.
-    private Sprite BackgroundSprite;
+    private ShapeRenderer shapeRenderer;
+    private boolean isDisposed = false;
     private Stage stage;
-    // Constructor initializes the gameplay scene with a specific viewport and camera setup.
+    private Skin skin;
+    private SpriteBatch batch;
+    private Texture bg;
+    private Sprite bgSprite;
+    private Sprite bgSprite2; // Additional background sprite for scrolling effect
+
+    private SceneManager sceneManager;
+    private BucketActor bucket;
+    private Texture bucketTexture;
+    private Texture raindropTexture;
+    private float spawnTimer = 0;
+    private InputManager inputManager;
+    private Array<RaindropActor> raindrops = new Array<>();
+    private List<CollidableActor> actors = new ArrayList<>();
+    private CollisionManager collisionManager;
+
     public GamePlay(SceneManager sceneManager) {
-        super(sceneManager, "GamePlay.png", "This is the GamePlay Scene.");
-        viewport = new StretchViewport(800, 600, camera);
-        camera.position.set(400, 300, 0);
-        initialize();
-    }
+        super(sceneManager);
+        batch = new SpriteBatch();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        Gdx.input.setInputProcessor(stage);
+        inputManager = new InputManager(stage);
+        skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
 
-    // Initialize method sets up necessary game components and entities.
-    public void initialize() {
-        lifeManager.getInstance().gamecheckStart();
+        bg = new Texture(Gdx.files.internal("DystopianWorld.png"));
+        bgSprite = new Sprite(bg);
+        bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        bgSprite2 = new Sprite(bg);
+        bgSprite2.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        bgSprite2.setPosition(bgSprite.getWidth(), 0);
+
+        int buttonWidth = 100;
+        int buttonHeight = 25;
+        int buttonSpacing = 10;
+        int rightMargin = 10;
+        int topMargin = 10;
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+        int totalHeight = (buttonHeight + buttonSpacing) * 5;
+        int totalWidth = (buttonWidth + buttonSpacing) * 5;
+
+        int verticalOffset = (screenHeight - totalHeight) / 2;
+        int horizontolOffset = (screenWidth - totalWidth) /2;
+        TextButton pausebtn = new TextButton("Pause", skin);
+        pausebtn.setSize(buttonWidth, buttonHeight);
+        pausebtn.setPosition(screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin);
+        pausebtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                sceneManager.pushScene(new PauseMenu(sceneManager));
+            }
+        });
+        stage.addActor(pausebtn);
+
+        TextButton homebtn = new TextButton("Home", skin);
+        homebtn.setSize(buttonWidth, buttonHeight);
+        homebtn.setPosition(screenWidth - buttonWidth - rightMargin, screenHeight - 2*buttonHeight - topMargin - buttonSpacing);
+        homebtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                sceneManager.pushScene(new MainMenu(sceneManager));
+            }
+        });
+        stage.addActor(homebtn);
+
+        bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
+        bucket = new BucketActor(bucketTexture, 100, 100, 200);
+        bucket.setSize(75,75);
+        actors.add(bucket); // Add the bucket to the actors list
+        collisionManager = new CollisionManager(actors, raindrops);
+        Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
+        stage.addActor(bucket);
+        bucket.debug();
+        stage.setDebugAll(true);
+
+        raindropTexture = new Texture(Gdx.files.internal("dust.png"));
+        collisionManager = new CollisionManager(actors, raindrops);
         shapeRenderer = new ShapeRenderer();
-        entityManager = new EntityManager();
-        highScoreManager.create();
-        highScoreManager.resetCurrentScore();
-        lifeManager.initializeSceneManager(sceneManager);
-        collisionManager = new CollisionManager(entityManager.getEntities());
-        Texture bucketTexture = new Texture(Gdx.files.internal("Fairy.png"));
-        BucketEntity bucket = new BucketEntity(bucketTexture, 0, 0, 200, batch, viewport);
-        bucket.setWidth(bucketTexture.getWidth()/10);
-        bucket.setHeight(bucketTexture.getHeight()/10);
-        entityManager.addEntity(bucket);
-
-        // Creates initial raindrop entities with random positions and adds them to the entityManager.
-        for (int i = 0; i < 2; i++) {
-            float randomX = MathUtils.random(0, Gdx.graphics.getWidth());
-            float randomY = MathUtils.random(0, Gdx.graphics.getHeight());
-            double dropSpeed = MathUtils.random(1,5);
-            Texture dropTexture = new Texture(Gdx.files.internal("dust.png"));
-            float bucketX = bucket.getX();
-            float bucketWidth = bucket.getWidth();
-            RaindropEntity drop = new RaindropEntity(dropTexture, randomX, randomY, dropSpeed, batch, bucketX, bucketWidth);
-            drop.setWidth(dropTexture.getWidth()/5);
-            drop.setHeight(dropTexture.getHeight()/5);
-            drop.setActive(true);
-            entityManager.addEntity(drop);
-        }
     }
 
-    // Update method called every frame to update game logic.
+    @Override
+    public void initialize() {
+    }
+
+    private void spawnRaindrop() {
+        RaindropActor raindrop = new RaindropActor(raindropTexture, 100, 0, 0, this);
+        raindrops.add(raindrop);
+        actors.add(raindrop);
+        stage.addActor(raindrop);
+        raindrop.resetPosition(raindrop.bucketX, raindrop.bucketWidth);
+    }
+
+    public void removeRaindrop(RaindropActor raindrop) {
+        raindrops.removeValue(raindrop, true);
+        raindrop.remove();
+    }
+
     @Override
     public void update(float deltaTime) {
-        // Update entities
-        entityManager.updateEntities();
-        // Handle collisions
+        spawnTimer += deltaTime;
+        if (spawnTimer >= 3) {
+            spawnRaindrop();
+            spawnTimer = 0;
+        }
+
+        stage.act(deltaTime);
         collisionManager.handleCollisions();
     }
 
-    // Render method called every frame to draw the scene.
     @Override
     public void render() {
-        super.render(); // Calls render method from the Scene superclass.
-        camera.update(); // Ensure camera updates are happening.
-        batch.setProjectionMatrix(camera.combined); // Sets the SpriteBatch's projection matrix to the camera's combined matrix.
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.input.setInputProcessor(stage);
 
+        // Scroll the background
+        bgSprite.setX(bgSprite.getX() - 1);
+        bgSprite2.setX(bgSprite2.getX() - 1);
+
+        // Reset position if the background sprite is out of view
+        if (bgSprite.getX() + bgSprite.getWidth() < 0) {
+            bgSprite.setX(bgSprite2.getX() + bgSprite2.getWidth());
+        }
+        if (bgSprite2.getX() + bgSprite2.getWidth() < 0) {
+            bgSprite2.setX(bgSprite.getX() + bgSprite.getWidth());
+        }
+
+        stage.act(Gdx.graphics.getDeltaTime());
 
         batch.begin();
-        entityManager.draw(batch, null); // Draws all entities managed by the entityManager.
-
-        // Drawing UI elements like the current score and player lives.
-        String scoreDisplay = "Current Score: " + highScoreManager.getInstance().getCurrentScoreFormatted();
-        GlyphLayout scoreLayout = new GlyphLayout(font, scoreDisplay);
-        float scoreX = viewport.getWorldWidth() - scoreLayout.width - 20;
-        float scoreY = viewport.getWorldHeight() - scoreLayout.height - 20;
-        font.draw(batch, scoreDisplay, scoreX, scoreY);
-
-        String lifeDisplay = "LIVES: " + lifeManager.getInstance().getLives();
-        GlyphLayout lifeLayout = new GlyphLayout(font, lifeDisplay);
-        float lifeX = viewport.getWorldWidth() - lifeLayout.width - 400;
-        float lifeY = viewport.getWorldHeight() - lifeLayout.height - 10;
-        font.draw(batch, lifeDisplay, lifeX, lifeY);
-
-        String highScoreDisplay = "High Score: " + highScoreManager.getInstance().getHighestScoreFormatted();
-        GlyphLayout highScoreLayout = new GlyphLayout(font, highScoreDisplay);
-        float highScoreX = viewport.getWorldWidth() - highScoreLayout.width - 20;
-        float highScoreY = scoreY - highScoreLayout.height - 10;
-        font.draw(batch, highScoreDisplay, highScoreX, highScoreY);
-
+        bgSprite.draw(batch);
+        bgSprite2.draw(batch); // Draw the second background sprite as well
         batch.end();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        entityManager.draw(null, shapeRenderer); // Optionally draws entities with the shapeRenderer for debug.
+        collisionManager.handleCollisions();
+
+        stage.draw();
+        update(Gdx.graphics.getDeltaTime());
+
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
+
+        // It's more efficient to reuse the ShapeRenderer instance if possible
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+
+        Rectangle bucketBounds = bucket.getBounds();
+        shapeRenderer.rect(bucketBounds.x, bucketBounds.y, bucketBounds.width, bucketBounds.height);
+
+        for (RaindropActor raindrop : raindrops) {
+            Rectangle dropBounds = raindrop.getBounds();
+            shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
+        }
         shapeRenderer.end();
 
-        entityManager.moveEntities(); // Moves entities based on their velocity and game logic.
+        inputManager.handleInput(Gdx.graphics.getDeltaTime());
     }
+
     @Override
-    public void handleInput() {
-        // Add more input handling as needed
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
     public void dispose() {
-        // Disposes of resources when they are no longer needed or when the game is closing.
-        if (!isDisposed) {
-            super.dispose();
-            Gdx.app.log("GamePlay", "Disposing ShapeRenderer in GamePlay");
-            shapeRenderer.dispose();
-            isDisposed = true;
-        } else {
-            Gdx.app.log("GamePlay", "ShapeRenderer in GamePlay already disposed");
-        }
+        super.dispose();
+        if (bucketTexture != null) bucketTexture.dispose();
+        if (raindropTexture != null) raindropTexture.dispose();
     }
 }

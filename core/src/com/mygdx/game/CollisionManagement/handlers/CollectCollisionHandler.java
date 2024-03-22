@@ -2,56 +2,57 @@ package com.mygdx.game.CollisionManagement.handlers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
-import com.mygdx.game.EntityManagement.Entity;
-import com.mygdx.game.Lifecycle.HighScoreManager;
+import com.mygdx.game.EntityManagement.RaindropActor;
+import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
+import com.mygdx.game.EntityManagement.CollidableActor;
 
-// CollectCollisionHandler handles the logic for what happens when a collision is detected
-// between two entities, specifically designed for scenarios where collecting or hitting an entity
-// results in gaining points and resetting its position.
 public class CollectCollisionHandler extends BaseCollisionHandler {
-    // Access to the HighScoreManager to update the score upon collision.
-    public HighScoreManager highScoreManager = HighScoreManager.getInstance();
+    private HighScoreManager highScoreManager;
+    private Array<RaindropActor> raindrops;
 
-    // Constructor that takes two entities involved in the collision.
-    public CollectCollisionHandler(Entity entity1, Entity entity2) {
-        super(entity1, entity2);
+    public CollectCollisionHandler(Actor actor1, Actor actor2, Array<RaindropActor> raindrops) {
+        super(actor1, actor2);
+        this.raindrops = raindrops;
+        highScoreManager = HighScoreManager.getInstance();
     }
 
     @Override
     public void handleCollision() {
-        // Log collision detection and deactivate the first entity.
-        System.out.println("Collision detected. Deactivating entity1.");
+        Actor actorToBeRemoved = null;
 
-        // Increment the current score by 1 point.
-        highScoreManager.addToCurrentScore(1);
+        if (actor1 instanceof RaindropActor && !((CollidableActor) actor1).isCollected()) {
+            actorToBeRemoved = actor1;
+        } else if (actor2 instanceof RaindropActor && !((CollidableActor) actor2).isCollected()) {
+            actorToBeRemoved = actor2;
+        }
 
-        // Set the first entity as inactive.
-        entity1.setActive(false);
+        if (actorToBeRemoved != null) {
+            System.out.println("Collision detected. Marking actor as collected.");
+            ((CollidableActor) actorToBeRemoved).setCollected(true);
+            highScoreManager.addToCurrentScore(10);
 
-        // Immediately call to reset the entity's position after a fixed delay.
-        resetEntityToTop(entity1);
+            // Remove the raindrop from the stage and the raindrops array
+            actorToBeRemoved.remove();
+            raindrops.removeValue((RaindropActor) actorToBeRemoved, true);
+
+            resetActorToTop(actorToBeRemoved);
+        }
     }
 
-    // Schedules the entity to be reset to the top of the screen after a delay.
-    public void resetEntityToTop(Entity entity1) {
+    public void resetActorToTop(Actor actor1) {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                // Ensure the task is run on the main LibGDX thread.
                 Gdx.app.postRunnable(() -> {
-                    // Randomize the X position within the entire screen width correctly.
-                    // It should consider the entity's width to ensure it doesn't spawn partially outside.
-                    float newX = MathUtils.random(0, Gdx.graphics.getWidth() - entity1.getX());
-
-                    // Set the new X position and reset Y to just above the visible screen.
-                    entity1.setX(newX);
-                    entity1.setY(Gdx.graphics.getHeight() + 150);
-
-                    // Reactivate the entity, making it visible and interactable again.
-                    entity1.setActive(true);
+                    float newX = MathUtils.random(0, Gdx.graphics.getWidth() - actor1.getWidth());
+                    actor1.setX(newX);
+                    actor1.setY(Gdx.graphics.getHeight() + 150);
+                    ((CollidableActor) actor1).setCollected(false);
                 });
             }
-        }, 2f); // Delay before resetting the entity, specified in seconds.
+        }, 1f);
     }
 }
