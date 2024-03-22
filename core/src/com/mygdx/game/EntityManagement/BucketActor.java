@@ -5,17 +5,29 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class BucketActor extends CollidableActor {
-    private Texture texture;
-    private float speed; // Consider using Vector2 for speed if you need direction.
+    private Texture textureLeft;
+    private Texture textureRight;
+    private Texture textureUp;
+    private Texture textureDown;
+    private Sprite currentSprite;
+    private float speed;
+
 
     // Constructor
-    public BucketActor(Texture texture, float x, float y, float speed) {
-        this.texture = texture;
+    public BucketActor(float x, float y, float speed) {
         this.speed = speed;
         this.setPosition(x, y);
-        this.setSize(texture.getWidth(), texture.getHeight());
+        textureLeft = new Texture(Gdx.files.internal("WalleLeft.png"));
+        textureRight = new Texture(Gdx.files.internal("WalleRight.png"));
+        textureUp = new Texture(Gdx.files.internal("WalleBack.png"));
+        textureDown = new Texture(Gdx.files.internal("WalleDown.png"));
+        // Set the initial texture, for example, facing up
+        currentSprite = new Sprite(textureDown);
+        currentSprite.setSize(75,75);
+        this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
         setTouchable(Touchable.enabled);
     }
 
@@ -41,10 +53,27 @@ public class BucketActor extends CollidableActor {
             setPosition(getX(), getStage().getViewport().getWorldHeight() - getHeight()); // Reset to top edge
         }
     }
-
+    public void changeDirection(Direction direction) {
+        switch (direction) {
+            case LEFT:
+                currentSprite.setTexture(textureLeft);
+                break;
+            case RIGHT:
+                currentSprite.setTexture(textureRight);
+                break;
+            case UP:
+                currentSprite.setTexture(textureUp);
+                break;
+            case DOWN:
+                currentSprite.setTexture(textureDown);
+                break;
+        }
+        // Update the size of the actor to match the new sprite's size
+        this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
+    }
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(texture, getX(), getY(), getWidth(), getHeight());
+        batch.draw(currentSprite, getX(), getY(), getWidth(), getHeight());
     }
 
 
@@ -68,11 +97,18 @@ public class BucketActor extends CollidableActor {
 
     public void dispose() {
         // Dispose of the texture when the object is no longer needed to free up resources.
-        if (texture != null) texture.dispose();
+        textureLeft.dispose();
+        textureRight.dispose();
+        textureUp.dispose();
+        textureDown.dispose();
     }
 
     public float getSpeed() {
         return speed;
+    }
+
+    public enum Direction {
+        LEFT, RIGHT, UP, DOWN
     }
 
 }
