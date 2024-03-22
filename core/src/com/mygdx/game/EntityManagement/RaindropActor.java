@@ -20,7 +20,7 @@ public class RaindropActor extends CollidableActor {
         this.speed = speed;
         this.bucketX = bucketX; // Store the X position
         this.bucketWidth = bucketWidth; // Store the width
-        this.setSize(texture.getWidth(), texture.getHeight());
+        this.setSize(75, 75);
         this.gamePlay = gamePlay;
         setTouchable(Touchable.enabled);
     }
@@ -29,15 +29,20 @@ public class RaindropActor extends CollidableActor {
         // Use the stage's viewport to get the world width for positioning.
         float stageWidth = this.getStage().getViewport().getWorldWidth();
 
-        // Generate a random Y position within the stage height
-        float randomY = MathUtils.random(0, this.getStage().getViewport().getWorldHeight() - this.getHeight());
+        // Calculate the fixed distance above the bottom of the screen
+        float fixedDistance = 100; // Adjust this value to your desired distance
+
+        // Calculate the Y position
+        float yPosition = fixedDistance;
 
         // Set the initial X position to be just outside the right edge of the stage
         float initialX = stageWidth;
 
         // Set the new position
-        this.setPosition(initialX, randomY);
+        this.setPosition(initialX, yPosition);
     }
+
+
 
 
     @Override
