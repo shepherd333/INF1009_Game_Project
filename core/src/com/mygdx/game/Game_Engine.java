@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.mygdx.game.Scenes.AudioManager;
 import com.mygdx.game.Scenes.MainMenu;
 import com.mygdx.game.Scenes.SceneManager;
+import com.badlogic.gdx.Graphics.DisplayMode;
 //import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
 //import com.mygdx.game.Lifecycle.HighScore.ScoreFileHandler;
 //import com.mygdx.game.Lifecycle.LifeManager;
@@ -22,6 +23,8 @@ public class Game_Engine extends ApplicationAdapter {
 
 	@Override
 	public void create() {
+//		DisplayMode displayMode = Gdx.graphics.getDisplayMode();
+//		Gdx.graphics.setFullscreenMode(displayMode);
 		sm = new SceneManager();
 		sm.pushScene(new MainMenu(sm)); // Initialize the game with the main menu scene.
 		AudioManager.getInstance().playBackgroundMusic("bgmusic2.mp3", true, 0.1f);

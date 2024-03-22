@@ -24,19 +24,20 @@ public class InputManager {
     }
 
     private void processBucketMovement(BucketActor bucket, float deltaTime) {
-        float speed = bucket.getSpeed(); // Ensure BucketActor has a getSpeed method
+        float speed = bucket.getSpeed();
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            bucket.moveBy(-speed * deltaTime, 0); // Move left
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            bucket.moveBy(speed * deltaTime, 0); // Move right
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            bucket.moveBy(0, speed * deltaTime); // Move up
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            bucket.moveBy(0, -speed * deltaTime); // Move down
+            bucket.moveBy(-speed * deltaTime, 0);
+            bucket.changeDirection(BucketActor.Direction.LEFT);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            bucket.moveBy(speed * deltaTime, 0);
+            bucket.changeDirection(BucketActor.Direction.RIGHT);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            bucket.moveBy(0, speed * deltaTime);
+            bucket.changeDirection(BucketActor.Direction.UP);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            bucket.moveBy(0, -speed * deltaTime);
+            bucket.changeDirection(BucketActor.Direction.DOWN);
         }
     }
 

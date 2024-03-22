@@ -6,8 +6,8 @@ import com.mygdx.game.CollisionManagement.handlers.ICollisionHandler;
 import com.mygdx.game.EntityManagement.CollidableActor;
 import com.mygdx.game.EntityManagement.RaindropActor;
 import com.mygdx.game.CollisionManagement.CollisionCriterias.Criterias;
-import com.mygdx.game.CollisionManagement.CollisionCriterias.CollectCollisionCriteria;
-import com.mygdx.game.CollisionManagement.handlers.CollectCollisionHandler;
+//import com.mygdx.game.CollisionManagement.CollisionCriterias.CollectCollisionCriteria;
+//import com.mygdx.game.CollisionManagement.handlers.CollectCollisionHandler;
 import com.mygdx.game.CollisionManagement.CollisionCriterias.PickUpCollisionCriteria;
 import com.mygdx.game.CollisionManagement.handlers.PickUpCollisionHandler;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -29,7 +29,7 @@ public class CollisionManager {
         this.criteriaToHandlers = new HashMap<>();
 
         // Link each CollisionCriteria class to its corresponding CollisionHandler class
-        this.criteriaToHandlers.put(CollectCollisionCriteria.class, CollectCollisionHandler.class);
+//        this.criteriaToHandlers.put(CollectCollisionCriteria.class, CollectCollisionHandler.class);
         this.criteriaToHandlers.put(PickUpCollisionCriteria.class, PickUpCollisionHandler.class);
         // Add more entries as needed...
     }

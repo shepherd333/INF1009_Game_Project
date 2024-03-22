@@ -2,29 +2,32 @@ package com.mygdx.game.CollisionManagement.handlers;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.EntityManagement.BucketActor;
-import com.mygdx.game.EntityManagement.PaperActor;
+import com.mygdx.game.EntityManagement.RaindropActor;
 import com.badlogic.gdx.utils.Array;
 
 public class PickUpCollisionHandler extends BaseCollisionHandler {
-    private Array<PaperActor> papers;
-    public PickUpCollisionHandler(Actor actor1, Actor actor2, Array<PaperActor> papers) {
+    private Array<RaindropActor> raindrops;
+
+    public PickUpCollisionHandler(Actor actor1, Actor actor2, Array<RaindropActor> raindrops) {
         super(actor1, actor2);
-        this.papers = papers;
+        this.raindrops = raindrops;
     }
 
     @Override
     public void handleCollision() {
-        if (actor1 instanceof BucketActor && actor2 instanceof PaperActor) {
-            handlePickUp((BucketActor) actor1, (PaperActor) actor2);
-        } else if (actor1 instanceof PaperActor && actor2 instanceof BucketActor) {
-            handlePickUp((BucketActor) actor2, (PaperActor) actor1);
+        if (actor1 instanceof BucketActor && actor2 instanceof RaindropActor) {
+            handlePickUp((BucketActor) actor1, (RaindropActor) actor2);
+        } else if (actor1 instanceof RaindropActor && actor2 instanceof BucketActor) {
+            handlePickUp((BucketActor) actor2, (RaindropActor) actor1);
         }
     }
 
-    private void handlePickUp(BucketActor bucket, PaperActor paper) {
-        // Remove the paper actor
-        paper.remove();
+    private void handlePickUp(BucketActor bucket, RaindropActor raindrop) {
+        // Remove the raindrop actor
+        raindrop.remove();
+        // Remove the raindrop from the array
+        raindrops.removeValue(raindrop, true);
         // Assign a unique value to the bucket actor
-        bucket.setPossessionValue(paper.getUniqueValue());
+        bucket.setPossessionValue(raindrop.getUniqueValue());
     }
 }
