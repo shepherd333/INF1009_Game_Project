@@ -1,0 +1,26 @@
+metalitems.png
+size: 25, 112
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cokeCan
+  rotate: false
+  xy: 0, 0
+  size: 20, 37
+  orig: 20, 37
+  offset: 0, 0
+  index: -1
+metalCanBig
+  rotate: false
+  xy: 0, 37
+  size: 23, 42
+  orig: 23, 42
+  offset: 0, 0
+  index: -1
+metalCanSmall
+  rotate: false
+  xy: 0, 79
+  size: 25, 33
+  orig: 25, 33
+  offset: 0, 0
+  index: -1
