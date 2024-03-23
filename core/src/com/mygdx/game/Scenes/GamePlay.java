@@ -20,6 +20,9 @@ import com.mygdx.game.EntityManagement.BucketActor;
 import com.mygdx.game.EntityManagement.CollidableActor;
 import com.mygdx.game.EntityManagement.RaindropActor;
 import com.mygdx.game.InputManagement.InputManager;
+import com.mygdx.game.EntityManagement.RecycleBinActor;
+import com.mygdx.game.EntityManagement.ConveyorBeltActor;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,8 @@ public class GamePlay extends Scene {
     private Array<RaindropActor> raindrops = new Array<>();
     private List<CollidableActor> actors = new ArrayList<>();
     private CollisionManager collisionManager;
+    private RecycleBinActor recycleBin;
+    private ConveyorBeltActor conveyorBelt;
 
     public GamePlay(SceneManager sceneManager) {
         super(sceneManager);
@@ -55,9 +60,10 @@ public class GamePlay extends Scene {
         bg = new Texture(Gdx.files.internal("DystopianWorld.png"));
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        bgSprite2 = new Sprite(bg);
-        bgSprite2.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        bgSprite2.setPosition(bgSprite.getWidth(), 0);
+        recycleBin = new RecycleBinActor();
+        stage.addActor(recycleBin);
+        conveyorBelt = new ConveyorBeltActor();
+        stage.addActor(conveyorBelt);
 
         int buttonWidth = 100;
         int buttonHeight = 25;
@@ -142,24 +148,10 @@ public class GamePlay extends Scene {
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.input.setInputProcessor(stage);
-
-        // Scroll the background
-        bgSprite.setX(bgSprite.getX() - 1);
-        bgSprite2.setX(bgSprite2.getX() - 1);
-
-        // Reset position if the background sprite is out of view
-        if (bgSprite.getX() + bgSprite.getWidth() < 0) {
-            bgSprite.setX(bgSprite2.getX() + bgSprite2.getWidth());
-        }
-        if (bgSprite2.getX() + bgSprite2.getWidth() < 0) {
-            bgSprite2.setX(bgSprite.getX() + bgSprite.getWidth());
-        }
-
         stage.act(Gdx.graphics.getDeltaTime());
 
         batch.begin();
         bgSprite.draw(batch);
-        bgSprite2.draw(batch); // Draw the second background sprite as well
         batch.end();
 
         collisionManager.handleCollisions();
@@ -196,5 +188,7 @@ public class GamePlay extends Scene {
         super.dispose();
         if (bucketTexture != null) bucketTexture.dispose();
         if (raindropTexture != null) raindropTexture.dispose();
+        recycleBin.dispose();
+        conveyorBelt.dispose();
     }
 }
