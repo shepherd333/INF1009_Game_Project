@@ -4,11 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.mygdx.game.Scenes.GamePlay;
 
-public class MetalObjectActor extends CollidableActor {
+public class PaperItemsActor extends CollidableActor {
     private Texture texture;
     private float speed;
     public float bucketX; // Added
@@ -16,7 +15,7 @@ public class MetalObjectActor extends CollidableActor {
     private GamePlay gamePlay;
     private String uniqueValue;
 
-    public MetalObjectActor(Texture texture, float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
+    public PaperItemsActor(Texture texture, float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
         this.texture = texture;
         this.speed = speed;
         this.bucketX = bucketX; // Store the X position
@@ -56,7 +55,7 @@ public class MetalObjectActor extends CollidableActor {
 
         // If the raindrop moves off the left side of the screen, reset its position.
         if (this.getX() + this.getWidth() < 0) {
-            Gdx.app.log("MetalObject", "A metal object moved off the left side and will be removed. Current X position: " + this.getX());
+            Gdx.app.log("Raindrop", "A raindrop moved off the left side and will be removed. Current X position: " + this.getX());
             // Here you could either reset the raindrop's position or remove it from the stage.
             this.remove(); // For example, to remove the raindrop
             // Or, to reset position, you might call resetPosition(bucketX, bucketWidth), with proper values.
@@ -72,7 +71,7 @@ public class MetalObjectActor extends CollidableActor {
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
         // Log the current bounds
-        Gdx.app.log("MetalObjectActor", "Bounds: " + bounds.toString());
+        Gdx.app.log("RaindropActor", "Bounds: " + bounds.toString());
         return bounds;
     }
 

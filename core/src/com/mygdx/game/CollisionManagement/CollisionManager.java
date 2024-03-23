@@ -4,8 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.CollisionManagement.handlers.ICollisionHandler;
 import com.mygdx.game.EntityManagement.CollidableActor;
-import com.mygdx.game.EntityManagement.MetalObjectActor;
-import com.mygdx.game.EntityManagement.RaindropActor;
+import com.mygdx.game.EntityManagement.PaperItemsActor;
 import com.mygdx.game.CollisionManagement.CollisionCriterias.Criterias;
 //import com.mygdx.game.CollisionManagement.CollisionCriterias.CollectCollisionCriteria;
 //import com.mygdx.game.CollisionManagement.handlers.CollectCollisionHandler;
@@ -20,17 +19,15 @@ import java.util.Map;
 
 public class CollisionManager {
     private List<CollidableActor> actors;
-    private Array<RaindropActor> raindrops;
-    private Array<TrashActor> trashes;
-    private Array<MetalObjectActor> metalobjects;
+    private Array<PaperItemsActor> paperitems;
+    private Array<TrashActor> trash;
+
     private Stage stage;
     private Map<Class<? extends Criterias>, Class<? extends ICollisionHandler>> criteriaToHandlers;
 
-    public CollisionManager(List<CollidableActor> actors, Array<RaindropActor> raindrops, Array<TrashActor> trashes, Array<MetalObjectActor> metalobjects, Stage stage) {
+    public CollisionManager(List<CollidableActor> actors, Array<PaperItemsActor> raindrops, Stage stage) {
         this.actors = actors;
-        this.raindrops = raindrops;
-        this.trashes = trashes;
-        this.metalobjects = metalobjects;
+        this.paperitems = raindrops;
         this.stage = stage;
         this.criteriaToHandlers = new HashMap<>();
 
@@ -59,7 +56,7 @@ public class CollisionManager {
                             // Check if the collision meets the criteria defined by the current CollisionCriteria class.
                             if (criteria.meetsCriteria(actors.get(i), actors.get(j))) {
                                 // If the criteria are met, create an instance of the corresponding CollisionHandler class and call its handleCollision method.
-                                ICollisionHandler handler = entry.getValue().getConstructor(Actor.class, Actor.class, Array.class).newInstance(actors.get(i), actors.get(j), raindrops);
+                                ICollisionHandler handler = entry.getValue().getConstructor(Actor.class, Actor.class, Array.class).newInstance(actors.get(i), actors.get(j), paperitems);
                                 handler.handleCollision();
                                 break;
                             }

@@ -28,13 +28,16 @@ public class HowToPlay extends Scene{
         int buttonWidth = 100;
         int buttonHeight = 25;
         int buttonSpacing = 10;
+        int rightMargin = 10;
+        int topMargin = 10;
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
         int totalHeight = (buttonHeight + buttonSpacing) * 5;
         int verticalOffset = (screenHeight - totalHeight) / 2;
+
         TextButton playButton = new TextButton("Play Game", skin);
         playButton.setSize(buttonWidth, buttonHeight);
-        playButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 600); // Adjust Y position as needed
+        playButton.setPosition(screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin);
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -43,6 +46,18 @@ public class HowToPlay extends Scene{
             }
         });
         stage.addActor(playButton);
+
+        TextButton backtohomeButton = new TextButton("Back to Home", skin);
+        backtohomeButton.setSize(buttonWidth, buttonHeight);
+        backtohomeButton.setPosition(screenWidth - buttonWidth - rightMargin, screenHeight - 2*buttonHeight - topMargin);
+        backtohomeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Transition to the PlayScene
+                sceneManager.set(new MainMenu(sceneManager));
+            }
+        });
+        stage.addActor(backtohomeButton);
     }
     @Override
     public void initialize() {

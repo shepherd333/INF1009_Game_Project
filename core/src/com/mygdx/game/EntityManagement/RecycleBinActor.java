@@ -7,28 +7,23 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class RecycleBinActor extends CollidableActor {
-    private Sprite[] sprites;
-    private int numberOfBins = 4;
+    private Sprite glassBin, paperBin, plasticBin, metalBin;
 
     public RecycleBinActor() {
-        sprites = new Sprite[numberOfBins];
-        Texture glassbinTexture = new Texture(Gdx.files.internal("GlassBin.png"));
-        Texture paperbinTexture = new Texture(Gdx.files.internal("PaperBin.png"));
-        Texture plasticbinTexture = new Texture(Gdx.files.internal("PlasticBin.png"));
-        Texture metalbinTexture = new Texture(Gdx.files.internal("MetalBin.png"));
+        // Load textures for each bin type
+        glassBin = new Sprite(new Texture(Gdx.files.internal("GlassBin.png")));
+        paperBin = new Sprite(new Texture(Gdx.files.internal("PaperBin.png")));
+        plasticBin = new Sprite(new Texture(Gdx.files.internal("PlasticBin.png")));
+        metalBin = new Sprite(new Texture(Gdx.files.internal("MetalBin.png")));
 
-        // Create sprites for each bin type
-        sprites[0] = new Sprite(glassbinTexture);
-        sprites[1] = new Sprite(paperbinTexture);
-        sprites[2] = new Sprite(plasticbinTexture);
-        sprites[3] = new Sprite(metalbinTexture);
-
-        for (Sprite sprite : sprites) {
-            sprite.setSize(75, 75); // Set size for each sprite, adjust as needed
-        }
+        // Set size for each sprite
+        glassBin.setSize(75, 75);
+        paperBin.setSize(75, 75);
+        plasticBin.setSize(75, 75);
+        metalBin.setSize(75, 75);
 
         // This sets the size of the entire actor that contains all sprites
-        setSize(numberOfBins * 75, 75); // Adjust based on actual sprite sizes
+        setSize(4 * 75, 75); // Assuming each sprite is 75x75
 
         // Position the actor at the top middle of the screen
         setPosition((Gdx.graphics.getWidth() - getWidth()) / 2, Gdx.graphics.getHeight() - getHeight());
@@ -37,22 +32,24 @@ public class RecycleBinActor extends CollidableActor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         // Draw each bin sprite beside each other
-        for (int i = 0; i < numberOfBins; i++) {
-            float x = getX() + i * 75; // Calculate the x position for each sprite
-            batch.draw(sprites[i], x, getY(), 75, 75);
-        }
+        float startX = getX(); // Starting X position for the first bin
+        batch.draw(glassBin, startX, getY(), 75, 75);
+        batch.draw(paperBin, startX + 75, getY(), 75, 75);
+        batch.draw(plasticBin, startX + 2 * 75, getY(), 75, 75);
+        batch.draw(metalBin, startX + 3 * 75, getY(), 75, 75);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        // You can add more behavior here if needed
+        // Add behavior here if needed
     }
 
     public void dispose() {
-        // Dispose of the textures of all sprites
-        for (Sprite sprite : sprites) {
-            sprite.getTexture().dispose();
-        }
+        // Dispose of the textures for all bins
+        glassBin.getTexture().dispose();
+        paperBin.getTexture().dispose();
+        plasticBin.getTexture().dispose();
+        metalBin.getTexture().dispose();
     }
 }
