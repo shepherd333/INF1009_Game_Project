@@ -248,6 +248,10 @@ public class GamePlay extends Scene {
             Rectangle dropBounds = metalitem.getBounds();
             shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
         }
+        for (GlassItemsActor glassitem : glassitems) {
+            Rectangle dropBounds = glassitem.getBounds();
+            shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
+        }
 
         shapeRenderer.end();
 
