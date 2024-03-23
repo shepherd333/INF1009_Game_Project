@@ -71,7 +71,7 @@ public class PaperItemsActor extends CollidableActor {
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
         // Log the current bounds
-        Gdx.app.log("RaindropActor", "Bounds: " + bounds.toString());
+        Gdx.app.log("PaperItemsActor", "Bounds: " + bounds.toString());
         return bounds;
     }
 

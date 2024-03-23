@@ -19,7 +19,6 @@ import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.InputManagement.InputManager;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,18 +35,23 @@ public class GamePlay extends Scene {
     private SceneManager sceneManager;
     private BucketActor bucket;
     private Texture bucketTexture;
-    private Texture raindropTexture;
+    private Texture paperitemsTexture;
     private Texture trashTexture;
+    private Texture metalitemsTexture;
     private float spawnTimer = 0;
     private InputManager inputManager;
-    private Array<RaindropActor> raindrops = new Array<>();
-    private Array<TrashActor> trashes = new Array<>();
-    private Array<MetalObjectActor> metalobjects = new Array<>();
+    private Array<PaperItemsActor> paperitems = new Array<>();
+    private Array<MetalItemsActor> metalitems = new Array<>();
     private List<CollidableActor> actors = new ArrayList<>();
     private boolean spawnTrashNext = false;
+    private GlassBinActor glassBin;
+    private PaperBinActor paperBin;
+    private PlasticBinActor plasticBin;
+    private MetalBinActor metalBin;
+
 
     private CollisionManager collisionManager;
-    private RecycleBinActor recycleBin;
+
     private ConveyorBeltActor conveyorBelt;
 
     public GamePlay(SceneManager sceneManager) {
@@ -61,8 +65,14 @@ public class GamePlay extends Scene {
         bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        recycleBin = new RecycleBinActor();
-        stage.addActor(recycleBin);
+        glassBin = new GlassBinActor();
+        stage.addActor(glassBin);
+        paperBin = new PaperBinActor();
+        stage.addActor(paperBin);
+        plasticBin = new PlasticBinActor();
+        stage.addActor(plasticBin);
+        metalBin = new MetalBinActor();
+        stage.addActor(metalBin);
         conveyorBelt = new ConveyorBeltActor();
         stage.addActor(conveyorBelt);
 
@@ -104,15 +114,16 @@ public class GamePlay extends Scene {
         bucket = new BucketActor( 100, 100, 200);
 //        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
-        collisionManager = new CollisionManager(actors, raindrops, trashes, metalobjects, stage);
+        collisionManager = new CollisionManager(actors, paperitems, metalitems, stage);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
         bucket.debug();
         stage.setDebugAll(true);
 
-        raindropTexture = new Texture(Gdx.files.internal("newspaper.png"));
-        trashTexture = new Texture(Gdx.files.internal("styrofoam.png"));
-        collisionManager = new CollisionManager(actors, raindrops, trashes, metalobjects,stage);
+        paperitemsTexture = new Texture(Gdx.files.internal("paperitems.png"));
+        metalitemsTexture = new Texture(Gdx.files.internal("metalitems.png"));
+//        trashTexture = new Texture(Gdx.files.internal("styrofoam.png"));
+        collisionManager = new CollisionManager(actors, paperitems, metalitems, stage);
         shapeRenderer = new ShapeRenderer();
 
     }
@@ -122,35 +133,42 @@ public class GamePlay extends Scene {
     }
 
     private void spawnRaindrop() {
-        RaindropActor raindrop = new RaindropActor(raindropTexture, 100, 0, 0, this);
-        raindrops.add(raindrop);
-        actors.add(raindrop);
-        stage.addActor(raindrop);
-        raindrop.resetPosition(raindrop.bucketX, raindrop.bucketWidth);
+        PaperItemsActor paperitem = new PaperItemsActor(100, 0, 0, this);
+        paperitems.add(paperitem);
+        actors.add(paperitem);
+        stage.addActor(paperitem);
+        paperitem.resetPosition(paperitem.bucketX, paperitem.bucketWidth);
     }
-
-    private void spawnTrash() {
-        TrashActor trash = new TrashActor(trashTexture, 100, 0, 0, this);
-        trashes.add(trash);
-        actors.add(trash);
-        stage.addActor(trash);
-        trash.resetPosition(trash.bucketX, trash.bucketWidth);
+    private void spawnMetalItem() {
+        MetalItemsActor metalitem = new MetalItemsActor(100, 0, 0, this);
+        metalitems.add(metalitem);
+        actors.add(metalitem);
+        stage.addActor(metalitem);
+        metalitem.resetPosition(metalitem.bucketX, metalitem.bucketWidth);
     }
+//    private void spawnTrash() {
+//        TrashActor trash = new TrashActor(trashTexture, 100, 0, 0, this);
+//        trashes.add(trash);
+//        actors.add(trash);
+//        stage.addActor(trash);
+//        trash.resetPosition(trash.bucketX, trash.bucketWidth);
+//    }
 
-    public void removeRaindrop(RaindropActor raindrop) {
-        raindrops.removeValue(raindrop, true);
-        raindrop.remove();
+    public void removeRaindrop(PaperItemsActor paperitem) {
+        paperitems.removeValue(paperitem, true);
+        paperitem.remove();
     }
 
     @Override
     public void update(float deltaTime) {
         spawnTimer += deltaTime;
         if (spawnTimer >= 3) {
-            if (spawnTrashNext) {
-                spawnTrash();
-            } else {
-                spawnRaindrop();
-            }
+//            if (spawnTrashNext) {
+//                spawnTrash();
+//            } else {
+//                spawnRaindrop();
+//            }
+            spawnMetalItem();
             spawnTimer = 0;
             spawnTrashNext = !spawnTrashNext; // Toggle the flag for next spawn
         }
@@ -185,10 +203,15 @@ public class GamePlay extends Scene {
         Rectangle bucketBounds = bucket.getBounds();
         shapeRenderer.rect(bucketBounds.x, bucketBounds.y, bucketBounds.width, bucketBounds.height);
 
-        for (RaindropActor raindrop : raindrops) {
-            Rectangle dropBounds = raindrop.getBounds();
+        for (PaperItemsActor paperitem : paperitems) {
+            Rectangle dropBounds = paperitem.getBounds();
             shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
         }
+        for (MetalItemsActor metalitem : metalitems) {
+            Rectangle dropBounds = metalitem.getBounds();
+            shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
+        }
+
         shapeRenderer.end();
 
         inputManager.handleInput(Gdx.graphics.getDeltaTime());
@@ -203,8 +226,12 @@ public class GamePlay extends Scene {
     public void dispose() {
         super.dispose();
         if (bucketTexture != null) bucketTexture.dispose();
-        if (raindropTexture != null) raindropTexture.dispose();
-        recycleBin.dispose();
+        if (paperitemsTexture != null) paperitemsTexture.dispose();
+        if (metalitemsTexture != null) metalitemsTexture.dispose();
+        glassBin.dispose();
+        paperBin.dispose();
+        plasticBin.dispose();
+        metalBin.dispose();
         conveyorBelt.dispose();
     }
 }
