@@ -134,7 +134,7 @@ public class GamePlay extends Scene {
     @Override
     public void initialize() {
         // Set initial spawnTimer value to a smaller value
-        spawnTimer = MathUtils.random(1.0f, 3.0f); // Random initial delay between 1 and 3 seconds
+        spawnTimer = MathUtils.random(1.0f, 2.0f); // Random initial delay between 1 and 3 seconds
     }
 
     private void spawnRaindrop() {
