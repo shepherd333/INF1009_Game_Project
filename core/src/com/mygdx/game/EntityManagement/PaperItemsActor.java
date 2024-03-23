@@ -6,23 +6,32 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.mygdx.game.Scenes.GamePlay;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Array;
 
 public class PaperItemsActor extends CollidableActor {
-    private Texture texture;
+    private TextureRegion textureRegion;
     private float speed;
-    public float bucketX; // Added
-    public float bucketWidth; // Added
+    public float bucketX, bucketWidth;
     private GamePlay gamePlay;
     private String uniqueValue;
 
-    public PaperItemsActor(Texture texture, float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
-        this.texture = texture;
+    private static TextureAtlas paperItemsAtlas = new TextureAtlas(Gdx.files.internal("paperitems.atlas"));
+    private static Array<TextureAtlas.AtlasRegion> paperItemsRegions = paperItemsAtlas.findRegions("paperItem");
+
+    public PaperItemsActor(float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
         this.speed = speed;
         this.bucketX = bucketX; // Store the X position
         this.bucketWidth = bucketWidth; // Store the width
-        this.setSize(75, 75);
         this.gamePlay = gamePlay;
+
+        int index = (int) (Math.random() * paperItemsRegions.size);
+        this.textureRegion = paperItemsRegions.get(index);
+
         setTouchable(Touchable.enabled);
+        this.setSize(75, 75);
         this.uniqueValue = "1";
     }
 
@@ -44,28 +53,19 @@ public class PaperItemsActor extends CollidableActor {
     }
 
 
-
-
     @Override
     public void act(float delta) {
         super.act(delta);
-
-        // Move the raindrop horizontally by subtracting its speed adjusted for delta time.
-        this.setX(this.getX() - speed * delta);
-
-        // If the raindrop moves off the left side of the screen, reset its position.
-        if (this.getX() + this.getWidth() < 0) {
-            Gdx.app.log("Raindrop", "A raindrop moved off the left side and will be removed. Current X position: " + this.getX());
-            // Here you could either reset the raindrop's position or remove it from the stage.
-            this.remove(); // For example, to remove the raindrop
-            // Or, to reset position, you might call resetPosition(bucketX, bucketWidth), with proper values.
+        setX(getX() - speed * delta);
+        if (getX() + getWidth() < 0) {
+            remove(); // Remove the actor if it goes off screen
         }
     }
 
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(texture, getX(), getY(), getWidth(), getHeight());
+        batch.draw(textureRegion, getX(), getY(), getWidth(), getHeight());
     }
 
     public Rectangle getBounds() {
@@ -84,9 +84,7 @@ public class PaperItemsActor extends CollidableActor {
     }
 
     public void dispose() {
-        if (texture != null) {
-            texture.dispose();
-        }
+        paperItemsAtlas.dispose();
     }
     public String getUniqueValue() {
         return uniqueValue;

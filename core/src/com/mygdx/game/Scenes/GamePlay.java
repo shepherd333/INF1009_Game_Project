@@ -125,8 +125,8 @@ public class GamePlay extends Scene {
         bucket.debug();
         stage.setDebugAll(true);
 
-        paperitemsTexture = new Texture(Gdx.files.internal("newspaper.png"));
-        trashTexture = new Texture(Gdx.files.internal("styrofoam.png"));
+        paperitemsTexture = new Texture(Gdx.files.internal("paperitems.png"));
+//        trashTexture = new Texture(Gdx.files.internal("styrofoam.png"));
         collisionManager = new CollisionManager(actors, paperitems,stage);
         shapeRenderer = new ShapeRenderer();
 
@@ -137,7 +137,7 @@ public class GamePlay extends Scene {
     }
 
     private void spawnRaindrop() {
-        PaperItemsActor paperitem = new PaperItemsActor(paperitemsTexture, 100, 0, 0, this);
+        PaperItemsActor paperitem = new PaperItemsActor(100, 0, 0, this);
         paperitems.add(paperitem);
         actors.add(paperitem);
         stage.addActor(paperitem);
