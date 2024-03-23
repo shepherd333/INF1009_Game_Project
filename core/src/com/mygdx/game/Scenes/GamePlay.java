@@ -185,21 +185,11 @@ public class GamePlay extends Scene {
     public void update(float deltaTime) {
         spawnTimer += deltaTime;
         if (spawnTimer >= 3) {
-
             if (random.nextBoolean()) {
                 spawnMetalItem();
             } else {
                 spawnPaperItem();
             }
-
-//            if (spawnTrashNext) {
-//                spawnTrash();
-//            } else {
-//                spawnRaindrop();
-//            }
-            spawnPaperItem();
-            spawnMetalItem();
-
             spawnTimer = 0;
         }
     }
