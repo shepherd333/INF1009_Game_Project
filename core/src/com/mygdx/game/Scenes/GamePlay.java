@@ -115,7 +115,6 @@ public class GamePlay extends Scene {
 
         bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
         bucket = new BucketActor( 100, 100, 200);
-//        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
         collisionManager = new CollisionManager(actors, paperitems, metalitems, stage);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
@@ -125,10 +124,8 @@ public class GamePlay extends Scene {
 
         paperitemsTexture = new Texture(Gdx.files.internal("paperitems.png"));
         metalitemsTexture = new Texture(Gdx.files.internal("metalitems.png"));
-//        trashTexture = new Texture(Gdx.files.internal("styrofoam.png"));
-        collisionManager = new CollisionManager(actors, paperitems, metalitems, stage);
-        shapeRenderer = new ShapeRenderer();
 
+        shapeRenderer = new ShapeRenderer();
     }
 
     @Override
@@ -137,7 +134,15 @@ public class GamePlay extends Scene {
         spawnTimer = MathUtils.random(1.0f, 3.0f); // Random initial delay between 1 and 3 seconds
     }
 
-    private void spawnRaindrop() {
+    private void spawnItem() {
+        if (random.nextBoolean()) {
+            spawnPaperItem();
+        } else {
+            spawnMetalItem();
+        }
+    }
+
+    private void spawnPaperItem() {
         PaperItemsActor paperitem = new PaperItemsActor(100, 0, 0, this);
         if (!checkCollision(paperitem)) { // Check for collision
             paperitems.add(paperitem);
@@ -169,15 +174,8 @@ public class GamePlay extends Scene {
         }
         return false; // No collision detected
     }
-//    private void spawnTrash() {
-//        TrashActor trash = new TrashActor(trashTexture, 100, 0, 0, this);
-//        trashes.add(trash);
-//        actors.add(trash);
-//        stage.addActor(trash);
-//        trash.resetPosition(trash.bucketX, trash.bucketWidth);
-//    }
 
-    public void removeRaindrop(PaperItemsActor paperitem) {
+    public void removeItem(PaperItemsActor paperitem) {
         paperitems.removeValue(paperitem, true);
         paperitem.remove();
     }
@@ -185,15 +183,10 @@ public class GamePlay extends Scene {
     public void update(float deltaTime) {
         spawnTimer += deltaTime;
         if (spawnTimer >= 3) {
-            if (random.nextBoolean()) {
-                spawnMetalItem();
-            } else {
-                spawnRaindrop();
-            }
+            spawnItem();
             spawnTimer = 0;
         }
     }
-
 
     @Override
     public void render() {
@@ -232,6 +225,7 @@ public class GamePlay extends Scene {
         shapeRenderer.end();
 
         inputManager.handleInput(Gdx.graphics.getDeltaTime());
+
     }
 
     @Override
@@ -252,3 +246,4 @@ public class GamePlay extends Scene {
         conveyorBelt.dispose();
     }
 }
+

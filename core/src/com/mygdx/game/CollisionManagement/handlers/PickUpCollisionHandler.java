@@ -19,13 +19,19 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
     @Override
     public void handleCollision() {
         if (actor1 instanceof BucketActor && actor2 instanceof PaperItemsActor) {
-            handlePickUp((BucketActor) actor1, (PaperItemsActor) actor2);
-        } else if (actor1 instanceof PaperItemsActor && actor2 instanceof BucketActor) {
-            handlePickUp((BucketActor) actor2, (PaperItemsActor) actor1);
+            BucketActor bucket = (BucketActor) actor1;
+            PaperItemsActor paperitem = (PaperItemsActor) actor2;
+            if (!bucket.isItemPickedUp()) {
+                handlePickUp(bucket, paperitem);
+                bucket.setItemPickedUp(true); // Mark item as picked up
+            }
         } else if (actor1 instanceof BucketActor && actor2 instanceof MetalItemsActor) {
-            handlePickUpMetal((BucketActor) actor1, (MetalItemsActor) actor2);
-        } else if (actor1 instanceof MetalItemsActor && actor2 instanceof BucketActor) {
-        handlePickUpMetal((BucketActor) actor2, (MetalItemsActor) actor1);
+            BucketActor bucket = (BucketActor) actor1;
+            MetalItemsActor metalitem = (MetalItemsActor) actor2;
+            if (!bucket.isItemPickedUp()) {
+                handlePickUpMetal(bucket, metalitem);
+                bucket.setItemPickedUp(true); // Mark item as picked up
+            }
         }
     }
 
