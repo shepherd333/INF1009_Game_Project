@@ -114,7 +114,7 @@ public class GamePlay extends Scene {
         bucket.debug();
         stage.setDebugAll(true);
 
-        raindropTexture = new Texture(Gdx.files.internal("Paper.png"));
+        raindropTexture = new Texture(Gdx.files.internal("newspaper.png"));
         trashTexture = new Texture(Gdx.files.internal("styrofoam.png"));
         collisionManager = new CollisionManager(actors, raindrops, trashes, stage);
         shapeRenderer = new ShapeRenderer();

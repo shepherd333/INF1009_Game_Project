@@ -32,7 +32,7 @@ public class RaindropActor extends CollidableActor {
         float stageWidth = this.getStage().getViewport().getWorldWidth();
 
         // Calculate the fixed distance above the bottom of the screen
-        float fixedDistance = 100; // Adjust this value to your desired distance
+        float fixedDistance = 20; // Adjust this value to your desired distance
 
         // Calculate the Y position
         float yPosition = fixedDistance;
