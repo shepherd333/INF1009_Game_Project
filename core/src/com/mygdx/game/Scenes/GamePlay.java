@@ -21,9 +21,11 @@ import com.mygdx.game.EntityManagement.CollidableActor;
 import com.mygdx.game.EntityManagement.RaindropActor;
 import com.mygdx.game.EntityManagement.TrashActor;
 import com.mygdx.game.InputManagement.InputManager;
-import com.mygdx.game.EntityManagement.RecycleBinActor;
+import com.mygdx.game.EntityManagement.GlassBinActor;
+import com.mygdx.game.EntityManagement.PaperBinActor;
+import com.mygdx.game.EntityManagement.PlasticBinActor;
+import com.mygdx.game.EntityManagement.MetalBinActor;
 import com.mygdx.game.EntityManagement.ConveyorBeltActor;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +51,14 @@ public class GamePlay extends Scene {
     private Array<TrashActor> trashes = new Array<>();
     private List<CollidableActor> actors = new ArrayList<>();
     private boolean spawnTrashNext = false;
+    private GlassBinActor glassBin;
+    private PaperBinActor paperBin;
+    private PlasticBinActor plasticBin;
+    private MetalBinActor metalBin;
+
 
     private CollisionManager collisionManager;
-    private RecycleBinActor recycleBin;
+
     private ConveyorBeltActor conveyorBelt;
 
     public GamePlay(SceneManager sceneManager) {
@@ -65,8 +72,14 @@ public class GamePlay extends Scene {
         bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        recycleBin = new RecycleBinActor();
-        stage.addActor(recycleBin);
+        glassBin = new GlassBinActor();
+        stage.addActor(glassBin);
+        paperBin = new PaperBinActor();
+        stage.addActor(paperBin);
+        plasticBin = new PlasticBinActor();
+        stage.addActor(plasticBin);
+        metalBin = new MetalBinActor();
+        stage.addActor(metalBin);
         conveyorBelt = new ConveyorBeltActor();
         stage.addActor(conveyorBelt);
 
@@ -208,7 +221,10 @@ public class GamePlay extends Scene {
         super.dispose();
         if (bucketTexture != null) bucketTexture.dispose();
         if (raindropTexture != null) raindropTexture.dispose();
-        recycleBin.dispose();
+        glassBin.dispose();
+        paperBin.dispose();
+        plasticBin.dispose();
+        metalBin.dispose();
         conveyorBelt.dispose();
     }
 }
