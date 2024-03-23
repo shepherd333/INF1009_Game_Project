@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 
 // BaseScene is an abstract class that implements the SceneInterface interface
-// It provides a basic structure for the scenes classes, PauseMenu, MainMenu, and HowToPlay.
+// It provides a basic structure for the scenes classes, PauseMenu, MainMenu, LeaderBoard, HowToPlay and GamePlay.
 // It provides a common structure for the scenes to initialize, update, render, and dispose.
 
 // It also provides a method to add buttons to the scene.

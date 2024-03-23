@@ -28,37 +28,27 @@ public class HowToPlay extends BaseScene {
 
         int buttonWidth = 100;
         int buttonHeight = 25;
-        int buttonSpacing = 10;
         int rightMargin = 10;
         int topMargin = 10;
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
-        int totalHeight = (buttonHeight + buttonSpacing) * 5;
-        int verticalOffset = (screenHeight - totalHeight) / 2;
+        int verticalOffset = (screenHeight - buttonHeight) / 2;
 
-        TextButton playButton = new TextButton("Play Game", skin);
-        playButton.setSize(buttonWidth, buttonHeight);
-        playButton.setPosition(screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin);
-        playButton.addListener(new ClickListener() {
+        addButton("Play Game", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Transition to the PlayScene
                 getSceneManager().set(new GamePlay(getSceneManager()));
             }
-        });
-        stage.addActor(playButton);
+        }, screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin, buttonWidth, buttonHeight);
 
-        TextButton backtohomeButton = new TextButton("Back to Home", skin);
-        backtohomeButton.setSize(buttonWidth, buttonHeight);
-        backtohomeButton.setPosition(screenWidth - buttonWidth - rightMargin, screenHeight - 2*buttonHeight - topMargin);
-        backtohomeButton.addListener(new ClickListener() {
+        addButton("Back to Home", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Transition to the MainMenuScene
                 getSceneManager().set(new MainMenu(getSceneManager()));
             }
-        });
-        stage.addActor(backtohomeButton);
+        }, screenWidth - buttonWidth - rightMargin, screenHeight - 2*buttonHeight - topMargin, buttonWidth, buttonHeight);
     }
 
     @Override
@@ -69,10 +59,6 @@ public class HowToPlay extends BaseScene {
     @Override
     public void render() {
         super.render(); // Call the render method of the superclass
-        batch.begin();
-        bgSprite.draw(batch);
-        batch.end();
-        stage.draw();
     }
 
     @Override
