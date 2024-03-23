@@ -132,7 +132,7 @@ public class GamePlay extends Scene {
     public void initialize() {
     }
 
-    private void spawnRaindrop() {
+    private void spawnPaperItem() {
         PaperItemsActor paperitem = new PaperItemsActor(100, 0, 0, this);
         paperitems.add(paperitem);
         actors.add(paperitem);
@@ -168,6 +168,7 @@ public class GamePlay extends Scene {
 //            } else {
 //                spawnRaindrop();
 //            }
+            spawnPaperItem();
             spawnMetalItem();
             spawnTimer = 0;
             spawnTrashNext = !spawnTrashNext; // Toggle the flag for next spawn

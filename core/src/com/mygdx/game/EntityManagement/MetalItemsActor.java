@@ -1,29 +1,35 @@
 package com.mygdx.game.EntityManagement;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.mygdx.game.Scenes.GamePlay;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 
-public class MetalObjectActor extends CollidableActor {
-    private Texture texture;
+public class MetalItemsActor extends CollidableActor {
+    private TextureRegion textureRegion;
     private float speed;
-    public float bucketX; // Added
-    public float bucketWidth; // Added
+    public float bucketX, bucketWidth;
     private GamePlay gamePlay;
     private String uniqueValue;
 
-    public MetalObjectActor(Texture texture, float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
-        this.texture = texture;
+    private static TextureAtlas metalItemsAtlas = new TextureAtlas(Gdx.files.internal("metalitems.atlas"));
+    private static Array<TextureAtlas.AtlasRegion> metalItemsRegions =  metalItemsAtlas.findRegions("metalItem");
+
+    public MetalItemsActor(float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
         this.speed = speed;
         this.bucketX = bucketX; // Store the X position
         this.bucketWidth = bucketWidth; // Store the width
-        this.setSize(75, 75);
         this.gamePlay = gamePlay;
+
+        int index = (int) (Math.random() * metalItemsRegions.size);
+        this.textureRegion = metalItemsRegions.get(index);
+
         setTouchable(Touchable.enabled);
+        this.setSize(75, 75);
         this.uniqueValue = "1";
     }
 
@@ -45,34 +51,25 @@ public class MetalObjectActor extends CollidableActor {
     }
 
 
-
-
     @Override
     public void act(float delta) {
         super.act(delta);
-
-        // Move the raindrop horizontally by subtracting its speed adjusted for delta time.
-        this.setX(this.getX() - speed * delta);
-
-        // If the raindrop moves off the left side of the screen, reset its position.
-        if (this.getX() + this.getWidth() < 0) {
-            Gdx.app.log("MetalObject", "A metal object moved off the left side and will be removed. Current X position: " + this.getX());
-            // Here you could either reset the raindrop's position or remove it from the stage.
-            this.remove(); // For example, to remove the raindrop
-            // Or, to reset position, you might call resetPosition(bucketX, bucketWidth), with proper values.
+        setX(getX() - speed * delta);
+        if (getX() + getWidth() < 0) {
+            remove(); // Remove the actor if it goes off screen
         }
     }
 
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(texture, getX(), getY(), getWidth(), getHeight());
+        batch.draw(textureRegion, getX(), getY(), getWidth(), getHeight());
     }
 
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
         // Log the current bounds
-        Gdx.app.log("MetalObjectActor", "Bounds: " + bounds.toString());
+        Gdx.app.log("MetalItemsActor", "Bounds: " + bounds.toString());
         return bounds;
     }
 
@@ -85,9 +82,7 @@ public class MetalObjectActor extends CollidableActor {
     }
 
     public void dispose() {
-        if (texture != null) {
-            texture.dispose();
-        }
+        metalItemsAtlas.dispose();
     }
     public String getUniqueValue() {
         return uniqueValue;
