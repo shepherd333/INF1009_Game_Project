@@ -9,24 +9,24 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
-public class MetalItemsActor extends CollidableActor {
+public class GlassItemsActor extends CollidableActor {
     private TextureRegion textureRegion;
     private float speed;
     public float bucketX, bucketWidth;
     private GamePlay gamePlay;
     private String uniqueValue;
 
-    private static TextureAtlas metalItemsAtlas = new TextureAtlas(Gdx.files.internal("metalitems.atlas"));
-    private static Array<TextureAtlas.AtlasRegion> metalItemsRegions = metalItemsAtlas.findRegions("metalItem");
+    private static TextureAtlas glassItemsAtlas = new TextureAtlas(Gdx.files.internal("glassitems.atlas"));
+    private static Array<TextureAtlas.AtlasRegion> glassItemsRegions =  glassItemsAtlas.findRegions("glassItem");
 
-    public MetalItemsActor(float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
+    public GlassItemsActor(float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
         this.speed = speed;
         this.bucketX = bucketX; // Store the X position
         this.bucketWidth = bucketWidth; // Store the width
         this.gamePlay = gamePlay;
 
-        int index = (int) (Math.random() * metalItemsRegions.size);
-        this.textureRegion = metalItemsRegions.get(index);
+        int index = (int) (Math.random() * glassItemsRegions.size);
+        this.textureRegion = glassItemsRegions.get(index);
 
         setTouchable(Touchable.enabled);
         this.setSize(75, 75);
@@ -69,7 +69,7 @@ public class MetalItemsActor extends CollidableActor {
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
         // Log the current bounds
-        Gdx.app.log("MetalItemsActor", "Bounds: " + bounds.toString());
+        Gdx.app.log("GlassItemsActor", "Bounds: " + bounds.toString());
         return bounds;
     }
 
@@ -82,9 +82,8 @@ public class MetalItemsActor extends CollidableActor {
     }
 
     public void dispose() {
-        metalItemsAtlas.dispose();
+        glassItemsAtlas.dispose();
     }
-
     public String getUniqueValue() {
         return uniqueValue;
     }
