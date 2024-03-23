@@ -137,7 +137,7 @@ public class GamePlay extends Scene {
         spawnTimer = MathUtils.random(1.0f, 2.0f); // Random initial delay between 1 and 3 seconds
     }
 
-    private void spawnRaindrop() {
+    private void spawnPaperItem() {
         PaperItemsActor paperitem = new PaperItemsActor(100, 0, 0, this);
         if (!checkCollision(paperitem)) { // Check for collision
             paperitems.add(paperitem);
@@ -185,11 +185,21 @@ public class GamePlay extends Scene {
     public void update(float deltaTime) {
         spawnTimer += deltaTime;
         if (spawnTimer >= 3) {
+
             if (random.nextBoolean()) {
                 spawnMetalItem();
             } else {
-                spawnRaindrop();
+                spawnPaperItem();
             }
+
+//            if (spawnTrashNext) {
+//                spawnTrash();
+//            } else {
+//                spawnRaindrop();
+//            }
+            spawnPaperItem();
+            spawnMetalItem();
+
             spawnTimer = 0;
         }
     }

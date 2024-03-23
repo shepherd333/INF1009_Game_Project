@@ -1,14 +1,12 @@
 package com.mygdx.game.EntityManagement;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.mygdx.game.Scenes.GamePlay;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 
 public class MetalItemsActor extends CollidableActor {
@@ -19,7 +17,7 @@ public class MetalItemsActor extends CollidableActor {
     private String uniqueValue;
 
     private static TextureAtlas metalItemsAtlas = new TextureAtlas(Gdx.files.internal("metalitems.atlas"));
-    private static Array<TextureAtlas.AtlasRegion> metalItemsRegions = metalItemsAtlas.findRegions("metalItem");
+    private static Array<TextureAtlas.AtlasRegion> metalItemsRegions =  metalItemsAtlas.findRegions("metalItem");
 
     public MetalItemsActor(float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
         this.speed = speed;
@@ -71,7 +69,7 @@ public class MetalItemsActor extends CollidableActor {
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
         // Log the current bounds
-        Gdx.app.log("RaindropActor", "Bounds: " + bounds.toString());
+        Gdx.app.log("MetalItemsActor", "Bounds: " + bounds.toString());
         return bounds;
     }
 
