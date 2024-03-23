@@ -41,10 +41,12 @@ public class GamePlay extends Scene {
     private Texture paperitemsTexture;
     private Texture trashTexture;
     private Texture metalitemsTexture;
+    private Texture glassitemsTexture;
     private float spawnTimer = 0;
     private InputManager inputManager;
     private Array<PaperItemsActor> paperitems = new Array<>();
     private Array<MetalItemsActor> metalitems = new Array<>();
+    private Array<GlassItemsActor> glassitems = new Array<>();
     private List<CollidableActor> actors = new ArrayList<>();
     private boolean spawnTrashNext = false;
     private GlassBinActor glassBin;
@@ -115,8 +117,9 @@ public class GamePlay extends Scene {
 
         bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
         bucket = new BucketActor( 100, 100, 200);
+//        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
-        collisionManager = new CollisionManager(actors, paperitems, metalitems, stage);
+        collisionManager = new CollisionManager(actors, paperitems, metalitems, glassitems ,stage);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
         bucket.debug();
@@ -124,23 +127,30 @@ public class GamePlay extends Scene {
 
         paperitemsTexture = new Texture(Gdx.files.internal("paperitems.png"));
         metalitemsTexture = new Texture(Gdx.files.internal("metalitems.png"));
-
+        glassitemsTexture = new Texture(Gdx.files.internal("glassitems.png"));
+//        trashTexture = new Texture(Gdx.files.internal("styrofoam.png"));
+        collisionManager = new CollisionManager(actors, paperitems, metalitems, glassitems ,stage);
         shapeRenderer = new ShapeRenderer();
+
     }
 
     @Override
     public void initialize() {
         // Set initial spawnTimer value to a smaller value
-        spawnTimer = MathUtils.random(1.0f, 3.0f); // Random initial delay between 1 and 3 seconds
+        spawnTimer = MathUtils.random(1.0f, 2.0f); // Random initial delay between 1 and 3 seconds
     }
 
     private void spawnItem() {
         if (random.nextBoolean()) {
             spawnPaperItem();
-        } else {
+        } else if(random.nextBoolean()) {
             spawnMetalItem();
+        } else {
+            spawnGlassItem();
         }
+
     }
+
 
     private void spawnPaperItem() {
         PaperItemsActor paperitem = new PaperItemsActor(100, 0, 0, this);
@@ -165,6 +175,17 @@ public class GamePlay extends Scene {
             metalitem.remove(); // Remove the item if it overlaps
         }
     }
+    private void spawnGlassItem() {
+        GlassItemsActor glassitem = new GlassItemsActor(100, 0, 0, this);
+        if (!checkCollision(glassitem)) { // Check for collision
+            glassitems.add(glassitem);
+            actors.add(glassitem);
+            stage.addActor(glassitem);
+            glassitem.resetPosition(glassitem.bucketX, glassitem.bucketWidth);
+        } else {
+            glassitem.remove(); // Remove the item if it overlaps
+        }
+    }
 
     private boolean checkCollision(CollidableActor actor) {
         for (CollidableActor existingActor : actors) {
@@ -187,6 +208,7 @@ public class GamePlay extends Scene {
             spawnTimer = 0;
         }
     }
+
 
     @Override
     public void render() {
@@ -221,11 +243,14 @@ public class GamePlay extends Scene {
             Rectangle dropBounds = metalitem.getBounds();
             shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
         }
+        for (GlassItemsActor glassitem : glassitems) {
+            Rectangle dropBounds = glassitem.getBounds();
+            shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
+        }
 
         shapeRenderer.end();
 
         inputManager.handleInput(Gdx.graphics.getDeltaTime());
-
     }
 
     @Override
@@ -239,6 +264,7 @@ public class GamePlay extends Scene {
         if (bucketTexture != null) bucketTexture.dispose();
         if (paperitemsTexture != null) paperitemsTexture.dispose();
         if (metalitemsTexture != null) metalitemsTexture.dispose();
+        if (glassitemsTexture != null) glassitemsTexture.dispose();
         glassBin.dispose();
         paperBin.dispose();
         plasticBin.dispose();
@@ -246,4 +272,3 @@ public class GamePlay extends Scene {
         conveyorBelt.dispose();
     }
 }
-
