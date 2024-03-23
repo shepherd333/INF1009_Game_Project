@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -21,10 +22,12 @@ import com.mygdx.game.InputManagement.InputManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GamePlay extends Scene {
     private ShapeRenderer shapeRenderer;
     private boolean isDisposed = false;
+    private Random random = new Random();
     private Stage stage;
     private Skin skin;
     private SpriteBatch batch;
@@ -130,21 +133,41 @@ public class GamePlay extends Scene {
 
     @Override
     public void initialize() {
+        // Set initial spawnTimer value to a smaller value
+        spawnTimer = MathUtils.random(1.0f, 3.0f); // Random initial delay between 1 and 3 seconds
     }
 
     private void spawnRaindrop() {
         PaperItemsActor paperitem = new PaperItemsActor(100, 0, 0, this);
-        paperitems.add(paperitem);
-        actors.add(paperitem);
-        stage.addActor(paperitem);
-        paperitem.resetPosition(paperitem.bucketX, paperitem.bucketWidth);
+        if (!checkCollision(paperitem)) { // Check for collision
+            paperitems.add(paperitem);
+            actors.add(paperitem);
+            stage.addActor(paperitem);
+            paperitem.resetPosition(paperitem.bucketX, paperitem.bucketWidth);
+        } else {
+            paperitem.remove(); // Remove the item if it overlaps
+        }
     }
+
     private void spawnMetalItem() {
         MetalItemsActor metalitem = new MetalItemsActor(100, 0, 0, this);
-        metalitems.add(metalitem);
-        actors.add(metalitem);
-        stage.addActor(metalitem);
-        metalitem.resetPosition(metalitem.bucketX, metalitem.bucketWidth);
+        if (!checkCollision(metalitem)) { // Check for collision
+            metalitems.add(metalitem);
+            actors.add(metalitem);
+            stage.addActor(metalitem);
+            metalitem.resetPosition(metalitem.bucketX, metalitem.bucketWidth);
+        } else {
+            metalitem.remove(); // Remove the item if it overlaps
+        }
+    }
+
+    private boolean checkCollision(CollidableActor actor) {
+        for (CollidableActor existingActor : actors) {
+            if (actor.getBounds().overlaps(existingActor.getBounds())) {
+                return true; // Collision detected
+            }
+        }
+        return false; // No collision detected
     }
 //    private void spawnTrash() {
 //        TrashActor trash = new TrashActor(trashTexture, 100, 0, 0, this);
@@ -159,22 +182,16 @@ public class GamePlay extends Scene {
         paperitem.remove();
     }
 
-    @Override
     public void update(float deltaTime) {
         spawnTimer += deltaTime;
         if (spawnTimer >= 3) {
-//            if (spawnTrashNext) {
-//                spawnTrash();
-//            } else {
-//                spawnRaindrop();
-//            }
-            spawnMetalItem();
+            if (random.nextBoolean()) {
+                spawnMetalItem();
+            } else {
+                spawnRaindrop();
+            }
             spawnTimer = 0;
-            spawnTrashNext = !spawnTrashNext; // Toggle the flag for next spawn
         }
-
-        stage.act(deltaTime);
-        collisionManager.handleCollisions();
     }
 
 
