@@ -146,13 +146,13 @@ public class GamePlay extends Scene {
         raindrop.resetPosition(raindrop.bucketX, raindrop.bucketWidth);
     }
 
-    private void spawnTrash() {
-        TrashActor trash = new TrashActor(trashTexture, 100, 0, 0, this);
-        trashes.add(trash);
-        actors.add(trash);
-        stage.addActor(trash);
-        trash.resetPosition(trash.bucketX, trash.bucketWidth);
-    }
+//    private void spawnTrash() {
+//        TrashActor trash = new TrashActor(trashTexture, 100, 0, 0, this);
+//        trashes.add(trash);
+//        actors.add(trash);
+//        stage.addActor(trash);
+//        trash.resetPosition(trash.bucketX, trash.bucketWidth);
+//    }
 
     public void removeRaindrop(RaindropActor raindrop) {
         raindrops.removeValue(raindrop, true);
@@ -163,11 +163,12 @@ public class GamePlay extends Scene {
     public void update(float deltaTime) {
         spawnTimer += deltaTime;
         if (spawnTimer >= 3) {
-            if (spawnTrashNext) {
-                spawnTrash();
-            } else {
-                spawnRaindrop();
-            }
+//            if (spawnTrashNext) {
+//                spawnTrash();
+//            } else {
+//                spawnRaindrop();
+//            }
+            spawnRaindrop();
             spawnTimer = 0;
             spawnTrashNext = !spawnTrashNext; // Toggle the flag for next spawn
         }
