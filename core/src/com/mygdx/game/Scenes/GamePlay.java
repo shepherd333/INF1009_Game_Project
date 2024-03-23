@@ -57,7 +57,7 @@ public class GamePlay extends Scene {
         inputManager = new InputManager(stage);
         skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
 
-        bg = new Texture(Gdx.files.internal("DystopianWorld.png"));
+        bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         recycleBin = new RecycleBinActor();
