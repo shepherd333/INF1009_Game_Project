@@ -2,7 +2,7 @@ package com.mygdx.game.CollisionManagement.CollisionCriterias;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.EntityManagement.BucketActor;
-import com.mygdx.game.EntityManagement.RaindropActor;
+import com.mygdx.game.EntityManagement.PaperItemsActor;
 import com.mygdx.game.InputManagement.InputManager;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -22,7 +22,7 @@ public class PickUpCollisionCriteria implements Criterias {
     public boolean meetsCriteria(Actor actor1, Actor actor2) {
         boolean isSpacePressed = this.inputManager.isSpacePressed();
         System.out.println("Space pressed: " + isSpacePressed);
-        return isSpacePressed && ((actor1 instanceof BucketActor && actor2 instanceof RaindropActor) ||
-                (actor1 instanceof RaindropActor && actor2 instanceof BucketActor));
+        return isSpacePressed && ((actor1 instanceof BucketActor && actor2 instanceof PaperItemsActor) ||
+                (actor1 instanceof PaperItemsActor && actor2 instanceof BucketActor));
     }
 }
