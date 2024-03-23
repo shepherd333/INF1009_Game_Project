@@ -3,16 +3,13 @@ package com.mygdx.game.CollisionManagement;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.CollisionManagement.handlers.ICollisionHandler;
-import com.mygdx.game.EntityManagement.CollidableActor;
-import com.mygdx.game.EntityManagement.MetalItemsActor;
-import com.mygdx.game.EntityManagement.PaperItemsActor;
+import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.CollisionManagement.CollisionCriterias.Criterias;
 //import com.mygdx.game.CollisionManagement.CollisionCriterias.CollectCollisionCriteria;
 //import com.mygdx.game.CollisionManagement.handlers.CollectCollisionHandler;
 import com.mygdx.game.CollisionManagement.CollisionCriterias.PickUpCollisionCriteria;
 import com.mygdx.game.CollisionManagement.handlers.PickUpCollisionHandler;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.game.EntityManagement.TrashActor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,15 +19,17 @@ public class CollisionManager {
     private List<CollidableActor> actors;
     private Array<PaperItemsActor> paperitems;
     private Array<MetalItemsActor> metalitems;
+    private Array<GlassItemsActor> glassitems;
     private Array<TrashActor> trash;
 
     private Stage stage;
     private Map<Class<? extends Criterias>, Class<? extends ICollisionHandler>> criteriaToHandlers;
 
-    public CollisionManager(List<CollidableActor> actors, Array<PaperItemsActor> raindrops, Array<MetalItemsActor> metalitems, Stage stage) {
+    public CollisionManager(List<CollidableActor> actors, Array<PaperItemsActor> paperitems, Array<MetalItemsActor> metalitems,Array<GlassItemsActor> glassitems ,Stage stage) {
         this.actors = actors;
-        this.paperitems = raindrops;
+        this.paperitems = paperitems;
         this.metalitems = metalitems;
+        this.glassitems = glassitems;
         this.stage = stage;
         this.criteriaToHandlers = new HashMap<>();
 
@@ -59,13 +58,13 @@ public class CollisionManager {
                             // Check if the collision meets the criteria defined by the current CollisionCriteria class.
                             if (criteria.meetsCriteria(actors.get(i), actors.get(j))) {
                                 // If the criteria are met, create an instance of the corresponding CollisionHandler class and call its handleCollision method.
-                                ICollisionHandler handler = entry.getValue().getConstructor(Actor.class, Actor.class, Array.class, Array.class).newInstance(actors.get(i), actors.get(j), paperitems, metalitems);
+                                ICollisionHandler handler = entry.getValue().getConstructor(Actor.class, Actor.class, Array.class, Array.class, Array.class).newInstance(actors.get(i), actors.get(j), paperitems, metalitems, glassitems);
                                 handler.handleCollision();
                                 break;
                             }
                             else if (criteria.meetsCriteria(actors.get(i), actors.get(j))) {
                                 // If the criteria are met, create an instance of the corresponding CollisionHandler class and call its handleCollision method.
-                                ICollisionHandler handler = entry.getValue().getConstructor(Actor.class, Actor.class, Array.class, Array.class).newInstance(actors.get(i), actors.get(j), paperitems, metalitems);
+                                ICollisionHandler handler = entry.getValue().getConstructor(Actor.class, Actor.class, Array.class, Array.class, Array.class).newInstance(actors.get(i), actors.get(j), paperitems, metalitems, glassitems);
                                 handler.handleCollision();
                                 break;
                             }

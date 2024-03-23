@@ -1,8 +1,10 @@
 package com.mygdx.game.EntityManagement;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -17,6 +19,7 @@ public class BucketActor extends CollidableActor {
 
     private Texture texture;
     private String possessionValue;
+    private boolean itemPickedUp; // Flag to check if an item has been picked up
 
     // Constructor
     public BucketActor(float x, float y, float speed) {
@@ -36,25 +39,41 @@ public class BucketActor extends CollidableActor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        // Example movement logic: move the bucket based on speed. Adjust as necessary.
-        // This is just a placeholder; actual movement logic will depend on your game's mechanics.
-        // For example, you might update the bucket's position based on user input.
+        // Update logic to prevent picking up items if already picked up
+        if (!itemPickedUp) {
+            // Get current bucket position
+            float newX = getX();
+            float newY = getY();
 
-        // Boundary checks
-        // Ensure the bucket doesn't move outside the left or right screen bounds
-        if (getX() < 0) {
-            setPosition(0, getY()); // Reset to left edge if out of bounds
-        } else if (getX() + getWidth() > getStage().getViewport().getWorldWidth()) {
-            setPosition(getStage().getViewport().getWorldWidth() - getWidth(), getY()); // Reset to right edge
-        }
+            // Update position based on input
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                newX -= speed * delta;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                newX += speed * delta;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                newY += speed * delta;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                newY -= speed * delta;
+            }
 
-        // Similarly, for top and bottom boundaries, if needed:
-        if (getY() < 0) {
-            setPosition(getX(), 0); // Reset to bottom edge if out of bounds
-        } else if (getY() + getHeight() > getStage().getViewport().getWorldHeight()) {
-            setPosition(getX(), getStage().getViewport().getWorldHeight() - getHeight()); // Reset to top edge
+            // Clamp position within screen bounds
+            newX = MathUtils.clamp(newX, 0, getStage().getViewport().getWorldWidth() - getWidth());
+            newY = MathUtils.clamp(newY, 0, getStage().getViewport().getWorldHeight() - getHeight());
+
+            // Update bucket position
+            setPosition(newX, newY);
+        } else {
+            // If item is picked up, clamp the bucket's position within screen bounds
+            float clampedX = MathUtils.clamp(getX(), 0, getStage().getViewport().getWorldWidth() - getWidth());
+            float clampedY = MathUtils.clamp(getY(), 0, getStage().getViewport().getWorldHeight() - getHeight());
+            setPosition(clampedX, clampedY);
         }
     }
+
+
     public void changeDirection(Direction direction) {
         switch (direction) {
             case LEFT:
@@ -73,11 +92,11 @@ public class BucketActor extends CollidableActor {
         // Update the size of the actor to match the new sprite's size
         this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
     }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(currentSprite, getX(), getY(), getWidth(), getHeight());
     }
-
 
     // Provides a bounding box for the bucket, useful for collision detection.
     public Rectangle getBounds() {
@@ -85,7 +104,6 @@ public class BucketActor extends CollidableActor {
         Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
         return bounds;
     }
-
 
     @Override
     public void setWidth(float width) {
@@ -116,8 +134,16 @@ public class BucketActor extends CollidableActor {
     public String getPossessionValue() {
         return possessionValue;
     }
+
+    public boolean isItemPickedUp() {
+        return itemPickedUp;
+    }
+
+    public void setItemPickedUp(boolean itemPickedUp) {
+        this.itemPickedUp = itemPickedUp;
+    }
+
     public enum Direction {
         LEFT, RIGHT, UP, DOWN
     }
-
 }

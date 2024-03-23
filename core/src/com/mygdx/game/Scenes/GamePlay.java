@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -21,10 +22,12 @@ import com.mygdx.game.InputManagement.InputManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GamePlay extends BaseScene {
     private ShapeRenderer shapeRenderer;
     private boolean isDisposed = false;
+    private Random random = new Random();
     private Stage stage;
     private Skin skin;
     private SpriteBatch batch;
@@ -38,10 +41,12 @@ public class GamePlay extends BaseScene {
     private Texture paperitemsTexture;
     private Texture trashTexture;
     private Texture metalitemsTexture;
+    private Texture glassitemsTexture;
     private float spawnTimer = 0;
     private InputManager inputManager;
     private Array<PaperItemsActor> paperitems = new Array<>();
     private Array<MetalItemsActor> metalitems = new Array<>();
+    private Array<GlassItemsActor> glassitems = new Array<>();
     private List<CollidableActor> actors = new ArrayList<>();
     private boolean spawnTrashNext = false;
     private GlassBinActor glassBin;
@@ -114,7 +119,7 @@ public class GamePlay extends BaseScene {
         bucket = new BucketActor( 100, 100, 200);
 //        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
-        collisionManager = new CollisionManager(actors, paperitems, metalitems, stage);
+        collisionManager = new CollisionManager(actors, paperitems, metalitems, glassitems ,stage);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
         bucket.debug();
@@ -122,8 +127,9 @@ public class GamePlay extends BaseScene {
 
         paperitemsTexture = new Texture(Gdx.files.internal("paperitems.png"));
         metalitemsTexture = new Texture(Gdx.files.internal("metalitems.png"));
+        glassitemsTexture = new Texture(Gdx.files.internal("glassitems.png"));
 //        trashTexture = new Texture(Gdx.files.internal("styrofoam.png"));
-        collisionManager = new CollisionManager(actors, paperitems, metalitems, stage);
+        collisionManager = new CollisionManager(actors, paperitems, metalitems, glassitems ,stage);
         shapeRenderer = new ShapeRenderer();
 
     }
@@ -135,52 +141,77 @@ public class GamePlay extends BaseScene {
 
     @Override
     public void initialize() {
+        // Set initial spawnTimer value to a smaller value
+        spawnTimer = MathUtils.random(1.0f, 2.0f); // Random initial delay between 1 and 3 seconds
     }
+
+    private void spawnItem() {
+        if (random.nextBoolean()) {
+            spawnPaperItem();
+        } else if(random.nextBoolean()) {
+            spawnMetalItem();
+        } else {
+            spawnGlassItem();
+        }
+
+    }
+
 
     private void spawnPaperItem() {
         PaperItemsActor paperitem = new PaperItemsActor(100, 0, 0, this);
-        paperitems.add(paperitem);
-        actors.add(paperitem);
-        stage.addActor(paperitem);
-        paperitem.resetPosition(paperitem.bucketX, paperitem.bucketWidth);
+        if (!checkCollision(paperitem)) { // Check for collision
+            paperitems.add(paperitem);
+            actors.add(paperitem);
+            stage.addActor(paperitem);
+            paperitem.resetPosition(paperitem.bucketX, paperitem.bucketWidth);
+        } else {
+            paperitem.remove(); // Remove the item if it overlaps
+        }
     }
+
     private void spawnMetalItem() {
         MetalItemsActor metalitem = new MetalItemsActor(100, 0, 0, this);
-        metalitems.add(metalitem);
-        actors.add(metalitem);
-        stage.addActor(metalitem);
-        metalitem.resetPosition(metalitem.bucketX, metalitem.bucketWidth);
+        if (!checkCollision(metalitem)) { // Check for collision
+            metalitems.add(metalitem);
+            actors.add(metalitem);
+            stage.addActor(metalitem);
+            metalitem.resetPosition(metalitem.bucketX, metalitem.bucketWidth);
+        } else {
+            metalitem.remove(); // Remove the item if it overlaps
+        }
     }
-//    private void spawnTrash() {
-//        TrashActor trash = new TrashActor(trashTexture, 100, 0, 0, this);
-//        trashes.add(trash);
-//        actors.add(trash);
-//        stage.addActor(trash);
-//        trash.resetPosition(trash.bucketX, trash.bucketWidth);
-//    }
+    private void spawnGlassItem() {
+        GlassItemsActor glassitem = new GlassItemsActor(100, 0, 0, this);
+        if (!checkCollision(glassitem)) { // Check for collision
+            glassitems.add(glassitem);
+            actors.add(glassitem);
+            stage.addActor(glassitem);
+            glassitem.resetPosition(glassitem.bucketX, glassitem.bucketWidth);
+        } else {
+            glassitem.remove(); // Remove the item if it overlaps
+        }
+    }
 
-    public void removeRaindrop(PaperItemsActor paperitem) {
+    private boolean checkCollision(CollidableActor actor) {
+        for (CollidableActor existingActor : actors) {
+            if (actor.getBounds().overlaps(existingActor.getBounds())) {
+                return true; // Collision detected
+            }
+        }
+        return false; // No collision detected
+    }
+
+    public void removeItem(PaperItemsActor paperitem) {
         paperitems.removeValue(paperitem, true);
         paperitem.remove();
     }
 
-    @Override
     public void update(float deltaTime) {
         spawnTimer += deltaTime;
         if (spawnTimer >= 3) {
-//            if (spawnTrashNext) {
-//                spawnTrash();
-//            } else {
-//                spawnRaindrop();
-//            }
-            spawnPaperItem();
-            spawnMetalItem();
+            spawnItem();
             spawnTimer = 0;
-            spawnTrashNext = !spawnTrashNext; // Toggle the flag for next spawn
         }
-
-        stage.act(deltaTime);
-        collisionManager.handleCollisions();
     }
 
 
@@ -217,6 +248,10 @@ public class GamePlay extends BaseScene {
             Rectangle dropBounds = metalitem.getBounds();
             shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
         }
+        for (GlassItemsActor glassitem : glassitems) {
+            Rectangle dropBounds = glassitem.getBounds();
+            shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
+        }
 
         shapeRenderer.end();
 
@@ -236,6 +271,7 @@ public class GamePlay extends BaseScene {
         if (bucketTexture != null) bucketTexture.dispose();
         if (paperitemsTexture != null) paperitemsTexture.dispose();
         if (metalitemsTexture != null) metalitemsTexture.dispose();
+        if (glassitemsTexture != null) glassitemsTexture.dispose();
         glassBin.dispose();
         paperBin.dispose();
         plasticBin.dispose();

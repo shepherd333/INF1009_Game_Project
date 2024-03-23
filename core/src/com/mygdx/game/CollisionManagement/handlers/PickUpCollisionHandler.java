@@ -2,6 +2,7 @@ package com.mygdx.game.CollisionManagement.handlers;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.EntityManagement.BucketActor;
+import com.mygdx.game.EntityManagement.GlassItemsActor;
 import com.mygdx.game.EntityManagement.MetalItemsActor;
 import com.mygdx.game.EntityManagement.PaperItemsActor;
 import com.badlogic.gdx.utils.Array;
@@ -9,28 +10,44 @@ import com.badlogic.gdx.utils.Array;
 public class PickUpCollisionHandler extends BaseCollisionHandler {
     private Array<PaperItemsActor> paperitems;
     private Array<MetalItemsActor> metalitems;
+    private Array<GlassItemsActor> glassitems;
 
-    public PickUpCollisionHandler(Actor actor1, Actor actor2, Array<PaperItemsActor> raindrops, Array<MetalItemsActor> metalitems) {
+    public PickUpCollisionHandler(Actor actor1, Actor actor2, Array<PaperItemsActor> paperitems, Array<MetalItemsActor> metalitems, Array<GlassItemsActor> glassitems) {
         super(actor1, actor2);
-        this.paperitems = raindrops;
+        this.paperitems = paperitems;
         this.metalitems = metalitems;
+        this.glassitems = glassitems;
     }
 
     @Override
     public void handleCollision() {
         if (actor1 instanceof BucketActor && actor2 instanceof PaperItemsActor) {
-            handlePickUp((BucketActor) actor1, (PaperItemsActor) actor2);
-        } else if (actor1 instanceof PaperItemsActor && actor2 instanceof BucketActor) {
-            handlePickUp((BucketActor) actor2, (PaperItemsActor) actor1);
+            BucketActor bucket = (BucketActor) actor1;
+            PaperItemsActor paperitem = (PaperItemsActor) actor2;
+            if (!bucket.isItemPickedUp()) {
+                handlePickUp(bucket, paperitem);
+                bucket.setItemPickedUp(true); // Mark item as picked up
+            }
         } else if (actor1 instanceof BucketActor && actor2 instanceof MetalItemsActor) {
-            handlePickUpMetal((BucketActor) actor1, (MetalItemsActor) actor2);
-        } else if (actor1 instanceof MetalItemsActor && actor2 instanceof BucketActor) {
-        handlePickUpMetal((BucketActor) actor2, (MetalItemsActor) actor1);
+            BucketActor bucket = (BucketActor) actor1;
+            MetalItemsActor metalitem = (MetalItemsActor) actor2;
+            if (!bucket.isItemPickedUp()) {
+                handlePickUpMetal(bucket, metalitem);
+                bucket.setItemPickedUp(true); // Mark item as picked up
+            }
+        }
+        else if (actor1 instanceof BucketActor && actor2 instanceof GlassItemsActor) {
+            BucketActor bucket = (BucketActor) actor1;
+            GlassItemsActor glassitem = (GlassItemsActor) actor2;
+            if (!bucket.isItemPickedUp()) {
+                handlePickUpGlass(bucket, glassitem);
+                bucket.setItemPickedUp(true); // Mark item as picked up
+            }
         }
     }
 
     private void handlePickUp(BucketActor bucket, PaperItemsActor paperitem) {
-        // Remove the raindrop actor
+        // Remove the paper actor
         paperitem.remove();
         // Remove the raindrop from the array
         paperitems.removeValue(paperitem, true);
@@ -39,11 +56,20 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
     }
 
     private void handlePickUpMetal(BucketActor bucket, MetalItemsActor metalitem) {
-        // Remove the raindrop actor
+        // Remove the metal actor
         metalitem.remove();
         // Remove the raindrop from the array
         metalitems.removeValue(metalitem, true);
         // Assign a unique value to the bucket actor
         bucket.setPossessionValue(metalitem.getUniqueValue());
+    }
+
+    private void handlePickUpGlass(BucketActor bucket, GlassItemsActor glassitem) {
+        // Remove the glass actor
+        glassitem.remove();
+        // Remove the raindrop from the array
+        glassitems.removeValue(glassitem, true);
+        // Assign a unique value to the bucket actor
+        bucket.setPossessionValue(glassitem.getUniqueValue());
     }
 }
