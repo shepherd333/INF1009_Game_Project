@@ -41,10 +41,6 @@ public class BucketActor extends CollidableActor {
         super.act(delta);
         // Update logic to prevent picking up items if already picked up
         if (!itemPickedUp) {
-            // Example movement logic: move the bucket based on speed. Adjust as necessary.
-            // This is just a placeholder; actual movement logic will depend on your game's mechanics.
-            // For example, you might update the bucket's position based on user input.
-
             // Get current bucket position
             float newX = getX();
             float newY = getY();
@@ -69,8 +65,14 @@ public class BucketActor extends CollidableActor {
 
             // Update bucket position
             setPosition(newX, newY);
+        } else {
+            // If item is picked up, clamp the bucket's position within screen bounds
+            float clampedX = MathUtils.clamp(getX(), 0, getStage().getViewport().getWorldWidth() - getWidth());
+            float clampedY = MathUtils.clamp(getY(), 0, getStage().getViewport().getWorldHeight() - getHeight());
+            setPosition(clampedX, clampedY);
         }
     }
+
 
     public void changeDirection(Direction direction) {
         switch (direction) {
