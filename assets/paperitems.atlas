@@ -3,24 +3,24 @@ size: 55, 134
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-cardboard
+paperItem
   rotate: false
   xy: 0, 0
   size: 53, 53
   orig: 53, 53
   offset: 0, 0
-  index: -1
-newspaper
+  index: 1
+paperItem
   rotate: false
   xy: 0, 53
   size: 55, 31
   orig: 55, 31
   offset: 0, 0
-  index: -1
-paperBag
+  index: 2
+paperItem
   rotate: false
   xy: 0, 84
   size: 36, 50
   orig: 36, 50
   offset: 0, 0
-  index: -1
+  index: 3

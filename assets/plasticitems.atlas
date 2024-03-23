@@ -3,24 +3,24 @@ size: 97, 58
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-milkPlasticBottle
+plasticItem
   rotate: false
   xy: 0, 0
   size: 41, 58
   orig: 41, 58
   offset: 0, 0
-  index: -1
-plasticBottle 
+  index: 1
+plasticItem
   rotate: false
   xy: 41, 0
   size: 18, 47
   orig: 18, 47
   offset: 0, 0
-  index: -1
-soapPlasticBottle
+  index: 2
+plasticItem
   rotate: false
   xy: 59, 0
   size: 38, 47
   orig: 38, 47
   offset: 0, 0
-  index: -1
+  index: 3
