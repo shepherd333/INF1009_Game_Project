@@ -1,29 +1,30 @@
 package com.mygdx.game.Scenes;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-public class HowToPlay extends Scene{
-    private Stage stage;
-    private Skin skin;
-    private SpriteBatch batch;
-    private Texture bg;
-    private Sprite bgSprite;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+
+public class HowToPlay extends BaseScene {
+
     public HowToPlay(SceneManager sceneManager) {
         super(sceneManager);
-        batch = new SpriteBatch();
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        Gdx.input.setInputProcessor(stage);
-        skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
-        bg = new Texture(Gdx.files.internal("howtoplay.jpg"));
-        bgSprite = new Sprite(bg);
-        bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+
+    @Override
+    protected String getBackgroundTexturePath() {
+        return "howtoplay.jpg"; // Set the path to the background texture for the how to play scene
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize(); // Call the initialize method of the superclass
 
         int buttonWidth = 100;
         int buttonHeight = 25;
@@ -42,7 +43,7 @@ public class HowToPlay extends Scene{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Transition to the PlayScene
-                sceneManager.set(new GamePlay(sceneManager));
+                getSceneManager().set(new GamePlay(getSceneManager()));
             }
         });
         stage.addActor(playButton);
@@ -53,39 +54,35 @@ public class HowToPlay extends Scene{
         backtohomeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Transition to the PlayScene
-                sceneManager.set(new MainMenu(sceneManager));
+                // Transition to the MainMenuScene
+                getSceneManager().set(new MainMenu(getSceneManager()));
             }
         });
         stage.addActor(backtohomeButton);
     }
-    @Override
-    public void initialize() {
-    }
+
     @Override
     public void update(float deltaTime) {
+        // Update logic here, if any
     }
+
     @Override
     public void render() {
-        super.render();
+        super.render(); // Call the render method of the superclass
         batch.begin();
         bgSprite.draw(batch);
         batch.end();
         stage.draw();
     }
+
     @Override
     public void resize(int width, int height) {
-        // Update the stage's viewport when the screen size changes
-        stage.getViewport().update(width, height, true);
-        // Optionally, you can also adjust the positions of UI elements here if necessary
-        // This ensures the viewport is recalculated to match the new screen size
+        super.resize(width, height); // Call the resize method of the superclass
     }
+
     @Override
     public void dispose() {
-        super.dispose();
-        stage.dispose();
-        skin.dispose();
-        batch.dispose();
+        super.dispose(); // Call the dispose method of the superclass
+        // Dispose any additional resources specific to HowToPlay
     }
 }
-

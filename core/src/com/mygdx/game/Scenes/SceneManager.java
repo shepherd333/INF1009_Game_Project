@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import java.util.Stack;
 
 public class SceneManager {
-    private Stack<Scene> sceneStack = new Stack<>();
+    private Stack<SceneInterface> sceneStack = new Stack<>();
 
     public SceneManager() {
         Gdx.app.log("SceneManager", "Initializing SceneManager");
@@ -16,7 +16,7 @@ public class SceneManager {
         pushScene(new MainMenu(this));
     }
 
-    public void pushScene(Scene scene) {
+    public void pushScene(SceneInterface scene) {
         sceneStack.push(scene);
     }
 
@@ -24,20 +24,16 @@ public class SceneManager {
         if (!sceneStack.isEmpty()) {
             sceneStack.pop().dispose();
         }
-//        if (!sceneStack.isEmpty()) {
-//            Scene currentScene = sceneStack.peek();
-//            currentScene.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        }
     }
 
-    public Scene getCurrentScene() {
+    public SceneInterface getCurrentScene() {
         if (!sceneStack.isEmpty()) {
             return sceneStack.peek();
         }
         return null;
     }
 
-    public void set(Scene scene) {
+    public void set(SceneInterface scene) {
         if (!sceneStack.isEmpty()) {
             sceneStack.pop().dispose();
         }
@@ -49,7 +45,7 @@ public class SceneManager {
     }
 
     public void render() {
-        Scene currentScene = getCurrentScene();
+        SceneInterface currentScene = getCurrentScene();
         if (currentScene != null) {
             currentScene.render();
         }

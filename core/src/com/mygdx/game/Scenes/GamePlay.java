@@ -22,7 +22,7 @@ import com.mygdx.game.InputManagement.InputManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GamePlay extends Scene {
+public class GamePlay extends BaseScene {
     private ShapeRenderer shapeRenderer;
     private boolean isDisposed = false;
     private Stage stage;
@@ -126,6 +126,11 @@ public class GamePlay extends Scene {
         collisionManager = new CollisionManager(actors, paperitems, metalitems, stage);
         shapeRenderer = new ShapeRenderer();
 
+    }
+
+    @Override
+    protected String getBackgroundTexturePath() {
+        return "FloorBG.png";
     }
 
     @Override
