@@ -19,6 +19,7 @@ import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.BucketActor;
 import com.mygdx.game.EntityManagement.CollidableActor;
 import com.mygdx.game.EntityManagement.RaindropActor;
+import com.mygdx.game.EntityManagement.TrashActor;
 import com.mygdx.game.InputManagement.InputManager;
 
 import java.util.ArrayList;
@@ -38,10 +39,14 @@ public class GamePlay extends Scene {
     private BucketActor bucket;
     private Texture bucketTexture;
     private Texture raindropTexture;
+    private Texture trashTexture;
     private float spawnTimer = 0;
     private InputManager inputManager;
     private Array<RaindropActor> raindrops = new Array<>();
+    private Array<TrashActor> trashes = new Array<>();
     private List<CollidableActor> actors = new ArrayList<>();
+    private boolean spawnTrashNext = false;
+
     private CollisionManager collisionManager;
 
     public GamePlay(SceneManager sceneManager) {
@@ -97,14 +102,15 @@ public class GamePlay extends Scene {
         bucket = new BucketActor( 100, 100, 200);
 //        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
-        collisionManager = new CollisionManager(actors, raindrops, stage);
+        collisionManager = new CollisionManager(actors, raindrops, trashes, stage);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
         bucket.debug();
         stage.setDebugAll(true);
 
-        raindropTexture = new Texture(Gdx.files.internal("dust.png"));
-        collisionManager = new CollisionManager(actors, raindrops, stage);
+        raindropTexture = new Texture(Gdx.files.internal("Paper.png"));
+        trashTexture = new Texture(Gdx.files.internal("styrofoam.png"));
+        collisionManager = new CollisionManager(actors, raindrops, trashes, stage);
         shapeRenderer = new ShapeRenderer();
 
     }
@@ -121,6 +127,14 @@ public class GamePlay extends Scene {
         raindrop.resetPosition(raindrop.bucketX, raindrop.bucketWidth);
     }
 
+    private void spawnTrash() {
+        TrashActor trash = new TrashActor(trashTexture, 100, 0, 0, this);
+        trashes.add(trash);
+        actors.add(trash);
+        stage.addActor(trash);
+        trash.resetPosition(trash.bucketX, trash.bucketWidth);
+    }
+
     public void removeRaindrop(RaindropActor raindrop) {
         raindrops.removeValue(raindrop, true);
         raindrop.remove();
@@ -130,13 +144,19 @@ public class GamePlay extends Scene {
     public void update(float deltaTime) {
         spawnTimer += deltaTime;
         if (spawnTimer >= 3) {
-            spawnRaindrop();
+            if (spawnTrashNext) {
+                spawnTrash();
+            } else {
+                spawnRaindrop();
+            }
             spawnTimer = 0;
+            spawnTrashNext = !spawnTrashNext; // Toggle the flag for next spawn
         }
 
         stage.act(deltaTime);
         collisionManager.handleCollisions();
     }
+
 
     @Override
     public void render() {
