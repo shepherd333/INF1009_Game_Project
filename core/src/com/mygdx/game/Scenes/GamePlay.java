@@ -18,8 +18,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.BucketActor;
 import com.mygdx.game.EntityManagement.CollidableActor;
-import com.mygdx.game.EntityManagement.RaindropActor;
-import com.mygdx.game.EntityManagement.TrashActor;
+import com.mygdx.game.EntityManagement.PaperItemsActor;
 import com.mygdx.game.InputManagement.InputManager;
 import com.mygdx.game.EntityManagement.GlassBinActor;
 import com.mygdx.game.EntityManagement.PaperBinActor;
@@ -43,12 +42,11 @@ public class GamePlay extends Scene {
     private SceneManager sceneManager;
     private BucketActor bucket;
     private Texture bucketTexture;
-    private Texture raindropTexture;
+    private Texture paperitemsTexture;
     private Texture trashTexture;
     private float spawnTimer = 0;
     private InputManager inputManager;
-    private Array<RaindropActor> raindrops = new Array<>();
-    private Array<TrashActor> trashes = new Array<>();
+    private Array<PaperItemsActor> paperitems = new Array<>();
     private List<CollidableActor> actors = new ArrayList<>();
     private boolean spawnTrashNext = false;
     private GlassBinActor glassBin;
@@ -121,15 +119,15 @@ public class GamePlay extends Scene {
         bucket = new BucketActor( 100, 100, 200);
 //        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
-        collisionManager = new CollisionManager(actors, raindrops, trashes, stage);
+        collisionManager = new CollisionManager(actors, paperitems, stage);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
         bucket.debug();
         stage.setDebugAll(true);
 
-        raindropTexture = new Texture(Gdx.files.internal("newspaper.png"));
+        paperitemsTexture = new Texture(Gdx.files.internal("newspaper.png"));
         trashTexture = new Texture(Gdx.files.internal("styrofoam.png"));
-        collisionManager = new CollisionManager(actors, raindrops, trashes, stage);
+        collisionManager = new CollisionManager(actors, paperitems,stage);
         shapeRenderer = new ShapeRenderer();
 
     }
@@ -139,11 +137,11 @@ public class GamePlay extends Scene {
     }
 
     private void spawnRaindrop() {
-        RaindropActor raindrop = new RaindropActor(raindropTexture, 100, 0, 0, this);
-        raindrops.add(raindrop);
-        actors.add(raindrop);
-        stage.addActor(raindrop);
-        raindrop.resetPosition(raindrop.bucketX, raindrop.bucketWidth);
+        PaperItemsActor paperitem = new PaperItemsActor(paperitemsTexture, 100, 0, 0, this);
+        paperitems.add(paperitem);
+        actors.add(paperitem);
+        stage.addActor(paperitem);
+        paperitem.resetPosition(paperitem.bucketX, paperitem.bucketWidth);
     }
 
 //    private void spawnTrash() {
@@ -154,9 +152,9 @@ public class GamePlay extends Scene {
 //        trash.resetPosition(trash.bucketX, trash.bucketWidth);
 //    }
 
-    public void removeRaindrop(RaindropActor raindrop) {
-        raindrops.removeValue(raindrop, true);
-        raindrop.remove();
+    public void removeRaindrop(PaperItemsActor paperitem) {
+        paperitems.removeValue(paperitem, true);
+        paperitem.remove();
     }
 
     @Override
@@ -203,8 +201,8 @@ public class GamePlay extends Scene {
         Rectangle bucketBounds = bucket.getBounds();
         shapeRenderer.rect(bucketBounds.x, bucketBounds.y, bucketBounds.width, bucketBounds.height);
 
-        for (RaindropActor raindrop : raindrops) {
-            Rectangle dropBounds = raindrop.getBounds();
+        for (PaperItemsActor paperitem : paperitems) {
+            Rectangle dropBounds = paperitem.getBounds();
             shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
         }
         shapeRenderer.end();
@@ -221,7 +219,7 @@ public class GamePlay extends Scene {
     public void dispose() {
         super.dispose();
         if (bucketTexture != null) bucketTexture.dispose();
-        if (raindropTexture != null) raindropTexture.dispose();
+        if (paperitemsTexture != null) paperitemsTexture.dispose();
         glassBin.dispose();
         paperBin.dispose();
         plasticBin.dispose();

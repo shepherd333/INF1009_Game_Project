@@ -4,11 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.mygdx.game.Scenes.GamePlay;
 
-public class RaindropActor extends CollidableActor {
+public class PaperItemsActor extends CollidableActor {
     private Texture texture;
     private float speed;
     public float bucketX; // Added
@@ -16,7 +15,7 @@ public class RaindropActor extends CollidableActor {
     private GamePlay gamePlay;
     private String uniqueValue;
 
-    public RaindropActor(Texture texture, float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
+    public PaperItemsActor(Texture texture, float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
         this.texture = texture;
         this.speed = speed;
         this.bucketX = bucketX; // Store the X position
