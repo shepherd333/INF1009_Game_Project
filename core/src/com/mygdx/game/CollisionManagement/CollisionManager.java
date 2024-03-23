@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.CollisionManagement.handlers.ICollisionHandler;
 import com.mygdx.game.EntityManagement.CollidableActor;
+import com.mygdx.game.EntityManagement.MetalObjectActor;
 import com.mygdx.game.EntityManagement.RaindropActor;
 import com.mygdx.game.CollisionManagement.CollisionCriterias.Criterias;
 //import com.mygdx.game.CollisionManagement.CollisionCriterias.CollectCollisionCriteria;
@@ -20,14 +21,16 @@ import java.util.Map;
 public class CollisionManager {
     private List<CollidableActor> actors;
     private Array<RaindropActor> raindrops;
-    private Array<TrashActor> trash;
+    private Array<TrashActor> trashes;
+    private Array<MetalObjectActor> metalobjects;
     private Stage stage;
     private Map<Class<? extends Criterias>, Class<? extends ICollisionHandler>> criteriaToHandlers;
 
-    public CollisionManager(List<CollidableActor> actors, Array<RaindropActor> raindrops, Array<TrashActor> trash, Stage stage) {
+    public CollisionManager(List<CollidableActor> actors, Array<RaindropActor> raindrops, Array<TrashActor> trashes, Array<MetalObjectActor> metalobjects, Stage stage) {
         this.actors = actors;
         this.raindrops = raindrops;
-        this.trash = trash;
+        this.trashes = trashes;
+        this.metalobjects = metalobjects;
         this.stage = stage;
         this.criteriaToHandlers = new HashMap<>();
 

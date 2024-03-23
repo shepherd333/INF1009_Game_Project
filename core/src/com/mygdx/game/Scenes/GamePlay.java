@@ -16,13 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.CollisionManagement.CollisionManager;
-import com.mygdx.game.EntityManagement.BucketActor;
-import com.mygdx.game.EntityManagement.CollidableActor;
-import com.mygdx.game.EntityManagement.RaindropActor;
-import com.mygdx.game.EntityManagement.TrashActor;
+import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.InputManagement.InputManager;
-import com.mygdx.game.EntityManagement.RecycleBinActor;
-import com.mygdx.game.EntityManagement.ConveyorBeltActor;
 
 
 import java.util.ArrayList;
@@ -47,6 +42,7 @@ public class GamePlay extends Scene {
     private InputManager inputManager;
     private Array<RaindropActor> raindrops = new Array<>();
     private Array<TrashActor> trashes = new Array<>();
+    private Array<MetalObjectActor> metalobjects = new Array<>();
     private List<CollidableActor> actors = new ArrayList<>();
     private boolean spawnTrashNext = false;
 
@@ -108,7 +104,7 @@ public class GamePlay extends Scene {
         bucket = new BucketActor( 100, 100, 200);
 //        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
-        collisionManager = new CollisionManager(actors, raindrops, trashes, stage);
+        collisionManager = new CollisionManager(actors, raindrops, trashes, metalobjects,stage);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
         bucket.debug();
@@ -116,7 +112,7 @@ public class GamePlay extends Scene {
 
         raindropTexture = new Texture(Gdx.files.internal("newspaper.png"));
         trashTexture = new Texture(Gdx.files.internal("styrofoam.png"));
-        collisionManager = new CollisionManager(actors, raindrops, trashes, stage);
+        collisionManager = new CollisionManager(actors, raindrops, trashes, metalobjects, stage);
         shapeRenderer = new ShapeRenderer();
 
     }
