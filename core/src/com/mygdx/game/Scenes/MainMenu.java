@@ -52,7 +52,7 @@ public class MainMenu extends BaseScene {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Transition to the HowToPlayScene
-                getSceneManager().set(new HowToPlay(getSceneManager()));
+                getSceneManager().set(new GameObjective(getSceneManager()));
             }
         });
         stage.addActor(howtoplayButton);
