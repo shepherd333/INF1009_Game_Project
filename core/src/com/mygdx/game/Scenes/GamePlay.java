@@ -41,11 +41,13 @@ public class GamePlay extends BaseScene {
     private Texture trashTexture;
     private Texture metalitemsTexture;
     private Texture glassitemsTexture;
+    private Texture plasticitemsTexture;
     private float spawnTimer = 0;
     private InputManager inputManager;
     private Array<PaperItemsActor> paperitems = new Array<>();
     private Array<MetalItemsActor> metalitems = new Array<>();
     private Array<GlassItemsActor> glassitems = new Array<>();
+    private Array<PlasticItemsActor> plasticitems = new Array<>();
     private List<CollidableActor> actors = new ArrayList<>();
     private boolean spawnTrashNext = false;
     private GlassBinActor glassBin;
@@ -118,7 +120,7 @@ public class GamePlay extends BaseScene {
         bucket = new BucketActor( 100, 100, 200);
 //        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
-        collisionManager = new CollisionManager(actors, paperitems, metalitems, glassitems ,stage);
+        collisionManager = new CollisionManager(actors, paperitems, metalitems, glassitems, plasticitems ,stage);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
         bucket.debug();
@@ -127,8 +129,9 @@ public class GamePlay extends BaseScene {
         paperitemsTexture = new Texture(Gdx.files.internal("paperitems.png"));
         metalitemsTexture = new Texture(Gdx.files.internal("metalitems.png"));
         glassitemsTexture = new Texture(Gdx.files.internal("glassitems.png"));
+        plasticitemsTexture = new Texture(Gdx.files.internal("plasticitems.png"));
 //        trashTexture = new Texture(Gdx.files.internal("styrofoam.png"));
-        collisionManager = new CollisionManager(actors, paperitems, metalitems, glassitems ,stage);
+        collisionManager = new CollisionManager(actors, paperitems, metalitems, glassitems, plasticitems ,stage);
         shapeRenderer = new ShapeRenderer();
 
     }
@@ -145,15 +148,19 @@ public class GamePlay extends BaseScene {
     }
 
     private void spawnItem() {
-        if (random.nextBoolean()) {
-            spawnPaperItem();
-        } else if(random.nextBoolean()) {
-            spawnMetalItem();
-        } else {
-            spawnGlassItem();
-        }
+        int itemToSpawn = random.nextInt(4); // Generates 0, 1, 2, or 3 randomly
 
+        if (itemToSpawn == 0) {
+            spawnPaperItem();
+        } else if (itemToSpawn == 1) {
+            spawnMetalItem();
+        } else if (itemToSpawn == 2) {
+            spawnGlassItem();
+        } else {
+            spawnPlasticItem();
+        }
     }
+
 
 
     private void spawnPaperItem() {
@@ -188,6 +195,17 @@ public class GamePlay extends BaseScene {
             glassitem.resetPosition(glassitem.bucketX, glassitem.bucketWidth);
         } else {
             glassitem.remove(); // Remove the item if it overlaps
+        }
+    }
+    private void spawnPlasticItem() {
+        PlasticItemsActor plasticitem = new PlasticItemsActor(100, 0, 0, this);
+        if (!checkCollision(plasticitem)) { // Check for collision
+            plasticitems.add(plasticitem);
+            actors.add(plasticitem);
+            stage.addActor(plasticitem);
+            plasticitem.resetPosition(plasticitem.bucketX, plasticitem.bucketWidth);
+        } else {
+            plasticitem.remove(); // Remove the item if it overlaps
         }
     }
 
@@ -251,6 +269,11 @@ public class GamePlay extends BaseScene {
             Rectangle dropBounds = glassitem.getBounds();
             shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
         }
+        for (PlasticItemsActor plasticitem : plasticitems) {
+            Rectangle dropBounds = plasticitem.getBounds();
+            shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
+        }
+
 
         shapeRenderer.end();
 
@@ -271,6 +294,7 @@ public class GamePlay extends BaseScene {
         if (paperitemsTexture != null) paperitemsTexture.dispose();
         if (metalitemsTexture != null) metalitemsTexture.dispose();
         if (glassitemsTexture != null) glassitemsTexture.dispose();
+        if (plasticitemsTexture != null) plasticitemsTexture.dispose();
         glassBin.dispose();
         paperBin.dispose();
         plasticBin.dispose();

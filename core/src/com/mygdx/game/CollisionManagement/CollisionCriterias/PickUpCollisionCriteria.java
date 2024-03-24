@@ -1,10 +1,7 @@
 package com.mygdx.game.CollisionManagement.CollisionCriterias;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.game.EntityManagement.BucketActor;
-import com.mygdx.game.EntityManagement.GlassItemsActor;
-import com.mygdx.game.EntityManagement.PaperItemsActor;
-import com.mygdx.game.EntityManagement.MetalItemsActor;
+import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.InputManagement.InputManager;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -29,12 +26,15 @@ public class PickUpCollisionCriteria implements Criterias {
         // Check if actor2 is a MetalItemActor
         boolean isMetalItemsActor = actor2 instanceof MetalItemsActor;
         boolean isGlassItemsActor = actor2 instanceof GlassItemsActor;
+        boolean isPlasticItemsActor = actor2 instanceof PlasticItemsActor;
+
 
         return isSpacePressed && (
                 ((actor1 instanceof BucketActor && actor2 instanceof PaperItemsActor) ||
                         (actor1 instanceof PaperItemsActor && actor2 instanceof BucketActor)) ||
                         (isMetalItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor)) ||
-                        (isGlassItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor))
+                        (isGlassItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor)) ||
+                        (isPlasticItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor))
         );
     }
 
