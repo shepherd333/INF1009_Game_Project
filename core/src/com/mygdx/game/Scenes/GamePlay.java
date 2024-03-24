@@ -34,7 +34,6 @@ public class GamePlay extends BaseScene {
     private Texture bg;
     private Sprite bgSprite;
     private Sprite bgSprite2; // Additional background sprite for scrolling effect
-
     private SceneManager sceneManager;
     private BucketActor bucket;
     private Texture bucketTexture;

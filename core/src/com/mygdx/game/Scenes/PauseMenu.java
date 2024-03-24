@@ -39,25 +39,34 @@ public class PauseMenu extends BaseScene {
             }
         }, (screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 100, buttonWidth, buttonHeight);
 
+        addButton("How to Play", new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                getSceneManager().set(new PauseMenuHowToPlay(getSceneManager())); // Transition to the main menu
+            }
+        }, (screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 120, buttonWidth, buttonHeight);
+
         // Mute button setup
         final TextButton muteButton = new TextButton(AudioManager.getInstance().isMusicMuted() ? "Unmute" : "Mute", skin);
+        muteButton.setSize(buttonWidth, buttonHeight); // Set the size as before
+        muteButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 140);
         muteButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 AudioManager.getInstance().toggleMusicMute();
+                // Directly set the text of the muteButton
                 muteButton.setText(AudioManager.getInstance().isMusicMuted() ? "Unmute" : "Mute");
-                event.stop(); // Stop the event from propagating to parent actors
             }
         });
-        addButton(muteButton.getText().toString(), muteButton.getClickListener(), (screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 120, buttonWidth, buttonHeight);
+        stage.addActor(muteButton);
 
         // Back to Home button setup
-        addButton("Home", new ClickListener() {
+        addButton("Exit to Home", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 getSceneManager().set(new MainMenu(getSceneManager())); // Transition to the main menu
             }
-        }, (screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 140, buttonWidth, buttonHeight);
+        }, (screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 160, buttonWidth, buttonHeight);
     }
 
     @Override

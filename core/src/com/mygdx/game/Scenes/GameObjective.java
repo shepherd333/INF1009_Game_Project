@@ -11,15 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
-public class HowToPlay extends BaseScene {
+public class GameObjective extends BaseScene {
 
-    public HowToPlay(SceneManager sceneManager) {
+    public GameObjective(SceneManager sceneManager) {
         super(sceneManager);
     }
 
     @Override
     protected String getBackgroundTexturePath() {
-        return "HowToPlay.jpg"; // Set the path to the background texture for the how to play scene
+        return "GameObjective.jpg"; // Set the path to the background texture for the how to play scene
     }
 
     @Override
@@ -34,29 +34,14 @@ public class HowToPlay extends BaseScene {
         int screenHeight = Gdx.graphics.getHeight();
         int verticalOffset = (screenHeight - buttonHeight) / 2;
 
-        addButton("Play Game", new ClickListener() {
+        addButton("Next", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Transition to the PlayScene
-                getSceneManager().set(new GamePlay(getSceneManager()));
+                getSceneManager().set(new HowToPlay(getSceneManager()));
             }
         }, screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin, buttonWidth, buttonHeight);
 
-        addButton("Back to Home", new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // Transition to the MainMenuScene
-                getSceneManager().set(new MainMenu(getSceneManager()));
-            }
-        }, screenWidth - buttonWidth - rightMargin, screenHeight - 2*buttonHeight - topMargin, buttonWidth, buttonHeight);
-
-        addButton("Back", new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // Transition to the MainMenuScene
-                getSceneManager().set(new GameObjective(getSceneManager()));
-            }
-        }, screenWidth - buttonWidth - rightMargin, screenHeight - 4*buttonHeight - topMargin, buttonWidth, buttonHeight);
     }
 
     @Override
