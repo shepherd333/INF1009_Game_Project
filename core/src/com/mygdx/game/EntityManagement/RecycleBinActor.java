@@ -17,13 +17,13 @@ public class RecycleBinActor extends CollidableActor {
         metalBin = new Sprite(new Texture(Gdx.files.internal("MetalBin.png")));
 
         // Set size for each sprite
-        glassBin.setSize(75, 75);
-        paperBin.setSize(75, 75);
-        plasticBin.setSize(75, 75);
-        metalBin.setSize(75, 75);
+        glassBin.setSize(200, 200);
+        paperBin.setSize(200, 200);
+        plasticBin.setSize(200, 200);
+        metalBin.setSize(200, 200);
 
         // This sets the size of the entire actor that contains all sprites
-        setSize(4 * 75, 75); // Assuming each sprite is 75x75
+        setSize(4 * 200, 200); // Assuming each sprite is 75x75
 
         // Position the actor at the top middle of the screen
         setPosition((Gdx.graphics.getWidth() - getWidth()) / 2, Gdx.graphics.getHeight() - getHeight());
@@ -32,11 +32,32 @@ public class RecycleBinActor extends CollidableActor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         // Draw each bin sprite beside each other
-        float startX = getX(); // Starting X position for the first bin
-        batch.draw(glassBin, startX, getY(), 75, 75);
-        batch.draw(paperBin, startX + 75, getY(), 75, 75);
-        batch.draw(plasticBin, startX + 2 * 75, getY(), 75, 75);
-        batch.draw(metalBin, startX + 3 * 75, getY(), 75, 75);
+        glassBin.setAlpha(parentAlpha);
+        paperBin.setAlpha(parentAlpha);
+        plasticBin.setAlpha(parentAlpha);
+        metalBin.setAlpha(parentAlpha);
+
+        // Start drawing with the batch
+        batch.begin();
+
+        // Calculate starting X position for the first bin
+        float startX = getX();
+
+        // Draw each bin sprite beside each other using their draw method
+        glassBin.setPosition(startX, getY());
+        glassBin.draw(batch);
+
+        paperBin.setPosition(startX + 200, getY());
+        paperBin.draw(batch);
+
+        plasticBin.setPosition(startX + 2 * 200, getY());
+        plasticBin.draw(batch);
+
+        metalBin.setPosition(startX + 3 * 200, getY());
+        metalBin.draw(batch);
+
+        // End drawing
+        batch.end();
     }
 
     @Override

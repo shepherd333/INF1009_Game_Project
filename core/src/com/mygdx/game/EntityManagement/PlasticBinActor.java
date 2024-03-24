@@ -11,7 +11,7 @@ public class PlasticBinActor extends CollidableActor {
 
     public PlasticBinActor() {
         sprite = new Sprite(new Texture(Gdx.files.internal("PlasticBin.png")));
-        sprite.setSize(75, 75); // Set your desired size
+        sprite.setSize(120, 120); // Set your desired size
 
         // Position this actor
         float xPosition = 20 + (75 + 10) * 2; // Example for positioning
