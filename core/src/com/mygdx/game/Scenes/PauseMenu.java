@@ -2,15 +2,19 @@ package com.mygdx.game.Scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class PauseMenu extends BaseScene {
+    private ShapeRenderer shapeRenderer;
 
     public PauseMenu(SceneManager sceneManager) {
         super(sceneManager);
+        shapeRenderer = new ShapeRenderer();
     }
+
 
     @Override
     protected String getBackgroundTexturePath() {
@@ -58,11 +62,25 @@ public class PauseMenu extends BaseScene {
 
     @Override
     public void render() {
-        // Clear the screen
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        // Enable blending using LibGDX's GL20 wrapper
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        super.render(); // Call the render method of the superclass
+        // Ensure the shape renderer's matrix is set correctly
+        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
+
+        // Draw a semi-transparent grey rectangle to serve as the overlay
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0.5f, 0.5f, 0.5f, 0.05f); // Semi-transparent grey
+        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shapeRenderer.end();
+
+        // Disable blending to reset state for other rendering operations
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
+        // Proceed with the rest of the pause menu rendering
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
     @Override
