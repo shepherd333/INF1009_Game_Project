@@ -9,13 +9,16 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
     private Array<MetalItemsActor> metalitems;
     private Array<GlassItemsActor> glassitems;
     private Array<PlasticItemsActor> plasticitems;
+    private Array<TrashItemsActor> trashitems;
 
-    public PickUpCollisionHandler(Actor actor1, Actor actor2, Array<PaperItemsActor> paperitems, Array<MetalItemsActor> metalitems, Array<GlassItemsActor> glassitems, Array<PlasticItemsActor> plasticitems) {
+
+    public PickUpCollisionHandler(Actor actor1, Actor actor2, Array<PaperItemsActor> paperitems, Array<MetalItemsActor> metalitems, Array<GlassItemsActor> glassitems, Array<PlasticItemsActor> plasticitems, Array<TrashItemsActor> trashitems) {
         super(actor1, actor2);
         this.paperitems = paperitems;
         this.metalitems = metalitems;
         this.glassitems = glassitems;
         this.plasticitems = plasticitems;
+        this.trashitems = trashitems;
     }
 
     @Override
@@ -49,6 +52,14 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             PlasticItemsActor plasticitem = (PlasticItemsActor) actor2;
             if (!bucket.isItemPickedUp()) {
                 handlePickUpPlastic(bucket, plasticitem);
+                bucket.setItemPickedUp(true); // Mark item as picked up
+            }
+        }
+        else if (actor1 instanceof BucketActor && actor2 instanceof TrashItemsActor) {
+            BucketActor bucket = (BucketActor) actor1;
+            TrashItemsActor trashitem = (TrashItemsActor) actor2;
+            if (!bucket.isItemPickedUp()) {
+                handlePickUpTrash(bucket, trashitem);
                 bucket.setItemPickedUp(true); // Mark item as picked up
             }
         }
@@ -88,5 +99,14 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
         plasticitems.removeValue(plasticitem, true);
         // Assign a unique value to the bucket actor
         bucket.setPossessionValue(plasticitem.getUniqueValue());
+    }
+
+    private void handlePickUpTrash(BucketActor bucket, TrashItemsActor trashitem) {
+        // Remove the trash actor
+        trashitem.remove();
+        // Remove the raindrop from the array
+        trashitems.removeValue(trashitem, true);
+        // Assign a unique value to the bucket actor
+        bucket.setPossessionValue(trashitem.getUniqueValue());
     }
 }

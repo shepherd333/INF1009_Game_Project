@@ -21,17 +21,18 @@ public class CollisionManager {
     private Array<MetalItemsActor> metalitems;
     private Array<GlassItemsActor> glassitems;
     private Array<PlasticItemsActor> plasticitems;
-    private Array<TrashActor> trash;
+    private Array<TrashItemsActor> trashitems;
 
     private Stage stage;
     private Map<Class<? extends Criterias>, Class<? extends ICollisionHandler>> criteriaToHandlers;
 
-    public CollisionManager(List<CollidableActor> actors, Array<PaperItemsActor> paperitems, Array<MetalItemsActor> metalitems,Array<GlassItemsActor> glassitems, Array<PlasticItemsActor> plasticitems,Stage stage) {
+    public CollisionManager(List<CollidableActor> actors, Array<PaperItemsActor> paperitems, Array<MetalItemsActor> metalitems,Array<GlassItemsActor> glassitems, Array<PlasticItemsActor> plasticitems, Array<TrashItemsActor> trashitems,Stage stage) {
         this.actors = actors;
         this.paperitems = paperitems;
         this.metalitems = metalitems;
         this.glassitems = glassitems;
         this.plasticitems = plasticitems;
+        this.trashitems = trashitems;
         this.stage = stage;
         this.criteriaToHandlers = new HashMap<>();
 
@@ -60,13 +61,13 @@ public class CollisionManager {
                             // Check if the collision meets the criteria defined by the current CollisionCriteria class.
                             if (criteria.meetsCriteria(actors.get(i), actors.get(j))) {
                                 // If the criteria are met, create an instance of the corresponding CollisionHandler class and call its handleCollision method.
-                                ICollisionHandler handler = entry.getValue().getConstructor(Actor.class, Actor.class, Array.class, Array.class, Array.class, Array.class).newInstance(actors.get(i), actors.get(j), paperitems, metalitems, glassitems, plasticitems);
+                                ICollisionHandler handler = entry.getValue().getConstructor(Actor.class, Actor.class, Array.class, Array.class, Array.class, Array.class, Array.class).newInstance(actors.get(i), actors.get(j), paperitems, metalitems, glassitems, plasticitems, trashitems);
                                 handler.handleCollision();
                                 break;
                             }
                             else if (criteria.meetsCriteria(actors.get(i), actors.get(j))) {
                                 // If the criteria are met, create an instance of the corresponding CollisionHandler class and call its handleCollision method.
-                                ICollisionHandler handler = entry.getValue().getConstructor(Actor.class, Actor.class, Array.class, Array.class, Array.class, Array.class).newInstance(actors.get(i), actors.get(j), paperitems, metalitems, glassitems, plasticitems);
+                                ICollisionHandler handler = entry.getValue().getConstructor(Actor.class, Actor.class, Array.class, Array.class, Array.class, Array.class, Array.class).newInstance(actors.get(i), actors.get(j), paperitems, metalitems, glassitems, plasticitems, trashitems);
                                 handler.handleCollision();
                                 break;
                             }

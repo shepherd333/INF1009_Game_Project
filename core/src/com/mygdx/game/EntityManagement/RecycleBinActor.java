@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class RecycleBinActor extends CollidableActor {
-    private Sprite glassBin, paperBin, plasticBin, metalBin;
+    private Sprite glassBin, paperBin, plasticBin, metalBin, trashBin;
 
     public RecycleBinActor() {
         // Load textures for each bin type
