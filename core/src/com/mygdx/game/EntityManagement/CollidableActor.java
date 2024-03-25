@@ -7,6 +7,7 @@ public class CollidableActor extends Actor {
     // Define a bounding box for collision detection
     private Rectangle bounds;
     private boolean collected;
+    private int value;
 
     public CollidableActor() {
         super();
@@ -20,6 +21,14 @@ public class CollidableActor extends Actor {
         super.act(delta);
         bounds.setPosition(getX(), getY());
         bounds.setSize(getWidth(), getHeight());
+    }
+
+    public CollidableActor(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
     }
 
     // Provide a method to get the bounding box for collision detection

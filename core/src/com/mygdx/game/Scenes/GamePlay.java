@@ -48,15 +48,13 @@ public class GamePlay extends BaseScene {
     private Array<MetalItemsActor> metalitems = new Array<>();
     private Array<GlassItemsActor> glassitems = new Array<>();
     private List<CollidableActor> actors = new ArrayList<>();
+    private List<CollidableActor> bins = new ArrayList<>();
     private boolean spawnTrashNext = false;
     private GlassBinActor glassBin;
     private PaperBinActor paperBin;
     private PlasticBinActor plasticBin;
     private MetalBinActor metalBin;
-
-
     private CollisionManager collisionManager;
-
     private ConveyorBeltActor conveyorBelt;
 
     public GamePlay(SceneManager sceneManager) {
@@ -70,13 +68,13 @@ public class GamePlay extends BaseScene {
         bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        glassBin = new GlassBinActor();
+        glassBin = new GlassBinActor(3);
         stage.addActor(glassBin);
-        paperBin = new PaperBinActor();
+        paperBin = new PaperBinActor(1);
         stage.addActor(paperBin);
         plasticBin = new PlasticBinActor();
         stage.addActor(plasticBin);
-        metalBin = new MetalBinActor();
+        metalBin = new MetalBinActor(2);
         stage.addActor(metalBin);
         conveyorBelt = new ConveyorBeltActor();
         stage.addActor(conveyorBelt);

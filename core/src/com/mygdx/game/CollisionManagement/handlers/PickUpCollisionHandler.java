@@ -1,5 +1,7 @@
 package com.mygdx.game.CollisionManagement.handlers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.EntityManagement.BucketActor;
 import com.mygdx.game.EntityManagement.GlassItemsActor;
@@ -51,8 +53,10 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
         paperitem.remove();
         // Remove the raindrop from the array
         paperitems.removeValue(paperitem, true);
-        // Assign a unique value to the bucket actor
-        bucket.setPossessionValue(paperitem.getUniqueValue());
+        // Assign value '1' to the bucket actor
+        bucket.setItemType(1);
+        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("paperBag.png")));
+        Gdx.app.log("PickUpCollisionHandler", "Item type assigned: " + bucket.getItemType());
     }
 
     private void handlePickUpMetal(BucketActor bucket, MetalItemsActor metalitem) {
@@ -60,8 +64,10 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
         metalitem.remove();
         // Remove the raindrop from the array
         metalitems.removeValue(metalitem, true);
-        // Assign a unique value to the bucket actor
-        bucket.setPossessionValue(metalitem.getUniqueValue());
+        // Assign value '2' to the bucket actor
+        bucket.setItemType(2);
+        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("metalCanSmall.png")));
+        Gdx.app.log("PickUpCollisionHandler", "Item type assigned: " + bucket.getItemType());
     }
 
     private void handlePickUpGlass(BucketActor bucket, GlassItemsActor glassitem) {
@@ -69,7 +75,9 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
         glassitem.remove();
         // Remove the raindrop from the array
         glassitems.removeValue(glassitem, true);
-        // Assign a unique value to the bucket actor
-        bucket.setPossessionValue(glassitem.getUniqueValue());
+        // Assign value '3' to the bucket actor
+        bucket.setItemType(3);
+        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("glassSodaBottle.png")));
+        Gdx.app.log("PickUpCollisionHandler", "Item type assigned: " + bucket.getItemType());
     }
 }

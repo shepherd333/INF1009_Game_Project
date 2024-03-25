@@ -8,8 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class GlassBinActor extends CollidableActor {
     private Sprite sprite;
+    private int value;
 
-    public GlassBinActor() {
+    public GlassBinActor(int value) {
         sprite = new Sprite(new Texture(Gdx.files.internal("GlassBin.png")));
         sprite.setSize(75, 75); // Set your desired size
 
@@ -17,6 +18,9 @@ public class GlassBinActor extends CollidableActor {
         float xPosition = 20;
         float yPosition = Gdx.graphics.getHeight() - sprite.getHeight() - 20; // 20 pixels from the top
         setPosition(xPosition, yPosition);
+
+        // Set the value of the Glass Bin
+        this.value = value;
     }
 
     @Override

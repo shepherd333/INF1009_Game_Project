@@ -20,6 +20,8 @@ public class BucketActor extends CollidableActor {
     private Texture texture;
     private String possessionValue;
     private boolean itemPickedUp; // Flag to check if an item has been picked up
+    private int itemType; // Type of item picked up
+    private Sprite heldItemSprite; // Sprite to display the item picked up
 
     // Constructor
     public BucketActor(float x, float y, float speed) {
@@ -73,6 +75,21 @@ public class BucketActor extends CollidableActor {
         }
     }
 
+    public void setHeldItemSprite(Texture texture) {
+        this.heldItemSprite = new Sprite(texture);
+        this.heldItemSprite.setSize(50, 50); // Set the size of the sprite
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        batch.draw(currentSprite, getX(), getY(), getWidth(), getHeight());
+        if (heldItemSprite != null) {
+            heldItemSprite.setPosition(getX(), getY() + getHeight()); // Position the sprite above the bucket
+            heldItemSprite.draw(batch);
+        }
+    }
+
 
     public void changeDirection(Direction direction) {
         switch (direction) {
@@ -93,11 +110,6 @@ public class BucketActor extends CollidableActor {
         this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        batch.draw(currentSprite, getX(), getY(), getWidth(), getHeight());
-    }
-
     // Provides a bounding box for the bucket, useful for collision detection.
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
@@ -113,6 +125,14 @@ public class BucketActor extends CollidableActor {
     @Override
     public void setHeight(float height) {
         super.setHeight(height);
+    }
+
+    public void setItemType(int itemType) {
+        this.itemType = itemType;
+    }
+
+    public int getItemType() {
+        return itemType;
     }
 
     public void dispose() {
