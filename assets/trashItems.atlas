@@ -1,0 +1,26 @@
+trashItems1.png
+size: 83, 64
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+trashItem
+  rotate: false
+  xy: 35, 33
+  size: 31, 28
+  orig: 31, 31
+  offset: 0, 1
+  index: 1
+trashItem
+  rotate: true
+  xy: 1, 1
+  size: 62, 32
+  orig: 62, 34
+  offset: 0, 1
+  index: 2
+trashItem
+  rotate: true
+  xy: 35, 1
+  size: 30, 47
+  orig: 30, 48
+  offset: 0, 1
+  index: 3

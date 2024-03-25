@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.mygdx.game.Scenes.LevelConfig;
 
 public class HowToPlay extends BaseScene {
 
@@ -38,7 +39,7 @@ public class HowToPlay extends BaseScene {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Transition to the PlayScene
-                getSceneManager().set(new GamePlay(getSceneManager()));
+                getSceneManager().set(new LevelMenu(getSceneManager()));
             }
         }, screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin, buttonWidth, buttonHeight);
 

@@ -35,19 +35,19 @@ public class MainMenu extends BaseScene {
         int verticalOffset = (screenHeight - totalHeight) / 2;
         TextButton playButton = new TextButton("Play", skin);
         playButton.setSize(buttonWidth, buttonHeight);
-        playButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 100); // Adjust Y position as needed
+        playButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 70); // Adjust Y position as needed
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Transition to the PlayScene
-                getSceneManager().set(new GamePlay(getSceneManager()));
+                getSceneManager().set(new LevelMenu(getSceneManager()));
             }
         });
         stage.addActor(playButton);
 
         TextButton howtoplayButton = new TextButton("How to Play", skin);
         howtoplayButton.setSize(buttonWidth, buttonHeight);
-        howtoplayButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 120); // Adjust Y position as needed
+        howtoplayButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 100); // Adjust Y position as needed
         howtoplayButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -59,7 +59,7 @@ public class MainMenu extends BaseScene {
 
         TextButton leaderboardButton = new TextButton("Leaderboard", skin);
         leaderboardButton.setSize(buttonWidth, buttonHeight);
-        leaderboardButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 140); // Adjust Y position as needed
+        leaderboardButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 130); // Adjust Y position as needed
         leaderboardButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -84,7 +84,7 @@ public class MainMenu extends BaseScene {
 
         TextButton exitButton = new TextButton("Exit Game", skin);
         exitButton.setSize(buttonWidth, buttonHeight);
-        exitButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 180); // Adjust Y position as needed
+        exitButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 190); // Adjust Y position as needed
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

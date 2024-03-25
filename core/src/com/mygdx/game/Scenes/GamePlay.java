@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.InputManagement.InputManager;
-
+import com.mygdx.game.Scenes.LevelConfig;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -54,14 +54,13 @@ public class GamePlay extends BaseScene {
     private PaperBinActor paperBin;
     private PlasticBinActor plasticBin;
     private MetalBinActor metalBin;
-
-
+    private LevelConfig levelConfig;
     private CollisionManager collisionManager;
-
     private ConveyorBeltActor conveyorBelt;
 
-    public GamePlay(SceneManager sceneManager) {
+    public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
+        this.levelConfig = levelConfig;
         batch = new SpriteBatch();
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
@@ -161,10 +160,9 @@ public class GamePlay extends BaseScene {
         }
     }
 
-
-
     private void spawnPaperItem() {
-        PaperItemsActor paperitem = new PaperItemsActor(100, 0, 0, this);
+        float baseSpeed = 100;
+        PaperItemsActor paperitem = new PaperItemsActor(baseSpeed * levelConfig.movementSpeedFactor, 0, 0, this);
         if (!checkCollision(paperitem)) { // Check for collision
             paperitems.add(paperitem);
             actors.add(paperitem);
@@ -176,7 +174,8 @@ public class GamePlay extends BaseScene {
     }
 
     private void spawnMetalItem() {
-        MetalItemsActor metalitem = new MetalItemsActor(100, 0, 0, this);
+        float baseSpeed = 100;
+        MetalItemsActor metalitem = new MetalItemsActor(baseSpeed * levelConfig.movementSpeedFactor, 0, 0, this);
         if (!checkCollision(metalitem)) { // Check for collision
             metalitems.add(metalitem);
             actors.add(metalitem);
@@ -187,7 +186,8 @@ public class GamePlay extends BaseScene {
         }
     }
     private void spawnGlassItem() {
-        GlassItemsActor glassitem = new GlassItemsActor(100, 0, 0, this);
+        float baseSpeed = 100;
+        GlassItemsActor glassitem = new GlassItemsActor(baseSpeed * levelConfig.movementSpeedFactor, 0, 0, this);
         if (!checkCollision(glassitem)) { // Check for collision
             glassitems.add(glassitem);
             actors.add(glassitem);
@@ -198,7 +198,8 @@ public class GamePlay extends BaseScene {
         }
     }
     private void spawnPlasticItem() {
-        PlasticItemsActor plasticitem = new PlasticItemsActor(100, 0, 0, this);
+        float baseSpeed = 100;
+        PlasticItemsActor plasticitem = new PlasticItemsActor(baseSpeed * levelConfig.movementSpeedFactor, 0, 0, this);
         if (!checkCollision(plasticitem)) { // Check for collision
             plasticitems.add(plasticitem);
             actors.add(plasticitem);
@@ -208,6 +209,8 @@ public class GamePlay extends BaseScene {
             plasticitem.remove(); // Remove the item if it overlaps
         }
     }
+
+
 
     private boolean checkCollision(CollidableActor actor) {
         for (CollidableActor existingActor : actors) {
@@ -225,12 +228,12 @@ public class GamePlay extends BaseScene {
 
     public void update(float deltaTime) {
         spawnTimer += deltaTime;
-        if (spawnTimer >= 3) {
+        if (spawnTimer >= 3/ levelConfig.spawnSpeedFactor) {
             spawnItem();
             spawnTimer = 0;
+
         }
     }
-
 
     @Override
     public void render() {
@@ -273,20 +276,15 @@ public class GamePlay extends BaseScene {
             Rectangle dropBounds = plasticitem.getBounds();
             shapeRenderer.rect(dropBounds.x, dropBounds.y, dropBounds.width, dropBounds.height);
         }
-
-
         shapeRenderer.end();
-
         inputManager.handleInput(Gdx.graphics.getDeltaTime());
     }
-
     @Override
     public void resize(int width, int height) {
         if (stage != null) {
             stage.getViewport().update(width, height, true);
         }
     }
-
     @Override
     public void dispose() {
         super.dispose();
