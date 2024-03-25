@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.InputManagement.InputManager;
-import com.mygdx.game.Scenes.LevelConfig;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -135,7 +134,6 @@ public class GamePlay extends BaseScene {
         trashitemsTexture = new Texture(Gdx.files.internal("trashitems.png"));
         collisionManager = new CollisionManager(actors, paperitems, metalitems, glassitems, plasticitems, trashitems ,stage);
         shapeRenderer = new ShapeRenderer();
-
     }
 
     @Override
@@ -227,9 +225,6 @@ public class GamePlay extends BaseScene {
             trashitem.remove(); // Remove the item if it overlaps
         }
     }
-
-
-
 
     private boolean checkCollision(CollidableActor actor) {
         for (CollidableActor existingActor : actors) {
