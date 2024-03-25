@@ -27,6 +27,7 @@ public class PickUpCollisionCriteria implements Criterias {
         boolean isMetalItemsActor = actor2 instanceof MetalItemsActor;
         boolean isGlassItemsActor = actor2 instanceof GlassItemsActor;
         boolean isPlasticItemsActor = actor2 instanceof PlasticItemsActor;
+        boolean isTrashItemsActor = actor2 instanceof  TrashItemsActor;
 
 
         return isSpacePressed && (
@@ -34,7 +35,8 @@ public class PickUpCollisionCriteria implements Criterias {
                         (actor1 instanceof PaperItemsActor && actor2 instanceof BucketActor)) ||
                         (isMetalItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor)) ||
                         (isGlassItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor)) ||
-                        (isPlasticItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor))
+                        (isPlasticItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor)) ||
+                        (isTrashItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor))
         );
     }
 
