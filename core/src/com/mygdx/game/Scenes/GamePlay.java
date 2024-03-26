@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -22,6 +23,7 @@ import com.mygdx.game.InputManagement.InputManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class GamePlay extends BaseScene {
     private ShapeRenderer shapeRenderer;
@@ -57,6 +59,32 @@ public class GamePlay extends BaseScene {
     private LevelConfig levelConfig;
     private CollisionManager collisionManager;
     private ConveyorBeltActor conveyorBelt;
+    private float timer;
+    public float getTimer() {
+        return timer;
+    }
+    public void setTimer(int t) {
+        timer = t;
+    }
+    public void increaseTimer(int t) {
+        timer += t;
+    }
+    public void decreaseTimer(int t) {
+        timer -= t;
+    }
+    public void timerCountdown(float deltaTime) {
+        timer -= deltaTime;
+        // Update the timerLabel to display only whole seconds
+        timerLabel.setText(String.format("Time: %d", (int) Math.floor(timer)));
+
+
+        // Consider adding logic to stop the timer at 0 to prevent it from going negative
+        if(timer <= 0) {
+            timer = 0; // Stop the timer at 0
+            // You might want to trigger some game over or time up logic here
+        }
+    }
+    private Label timerLabel;
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
@@ -66,6 +94,15 @@ public class GamePlay extends BaseScene {
         Gdx.input.setInputProcessor(stage);
         inputManager = new InputManager(stage);
         skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
+
+        skin = new Skin(Gdx.files.internal("cloud-form-ui.json")); // Assuming you've already initialized `skin`
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = new BitmapFont(); // You can customize your font
+        labelStyle.fontColor = Color.WHITE;
+
+        timerLabel = new Label("Time: 0", labelStyle);
+        timerLabel.setPosition(10, Gdx.graphics.getHeight() - 30); // Position the label at the top-left corner
+        stage.addActor(timerLabel);
 
         bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
         bgSprite = new Sprite(bg);
@@ -134,6 +171,9 @@ public class GamePlay extends BaseScene {
         trashitemsTexture = new Texture(Gdx.files.internal("trashitems.png"));
         collisionManager = new CollisionManager(actors, paperitems, metalitems, glassitems, plasticitems, trashitems ,stage);
         shapeRenderer = new ShapeRenderer();
+
+        setTimer(90);
+
     }
 
     @Override
@@ -242,11 +282,14 @@ public class GamePlay extends BaseScene {
 
     public void update(float deltaTime) {
         spawnTimer += deltaTime;
-        if (spawnTimer >= 3/ levelConfig.spawnSpeedFactor) {
+        if (spawnTimer >= 3 / levelConfig.spawnSpeedFactor) {
             spawnItem();
             spawnTimer = 0;
-
         }
+
+        timerCountdown(deltaTime);
+
+
     }
 
     @Override
