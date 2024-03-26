@@ -16,21 +16,20 @@ public class DropCollisionCriteria implements Criterias {
         this.stage = stage;
         this.inputManager = new InputManager(this.stage); // Pass the stage to the InputManager constructor
     }
-
     @Override
     public boolean meetsCriteria(Actor actor1, Actor actor2) {
         boolean isSpacePressed = this.inputManager.isSpacePressed();
-        System.out.println("Space pressed: " + isSpacePressed);
-
-        // Check if actor2 is a MetalItemActor
-        boolean isMetalItemsActor = actor2 instanceof MetalItemsActor;
-        boolean isGlassItemsActor = actor2 instanceof GlassItemsActor;
-        boolean isPlasticItemsActor = actor2 instanceof PlasticItemsActor;
-        boolean isTrashItemsActor = actor2 instanceof  TrashItemsActor;
-        if (actor1 instanceof BucketActor && actor2 instanceof MetalBinActor) {
-            BucketActor bucketActor = (BucketActor) actor1;
-            return bucketActor.isHoldingItem(); // Return true if the bucket is holding an item
-        }
-        return false;
+        boolean isMetalBinActor = actor2 instanceof MetalBinActor;
+        boolean isGlassBinActor = actor2 instanceof GlassBinActor;
+        boolean isPlasticBinActor = actor2 instanceof PlasticBinActor;
+        boolean isTrashBinActor = actor2 instanceof  TrashBinActor;
+        return isSpacePressed && (
+                ((actor1 instanceof BucketActor && actor2 instanceof PaperBinActor) ||
+                        (actor1 instanceof PaperBinActor && actor2 instanceof BucketActor)) ||
+                        (isMetalBinActor && (actor1 instanceof BucketActor)) ||
+                        (isGlassBinActor && (actor1 instanceof BucketActor)) ||
+                        (isPlasticBinActor && (actor1 instanceof BucketActor)) ||
+                        (isTrashBinActor && (actor1 instanceof BucketActor))
+        );
     }
 }

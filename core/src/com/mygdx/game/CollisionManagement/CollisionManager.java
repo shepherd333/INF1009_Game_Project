@@ -2,6 +2,8 @@
 
     import com.badlogic.gdx.scenes.scene2d.Stage;
     import com.badlogic.gdx.utils.Array;
+    import com.mygdx.game.CollisionManagement.CollisionCriterias.DropCollisionCriteria;
+    import com.mygdx.game.CollisionManagement.handlers.DropCollisionHandler;
     import com.mygdx.game.CollisionManagement.handlers.ICollisionHandler;
     import com.mygdx.game.EntityManagement.*;
     import com.mygdx.game.CollisionManagement.CollisionCriterias.Criterias;
@@ -39,6 +41,7 @@
             // Link each CollisionCriteria class to its corresponding CollisionHandler class
     //        this.criteriaToHandlers.put(CollectCollisionCriteria.class, CollectCollisionHandler.class);
             this.criteriaToHandlers.put(PickUpCollisionCriteria.class, PickUpCollisionHandler.class);
+            this.criteriaToHandlers.put(DropCollisionCriteria.class, DropCollisionHandler.class);
             // Add more entries as needed...
         }
 
@@ -55,6 +58,8 @@
                                 Criterias criteria;
                                 if (entry.getKey() == PickUpCollisionCriteria.class) {
                                     criteria = new PickUpCollisionCriteria(stage);
+                                } else if (entry.getKey() == DropCollisionCriteria.class) {
+                                    criteria = new DropCollisionCriteria(stage);
                                 } else {
                                     criteria = entry.getKey().newInstance();
                                 }
