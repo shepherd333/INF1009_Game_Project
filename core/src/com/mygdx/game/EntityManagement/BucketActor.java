@@ -2,12 +2,15 @@ package com.mygdx.game.EntityManagement;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class BucketActor extends CollidableActor {
     private Texture textureLeft;
@@ -20,6 +23,12 @@ public class BucketActor extends CollidableActor {
     private Texture texture;
     private String possessionValue;
     private boolean itemPickedUp; // Flag to check if an item has been picked up
+    private float maxHealth = 100; // Maximum health
+    private float currentHealth = maxHealth; // Current health
+    private float lifeBarWidth = 50; // Width of the life bar
+    private float lifeBarHeight = 5; // Height of the life bar
+    private Color lifeBarColor = Color.GREEN; // Color of the life bar
+    private static ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     // Constructor
     public BucketActor(float x, float y, float speed) {
@@ -95,7 +104,53 @@ public class BucketActor extends CollidableActor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+//        batch.draw(currentSprite, getX(), getY(), getWidth(), getHeight());
         batch.draw(currentSprite, getX(), getY(), getWidth(), getHeight());
+
+        // End the batch before starting to draw with the ShapeRenderer
+        batch.end();
+
+        // Draw the life bar with ShapeRenderer
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(lifeBarColor);
+
+        // Calculate the width of the life bar based on current health
+        float healthPercentage = currentHealth / maxHealth;
+        float drawWidth = lifeBarWidth * healthPercentage;
+        float lifeBarX = getX() + (getWidth() - lifeBarWidth) / 2; // Center the life bar
+        float lifeBarY = getY() + getHeight() + 5; // 5 pixels above the entity
+        shapeRenderer.rect(lifeBarX, lifeBarY, drawWidth, lifeBarHeight);
+
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
+        // Start the batch again for subsequent drawings
+        batch.begin();
+    }
+
+    public void takeDamage(float amount) {
+        currentHealth -= amount;
+        currentHealth = Math.max(currentHealth, 0); // Ensure health does not drop below 0
+        updateLifeBarColor(); // Optionally, update the life bar's color based on current health
+    }
+
+    public void heal(float amount) {
+        currentHealth += amount;
+        currentHealth = Math.min(currentHealth, maxHealth); // Ensure health does not exceed maxHealth
+    }
+
+    private void updateLifeBarColor() {
+        // Update the life bar color based on current health percentage
+        float healthPercentage = currentHealth / maxHealth;
+        if(healthPercentage > 0.5) {
+            lifeBarColor = Color.GREEN;
+        } else if(healthPercentage > 0.25) {
+            lifeBarColor = Color.YELLOW;
+        } else {
+            lifeBarColor = Color.RED;
+        }
     }
 
     // Provides a bounding box for the bucket, useful for collision detection.
