@@ -10,11 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.mygdx.game.Scenes.LevelConfig;
 
-public class HowToPlay extends BaseScene {
+public class PauseMenuHowToPlay extends BaseScene {
 
-    public HowToPlay(SceneManager sceneManager) {
+    public PauseMenuHowToPlay(SceneManager sceneManager) {
         super(sceneManager);
     }
 
@@ -35,29 +34,14 @@ public class HowToPlay extends BaseScene {
         int screenHeight = Gdx.graphics.getHeight();
         int verticalOffset = (screenHeight - buttonHeight) / 2;
 
-        addButton("Play Game", new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // Transition to the PlayScene
-                getSceneManager().set(new LevelMenu(getSceneManager()));
-            }
-        }, screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin, buttonWidth, buttonHeight);
-
-        addButton("Back to Home", new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // Transition to the MainMenuScene
-                getSceneManager().set(new MainMenu(getSceneManager()));
-            }
-        }, screenWidth - buttonWidth - rightMargin, screenHeight - 2*buttonHeight - topMargin, buttonWidth, buttonHeight);
-
         addButton("Back", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Transition to the MainMenuScene
-                getSceneManager().set(new GameObjective(getSceneManager()));
+                // Transition to the PlayScene
+                getSceneManager().set(new PauseMenu(getSceneManager()));
             }
-        }, screenWidth - buttonWidth - rightMargin, screenHeight - 4*buttonHeight - topMargin, buttonWidth, buttonHeight);
+        }, screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin, buttonWidth, buttonHeight);
+
     }
 
     @Override
@@ -81,3 +65,4 @@ public class HowToPlay extends BaseScene {
         // Dispose any additional resources specific to HowToPlay
     }
 }
+

@@ -6,21 +6,17 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class MetalBinActor extends CollidableActor {
+public class TrashBinActor extends CollidableActor {
     private Sprite sprite;
-    private int value;
 
-    public MetalBinActor(int value) {
-        sprite = new Sprite(new Texture(Gdx.files.internal("MetalBin.png")));
+    public TrashBinActor() {
+        sprite = new Sprite(new Texture(Gdx.files.internal("TrashBin.png")));
         sprite.setSize(120, 120); // Set your desired size
 
         // Position this actor
-        float xPosition = 20 + (75 + 10) * 3; // Example for positioning
+        float xPosition = 20 + (75 + 10) * 4;
         float yPosition = Gdx.graphics.getHeight() - sprite.getHeight() - 20; // 20 pixels from the top
         setPosition(xPosition, yPosition);
-
-        // Set the value of the Metal Bin
-        this.value = value;
     }
 
     @Override
