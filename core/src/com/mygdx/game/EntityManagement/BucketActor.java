@@ -20,6 +20,8 @@ public class BucketActor extends CollidableActor {
     private Texture texture;
     private String possessionValue;
     private boolean itemPickedUp; // Flag to check if an item has been picked up
+    private boolean holdingItem = false;
+    private CollidableActor heldItem;
 
     // Constructor
     public BucketActor(float x, float y, float speed) {
@@ -40,7 +42,7 @@ public class BucketActor extends CollidableActor {
     public void act(float delta) {
         super.act(delta);
         // Update logic to prevent picking up items if already picked up
-        if (!itemPickedUp) {
+        if (!holdingItem) {
             // Get current bucket position
             float newX = getX();
             float newY = getY();
@@ -48,15 +50,19 @@ public class BucketActor extends CollidableActor {
             // Update position based on input
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 newX -= speed * delta;
+                changeDirection(Direction.LEFT);
             }
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 newX += speed * delta;
+                changeDirection(Direction.RIGHT);
             }
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                 newY += speed * delta;
+                changeDirection(Direction.UP);
             }
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                 newY -= speed * delta;
+                changeDirection(Direction.DOWN);
             }
 
             // Clamp position within screen bounds
@@ -71,7 +77,13 @@ public class BucketActor extends CollidableActor {
             float clampedY = MathUtils.clamp(getY(), 0, getStage().getViewport().getWorldHeight() - getHeight());
             setPosition(clampedX, clampedY);
         }
+
+        // Handle dropping item when spacebar is pressed
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && holdingItem) {
+            dropItem();
+        }
     }
+
 
 
     public void changeDirection(Direction direction) {
@@ -143,6 +155,30 @@ public class BucketActor extends CollidableActor {
         this.itemPickedUp = itemPickedUp;
     }
 
+    public boolean isHoldingItem() {
+        return holdingItem;
+    }
+
+    public void setHoldingItem(boolean holdingItem) {
+        this.holdingItem = holdingItem;
+    }
+
+    public CollidableActor getHeldItem() {
+        return heldItem;
+    }
+    public void setHeldItem(CollidableActor heldItem) {
+        this.heldItem = heldItem;
+    }
+
+    // Method to drop the held item
+    private void dropItem() {
+        if (heldItem != null) {
+            heldItem.setPosition(getX(), getY()); // Set the position of the dropped item to the bucket's position
+            getStage().addActor(heldItem); // Add the item to the stage
+            setHoldingItem(false); // Update holdingItem flag
+            setHeldItem(null); // Clear the held item reference
+        }
+    }
     public enum Direction {
         LEFT, RIGHT, UP, DOWN
     }

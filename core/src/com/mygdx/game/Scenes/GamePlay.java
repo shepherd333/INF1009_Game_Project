@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,7 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.mygdx.game.CollisionManagement.CollisionCriterias.DropCollisionCriteria;
 import com.mygdx.game.CollisionManagement.CollisionManager;
+import com.mygdx.game.CollisionManagement.handlers.DropCollisionHandler;
 import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.InputManagement.InputManager;
 import java.util.ArrayList;
@@ -56,6 +59,7 @@ public class GamePlay extends BaseScene {
     private TrashBinActor trashBin;
     private LevelConfig levelConfig;
     private CollisionManager collisionManager;
+    private DropCollisionHandler dropCollisionHandler;
     private ConveyorBeltActor conveyorBelt;
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
@@ -122,6 +126,7 @@ public class GamePlay extends BaseScene {
 //        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
         collisionManager = new CollisionManager(actors, paperitems, metalitems, glassitems, plasticitems, trashitems ,stage);
+        dropCollisionHandler = new DropCollisionHandler(bucket,metalBin);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
         bucket.debug();
