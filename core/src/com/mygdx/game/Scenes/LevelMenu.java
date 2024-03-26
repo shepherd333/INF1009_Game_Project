@@ -42,7 +42,7 @@ public class LevelMenu extends BaseScene{
         level2btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig lvl2config = new LevelConfig(4f, 4f,1);
+                LevelConfig lvl2config = new LevelConfig(4f, 4f,2);
                 getSceneManager().set(new GamePlay(getSceneManager(), lvl2config));
             }
         });
@@ -53,7 +53,7 @@ public class LevelMenu extends BaseScene{
         level3btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig lvl3config = new LevelConfig(7f, 7f,2);
+                LevelConfig lvl3config = new LevelConfig(7f, 7f,4);
                 getSceneManager().set(new GamePlay(getSceneManager(),lvl3config));
             }
         });

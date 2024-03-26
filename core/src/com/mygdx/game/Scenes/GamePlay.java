@@ -82,8 +82,6 @@ public class GamePlay extends BaseScene {
         stage.addActor(metalBin);
         trashBin = new TrashBinActor();
         stage.addActor(trashBin);
-        toxicWaste = new ToxicWasteActor();
-        stage.addActor(toxicWaste);
         conveyorBelt = new ConveyorBeltActor();
         stage.addActor(conveyorBelt);
 
