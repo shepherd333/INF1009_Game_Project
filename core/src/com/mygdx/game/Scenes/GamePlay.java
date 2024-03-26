@@ -81,11 +81,11 @@ public class GamePlay extends BaseScene {
         stage.addActor(glassBin);
         paperBin = new PaperBinActor(1);
         stage.addActor(paperBin);
-        plasticBin = new PlasticBinActor();
+        plasticBin = new PlasticBinActor(4);
         stage.addActor(plasticBin);
         metalBin = new MetalBinActor(2);
         stage.addActor(metalBin);
-        trashBin = new TrashBinActor();
+        trashBin = new TrashBinActor(5);
         stage.addActor(trashBin);
         conveyorBelt = new ConveyorBeltActor();
         stage.addActor(conveyorBelt);

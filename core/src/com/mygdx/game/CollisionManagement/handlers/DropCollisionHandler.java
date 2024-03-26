@@ -1,24 +1,27 @@
 package com.mygdx.game.CollisionManagement.handlers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.EntityManagement.BucketActor;
 import com.mygdx.game.EntityManagement.CollidableActor;
 
-public class DropCollisionHandler {
+public class DropCollisionHandler extends BaseCollisionHandler {
     private int points;
 
-    public DropCollisionHandler() {
+    public DropCollisionHandler(Actor actor1, Actor actor2) {
+        super(actor1, actor2);
         points = 0;
+        Gdx.app.log("DropCollisionHandler", "DropCollisionHandler created");
     }
 
-    public void handleCollision(BucketActor bucket, CollidableActor paperBin, CollidableActor metalBin, CollidableActor glassBin) {
-        if (bucket.getBounds().overlaps(paperBin.getBounds())) {
-            updatePoints(bucket, paperBin);
-        } else if (bucket.getBounds().overlaps(metalBin.getBounds())) {
-            updatePoints(bucket, metalBin);
-        } else if (bucket.getBounds().overlaps(glassBin.getBounds())) {
-            updatePoints(bucket, glassBin);
-        }
+    @Override
+    public void handleCollision() {
+        Gdx.app.log("DropCollisionHandler", "handleCollision called");
+        BucketActor bucket = (BucketActor) actor1;
+        CollidableActor bin = (CollidableActor) actor2;
+
+        updatePoints(bucket, bin);
+
         bucket.setItemPickedUp(false); // Allow the bucket to pick up other actors again
         bucket.setHeldItemSprite(null); // Remove the held item sprite
 
@@ -29,6 +32,7 @@ public class DropCollisionHandler {
     private void updatePoints(BucketActor bucket, CollidableActor bin) {
         if (bucket.getItemType() == bin.getValue()) {
             points += 10;
+            bucket.setItemType(0); // Reset the bucket's value
         } else {
             points -= 10;
         }

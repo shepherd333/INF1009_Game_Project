@@ -8,8 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class PlasticBinActor extends CollidableActor {
     private Sprite sprite;
+    private int value;
 
-    public PlasticBinActor() {
+    public PlasticBinActor(int value) {
         sprite = new Sprite(new Texture(Gdx.files.internal("PlasticBin.png")));
         sprite.setSize(120, 120); // Set your desired size
 
@@ -17,6 +18,9 @@ public class PlasticBinActor extends CollidableActor {
         float xPosition = 20 + (75 + 10) * 2; // Example for positioning
         float yPosition = Gdx.graphics.getHeight() - sprite.getHeight() - 20; // 20 pixels from the top
         setPosition(xPosition, yPosition);
+
+        // Set the value of the Plastic Bin
+        this.value = value;
     }
 
     @Override

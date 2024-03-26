@@ -8,6 +8,7 @@ import com.mygdx.game.EntityManagement.BucketActor;
 
 public class InputManager {
     private Stage stage;
+    private boolean spacePressed;
 
     public InputManager(Stage stage) {
         this.stage = stage;
@@ -43,6 +44,10 @@ public class InputManager {
 
     public boolean isSpacePressed() {
         return Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+    }
+
+    public boolean isDPressed() {
+        return Gdx.input.isKeyJustPressed(Input.Keys.D);
     }
 }
 

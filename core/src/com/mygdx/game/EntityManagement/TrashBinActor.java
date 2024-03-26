@@ -8,8 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class TrashBinActor extends CollidableActor {
     private Sprite sprite;
+    private int value;
 
-    public TrashBinActor() {
+    public TrashBinActor(int value) {
         sprite = new Sprite(new Texture(Gdx.files.internal("TrashBin.png")));
         sprite.setSize(120, 120); // Set your desired size
 
@@ -17,6 +18,9 @@ public class TrashBinActor extends CollidableActor {
         float xPosition = 20 + (75 + 10) * 4;
         float yPosition = Gdx.graphics.getHeight() - sprite.getHeight() - 20; // 20 pixels from the top
         setPosition(xPosition, yPosition);
+
+        // Set the value of the Trash Bin
+        this.value = value;
     }
 
     @Override

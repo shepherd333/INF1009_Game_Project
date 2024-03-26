@@ -31,6 +31,7 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             if (!bucket.isItemPickedUp()) {
                 handlePickUp(bucket, paperitem);
                 bucket.setItemPickedUp(true); // Mark item as picked up
+                System.out.println("Paper item picked up");
             }
         }
         else if (actor1 instanceof BucketActor && actor2 instanceof MetalItemsActor) {
@@ -39,6 +40,7 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             if (!bucket.isItemPickedUp()) {
                 handlePickUpMetal(bucket, metalitem);
                 bucket.setItemPickedUp(true); // Mark item as picked up
+                System.out.println("Metal item picked up");
             }
         }
         else if (actor1 instanceof BucketActor && actor2 instanceof GlassItemsActor) {
@@ -47,6 +49,7 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             if (!bucket.isItemPickedUp()) {
                 handlePickUpGlass(bucket, glassitem);
                 bucket.setItemPickedUp(true); // Mark item as picked up
+                System.out.println("Glass item picked up");
             }
         }
         else if (actor1 instanceof BucketActor && actor2 instanceof PlasticItemsActor) {
@@ -55,6 +58,7 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             if (!bucket.isItemPickedUp()) {
                 handlePickUpPlastic(bucket, plasticitem);
                 bucket.setItemPickedUp(true); // Mark item as picked up
+                System.out.println("Plastic item picked up");
             }
         }
         else if (actor1 instanceof BucketActor && actor2 instanceof TrashItemsActor) {
@@ -63,6 +67,7 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             if (!bucket.isItemPickedUp()) {
                 handlePickUpTrash(bucket, trashitem);
                 bucket.setItemPickedUp(true); // Mark item as picked up
+                System.out.println("Trash item picked up");
             }
         }
     }
@@ -105,8 +110,9 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
         plasticitem.remove();
         // Remove the raindrop from the array
         plasticitems.removeValue(plasticitem, true);
-        // Assign a unique value to the bucket actor
-        bucket.setPossessionValue(plasticitem.getUniqueValue());
+        // Assign value '4' to the bucket actor
+        bucket.setItemType(4);
+        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("plasticBottle.png")));
     }
 
     private void handlePickUpTrash(BucketActor bucket, TrashItemsActor trashitem) {
@@ -114,7 +120,8 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
         trashitem.remove();
         // Remove the raindrop from the array
         trashitems.removeValue(trashitem, true);
-        // Assign a unique value to the bucket actor
-        bucket.setPossessionValue(trashitem.getUniqueValue());
+        // Assign value '5' to the bucket actor
+        bucket.setItemType(5);
+        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("styrofoam.png")));
     }
 }

@@ -9,6 +9,8 @@ import com.mygdx.game.CollisionManagement.CollisionCriterias.Criterias;
 //import com.mygdx.game.CollisionManagement.handlers.CollectCollisionHandler;
 import com.mygdx.game.CollisionManagement.CollisionCriterias.PickUpCollisionCriteria;
 import com.mygdx.game.CollisionManagement.handlers.PickUpCollisionHandler;
+import com.mygdx.game.CollisionManagement.CollisionCriterias.DropCollisionCriteria;
+import com.mygdx.game.CollisionManagement.handlers.DropCollisionHandler;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.HashMap;
@@ -39,6 +41,7 @@ public class CollisionManager {
         // Link each CollisionCriteria class to its corresponding CollisionHandler class
 //        this.criteriaToHandlers.put(CollectCollisionCriteria.class, CollectCollisionHandler.class);
         this.criteriaToHandlers.put(PickUpCollisionCriteria.class, PickUpCollisionHandler.class);
+        this.criteriaToHandlers.put(DropCollisionCriteria.class, DropCollisionHandler.class);
         // Add more entries as needed...
     }
 
@@ -51,10 +54,11 @@ public class CollisionManager {
                     // Iterate over all entries in the criteriaToHandlers map.
                     for (Map.Entry<Class<? extends Criterias>, Class<? extends ICollisionHandler>> entry : criteriaToHandlers.entrySet()) {
                         try {
-                            // Create an instance of the current CollisionCriteria class.
                             Criterias criteria;
                             if (entry.getKey() == PickUpCollisionCriteria.class) {
                                 criteria = new PickUpCollisionCriteria(stage);
+                            } else if (entry.getKey() == DropCollisionCriteria.class) {
+                                criteria = new DropCollisionCriteria(stage);
                             } else {
                                 criteria = entry.getKey().newInstance();
                             }
