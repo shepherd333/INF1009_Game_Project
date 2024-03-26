@@ -19,9 +19,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.InputManagement.InputManager;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+
+import java.util.*;
 
 public class GamePlay extends BaseScene {
     private ShapeRenderer shapeRenderer;
@@ -54,6 +53,7 @@ public class GamePlay extends BaseScene {
     private PlasticBinActor plasticBin;
     private MetalBinActor metalBin;
     private TrashBinActor trashBin;
+    private ToxicWasteActor toxicWaste;
     private LevelConfig levelConfig;
     private CollisionManager collisionManager;
     private ConveyorBeltActor conveyorBelt;
@@ -66,6 +66,8 @@ public class GamePlay extends BaseScene {
         Gdx.input.setInputProcessor(stage);
         inputManager = new InputManager(stage);
         skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
+
+        spawnToxicWaste(levelConfig.spawnToxicWaste);
 
         bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
         bgSprite = new Sprite(bg);
@@ -80,6 +82,8 @@ public class GamePlay extends BaseScene {
         stage.addActor(metalBin);
         trashBin = new TrashBinActor();
         stage.addActor(trashBin);
+        toxicWaste = new ToxicWasteActor();
+        stage.addActor(toxicWaste);
         conveyorBelt = new ConveyorBeltActor();
         stage.addActor(conveyorBelt);
 
@@ -225,6 +229,13 @@ public class GamePlay extends BaseScene {
             trashitem.remove(); // Remove the item if it overlaps
         }
     }
+    private void spawnToxicWaste(int spawnToxicWaste) {
+        for (int i = 0; i < spawnToxicWaste; i++) {
+            ToxicWasteActor toxicwaste = new ToxicWasteActor();
+            stage.addActor(toxicwaste);
+        }
+    }
+
 
     private boolean checkCollision(CollidableActor actor) {
         for (CollidableActor existingActor : actors) {
@@ -317,6 +328,7 @@ public class GamePlay extends BaseScene {
         plasticBin.dispose();
         metalBin.dispose();
         trashBin.dispose();
+        toxicWaste.dispose();
         conveyorBelt.dispose();
     }
 }
