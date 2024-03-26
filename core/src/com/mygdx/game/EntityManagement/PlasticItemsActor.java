@@ -69,7 +69,7 @@ public class PlasticItemsActor extends CollidableActor {
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
         // Log the current bounds
-        Gdx.app.log("PlasticItemsActor", "Bounds: " + bounds.toString());
+        //Gdx.app.log("PlasticItemsActor", "Bounds: " + bounds.toString());
         return bounds;
     }
 

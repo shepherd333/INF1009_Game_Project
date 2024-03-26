@@ -17,7 +17,6 @@ public class PickUpCollisionCriteria implements Criterias {
         this.inputManager = new InputManager(this.stage); // Pass the stage to the InputManager constructor
     }
 
-
     @Override
     public boolean meetsCriteria(Actor actor1, Actor actor2) {
         boolean isSpacePressed = this.inputManager.isSpacePressed();
@@ -29,7 +28,6 @@ public class PickUpCollisionCriteria implements Criterias {
         boolean isPlasticItemsActor = actor2 instanceof PlasticItemsActor;
         boolean isTrashItemsActor = actor2 instanceof  TrashItemsActor;
 
-
         return isSpacePressed && (
                 ((actor1 instanceof BucketActor && actor2 instanceof PaperItemsActor) ||
                         (actor1 instanceof PaperItemsActor && actor2 instanceof BucketActor)) ||
@@ -39,8 +37,4 @@ public class PickUpCollisionCriteria implements Criterias {
                         (isTrashItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor))
         );
     }
-
-
-
-
 }

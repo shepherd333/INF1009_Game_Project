@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.mygdx.game.AIManagement.AIManager;
 import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.InputManagement.InputManager;
@@ -57,10 +58,13 @@ public class GamePlay extends BaseScene {
     private LevelConfig levelConfig;
     private CollisionManager collisionManager;
     private ConveyorBeltActor conveyorBelt;
+    private TrashMonsterActor trashMonsterActor;
+    private AIManager aiManager;
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
         this.levelConfig = levelConfig;
+
         batch = new SpriteBatch();
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
@@ -84,6 +88,7 @@ public class GamePlay extends BaseScene {
         stage.addActor(trashBin);
         conveyorBelt = new ConveyorBeltActor();
         stage.addActor(conveyorBelt);
+
 
         int buttonWidth = 100;
         int buttonHeight = 25;
@@ -127,6 +132,9 @@ public class GamePlay extends BaseScene {
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
         bucket.debug();
+        this.aiManager = new AIManager(stage, bucket);
+        trashMonsterActor = new TrashMonsterActor();
+        stage.addActor(trashMonsterActor);
         stage.setDebugAll(true);
 
         paperitemsTexture = new Texture(Gdx.files.internal("paperitems.png"));
@@ -256,6 +264,9 @@ public class GamePlay extends BaseScene {
             spawnTimer = 0;
 
         }
+        float followSpeed = 50; // Speed at which the monster follows the bucket, adjust as needed
+        aiManager.updateFollower(trashMonsterActor, deltaTime, followSpeed);
+
     }
 
     @Override

@@ -101,7 +101,7 @@ public class BucketActor extends CollidableActor {
     // Provides a bounding box for the bucket, useful for collision detection.
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
-        Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
+//        Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
         return bounds;
     }
 
