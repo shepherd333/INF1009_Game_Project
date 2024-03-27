@@ -249,6 +249,12 @@ public class GamePlay extends BaseScene {
         float followSpeed = 50; // Speed at which the monster follows the bucket, adjust as needed
         aiManager.updateFollower(trashMonsterActor, deltaTime, followSpeed);
 
+        if (trashMonsterActor.overlaps(bucket)) {
+            // Decrease life of the bucket actor
+            bucket.decreaseLife(10); // You need to define the decreaseLife method in BucketActor
+            trashMonsterActor.respawnAtRandomEdge();
+        }
+
         timerCountdown(deltaTime);
     }
 
