@@ -11,7 +11,7 @@ public class TrashMonsterActor extends CollidableActor{
 
     public TrashMonsterActor() {
         sprite = new Sprite(new Texture(Gdx.files.internal("trashmonster.png")));
-        sprite.setSize(70, 70); // Set your desired size
+        sprite.setSize(100, 100); // Set your desired size
 
         // Position this actor
         float xPosition = 20 + 75 + 1100;
