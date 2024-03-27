@@ -187,10 +187,6 @@ public class GamePlay extends BaseScene {
         }
     }
 
-    public void dropItemInBin(BucketActor bucket, ItemActor item) {
-        // Remove the specific item from the stage and items array
-        item.removeItem();
-    }
 
     private boolean checkCollision(CollidableActor actor) {
         for (CollidableActor existingActor : actors) {
@@ -241,7 +237,7 @@ public class GamePlay extends BaseScene {
 
         shapeRenderer.end();
         inputManager.handleInput(Gdx.graphics.getDeltaTime());
-        logFPS();
+//        logFPS();
     }
     private void logFPS() {
         if (System.nanoTime() - startTime >= 1000000000) { // Check if a second has passed

@@ -18,7 +18,7 @@ public class ConveyorBeltActor extends Actor {
         stateTime = 0f;
 
         TextureRegion initialFrame = frames.first();
-        setSize(initialFrame.getRegionWidth(), initialFrame.getRegionHeight());
+        setSize(initialFrame.getRegionWidth(), initialFrame.getRegionHeight()*2);
         setPosition(0, 0);
     }
 

@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.EntityManagement.Bins.BinActor;
 import com.mygdx.game.EntityManagement.Items.ItemActor;
 import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
+import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
 import com.mygdx.game.Scenes.GamePlay;
 import com.mygdx.game.enums.ItemType;
 
@@ -26,13 +27,18 @@ public class BucketActor extends CollidableActor {
 //    private Texture texture;
 //    private String possessionValue;
     private boolean itemPickedUp; // Flag to check if an item has been picked up
-    private int itemType; // Type of item picked up
+    private ItemType itemType; // Type of item picked up
     private Sprite heldItemSprite; // Sprite to display the item picked up
     private LifeManager lifeManager;
     private ItemType heldItemType;
     private TextureRegion heldItemTextureRegion;
     private GamePlay gamePlay;
     private ItemActor heldItem; // Reference to the currently held item
+    private boolean isShaking = false;
+    private float shakeDuration = 0f;
+    private float shakeIntensity = 5f;
+    private float shakeTimer = 0f;
+
 
 
     // Constructor
@@ -54,11 +60,25 @@ public class BucketActor extends CollidableActor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        handleInput(delta); // Handle user input separately
-        ensureInBounds(); // Ensure the actor remains within the screen bounds
+        handleInput(delta);
+        ensureInBounds();
+
+        if (isShaking) {
+            shakeTimer += delta;
+            if (shakeTimer <= shakeDuration) {
+                // Apply shaking by randomly offsetting the actor's position within the shake intensity range
+                float shakeOffsetX = MathUtils.random(-shakeIntensity, shakeIntensity);
+                float shakeOffsetY = MathUtils.random(-shakeIntensity, shakeIntensity);
+                setPosition(getX() + shakeOffsetX, getY() + shakeOffsetY);
+            } else {
+                isShaking = false; // Stop shaking after the duration has passed
+                shakeTimer = 0;
+            }
+        }
     }
 
     private void handleInput(float deltaTime) {
+
         if (!itemPickedUp) {
             float newX = getX(), newY = getY();
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { newX -= speed * deltaTime; changeDirection(Direction.LEFT); }
@@ -84,6 +104,10 @@ public class BucketActor extends CollidableActor {
                 // Drop the item into the bin
                 dropHeldItem();
             }
+            else if (overlappingBinType != null && overlappingBinType != this.heldItemType){
+                errorDropHeldItem();
+                startShaking(0.5F,1);
+            }
         }
     }
 
@@ -98,8 +122,31 @@ public class BucketActor extends CollidableActor {
     // Call this method when the item is dropped into a bin
     public void dropHeldItem() {
         if (heldItem != null) {
-            gamePlay.dropItemInBin(this, heldItem);
+            // Get the type of the bin that is currently overlapping with the bucket
+            ItemType overlappingBinType = getOverlappingBinType();
+
+            // If there is a bin overlapping and the item's type matches the bin's type
+            if (overlappingBinType != null && overlappingBinType == heldItem.getItemType()) {
+                // Correct bin
+                ScoreManager.getInstance().addToCurrentScore(100); // Add 100 points for correct placement
+                Gdx.app.log("GamePlay", "Correct bin! Score added!!!");
+            }
+            // Now we can remove the item from the scene
+            heldItem.remove();
+
+            // Clear the held item reference
             clearHeldItem();
+        }
+    }
+
+    public void errorDropHeldItem(){
+        if (heldItem != null){
+            ItemType overlappingBinType = getOverlappingBinType();
+            if (overlappingBinType != null && overlappingBinType != heldItem.getItemType()){
+                // Incorrect bin or no bin
+                ScoreManager.getInstance().subtractFromCurrentScore(50); // Subtract 50 points for incorrect placement
+                Gdx.app.log("GamePlay", "Incorrect bin or no bin overlapping! Score subtracted.");
+            }
         }
     }
 
@@ -181,6 +228,14 @@ public class BucketActor extends CollidableActor {
         return bounds;
     }
 
+    public void startShaking(float duration, float intensity) {
+        this.isShaking = true;
+        this.shakeDuration = duration;
+        this.shakeIntensity = intensity;
+        this.shakeTimer = 0f; // Reset the shake timer
+    }
+
+
     @Override
     public void setWidth(float width) {
         super.setWidth(width);
@@ -189,10 +244,10 @@ public class BucketActor extends CollidableActor {
     public void setHeight(float height) {
         super.setHeight(height);
     }
-    public void setItemType(int itemType) {
+    public void setItemType() {
         this.itemType = itemType;
     }
-    public int getItemType() {
+    public ItemType getItemType() {
         return itemType;
     }
     public void dispose() {
