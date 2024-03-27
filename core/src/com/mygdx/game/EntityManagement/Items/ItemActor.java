@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.EntityManagement.CollidableActor;
 import com.mygdx.game.Scenes.GamePlay;
 import com.mygdx.game.enums.ItemType;
@@ -150,6 +149,17 @@ public class ItemActor extends CollidableActor {
         return this.textureRegion;
     }
 
+    public void removeItem() {
+        // Remove the item from the GamePlay items array
+        if (gamePlay != null) {
+            gamePlay.removeItemFromList(this);
+        }
+
+        // Remove the item from its own stage
+        if (getStage() != null) {
+            remove();
+        }
+    }
     // Additional methods and logic based on the item type can be added here
     // ...
 }

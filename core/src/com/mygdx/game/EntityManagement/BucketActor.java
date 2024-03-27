@@ -7,9 +7,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.game.EntityManagement.Bins.BinActor;
+import com.mygdx.game.EntityManagement.Items.ItemActor;
 import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
+import com.mygdx.game.Scenes.GamePlay;
 import com.mygdx.game.enums.ItemType;
 
 public class BucketActor extends CollidableActor {
@@ -27,10 +31,13 @@ public class BucketActor extends CollidableActor {
     private LifeManager lifeManager;
     private ItemType heldItemType;
     private TextureRegion heldItemTextureRegion;
+    private GamePlay gamePlay;
+    private ItemActor heldItem; // Reference to the currently held item
 
 
     // Constructor
-    public BucketActor(float x, float y, float speed, float maxHealth ) {
+    public BucketActor(float x, float y, float speed, float maxHealth, GamePlay gamePlay ) {
+        this.gamePlay = gamePlay;
         this.lifeManager = new LifeManager(maxHealth, 100, 10, Color.GREEN);
         this.speed = speed;
         this.setPosition(x, y);
@@ -65,7 +72,53 @@ public class BucketActor extends CollidableActor {
                 clearHeldItem();
             }
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            ItemType overlappingBinType = getOverlappingBinType();
+            if (overlappingBinType != null && overlappingBinType == this.heldItemType) {
+                // Drop the item into the bin
+                dropHeldItem();
+            }
+        }
     }
+
+    // Call this method when the item is picked up
+    public void holdItem(ItemActor item) {
+        this.heldItem = item;
+        setHeldItemType(item.getItemType());
+        setHeldItemSprite(item.getTextureRegion());
+        setItemPickedUp(true);
+    }
+
+    // Call this method when the item is dropped into a bin
+    public void dropHeldItem() {
+        if (heldItem != null) {
+            gamePlay.dropItemInBin(this, heldItem);
+            clearHeldItem();
+        }
+    }
+
+    public void clearHeldItem() {
+        this.heldItemType = null;
+        this.heldItemSprite = null;
+        this.heldItem = null; // Clear the reference
+        setItemPickedUp(false);
+    }
+
+//    private void dropItem() {
+//        if (heldItemSprite != null && heldItemType != null) {
+//            // Communicate with the GamePlay class to remove the item from the stage
+//            gamePlay.dropItemInBin(this, heldItemType);
+//            clearHeldItem(); // Clear the held item
+//        }
+//    }
+
+//    public void clearHeldItem() {
+//        if (heldItemSprite != null) {
+//            heldItemSprite = null; // Remove reference to the sprite
+//        }
+//        this.heldItemType = null;// Assuming heldItemType is used to track the current item
+//        this.setItemPickedUp(false);
+//    }
 
     private void ensureInBounds() {
         float clampedX = MathUtils.clamp(getX(), 0, getStage().getViewport().getWorldWidth() - getWidth());
@@ -85,12 +138,6 @@ public class BucketActor extends CollidableActor {
     }
 
 
-    public void clearHeldItem() {
-        this.heldItemType = null; // Assuming heldItemType is used to track the current item
-        this.setItemPickedUp(false);
-        // Reset the texture or visual representation of the bucket
-        this.heldItemSprite = null;
-    }
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
@@ -168,11 +215,24 @@ public class BucketActor extends CollidableActor {
 
     public void setHeldItemType(ItemType itemType) {
         this.heldItemType = itemType;
+        Gdx.app.log("BucketActor", "Held item type set to: " + itemType);
     }
     public ItemType getHeldItemType() {
         return heldItemType;
     }
     public enum Direction {
         LEFT, RIGHT, UP, DOWN
+    }
+
+    public ItemType getOverlappingBinType() {
+        for (Actor actor : getStage().getActors()) {
+            if (actor instanceof BinActor) {
+                BinActor bin = (BinActor) actor;
+                if (this.getBounds().overlaps(bin.getBounds())) {
+                    return bin.getAcceptsType();
+                }
+            }
+        }
+        return null;
     }
 }

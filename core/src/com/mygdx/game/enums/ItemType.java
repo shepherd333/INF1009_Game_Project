@@ -1,6 +1,6 @@
 package com.mygdx.game.enums;
 
 public enum ItemType {
-    PAPER, METAL, GLASS, PLASTIC, TRASH
+    GLASS, METAL, PAPER, PLASTIC, TRASH
 }
 
