@@ -150,6 +150,17 @@ public class ItemActor extends CollidableActor {
         return this.textureRegion;
     }
 
+    public void removeItem() {
+        // Remove the item from the GamePlay items array
+        if (gamePlay != null) {
+            gamePlay.removeItemFromList(this);
+        }
+
+        // Remove the item from its own stage
+        if (getStage() != null) {
+            remove();
+        }
+    }
     // Additional methods and logic based on the item type can be added here
     // ...
 }
