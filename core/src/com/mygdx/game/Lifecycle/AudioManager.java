@@ -19,7 +19,9 @@ public class AudioManager {
         }
         return instance;
     }
-
+    public static final Sound collisionSound = Gdx.audio.newSound(Gdx.files.internal("HitImpactSound.mp3"));
+    public static final Sound errorSound = Gdx.audio.newSound(Gdx.files.internal("ErrorSound.mp3"));
+    public static final Sound correctBinSound = Gdx.audio.newSound(Gdx.files.internal("CorrectBinSound.mp3"));
     public void playBackgroundMusic(String filePath, boolean isLooping, float volume) {
         if (backgroundMusic != null) {
             backgroundMusic.stop(); // Stop any currently playing music
@@ -53,6 +55,16 @@ public class AudioManager {
         if (backgroundMusic != null) {
             backgroundMusic.dispose();
         }
+        if (collisionSound != null) {
+            collisionSound.dispose();
+        }
+        if (errorSound != null) {
+            errorSound.dispose();
+        }
+        if (correctBinSound != null) {
+            correctBinSound.dispose();
+        }
+
         // Dispose other sounds if you're keeping references to them
     }
 
