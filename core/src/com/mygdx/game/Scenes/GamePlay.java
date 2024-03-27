@@ -39,7 +39,7 @@ import com.mygdx.game.AIManagement.AIManager;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class GamePlay extends BaseScene {
+public class GamePlay extends BaseScene implements GameOverListener {
     private ShapeRenderer shapeRenderer;
     private boolean isDisposed = false;
     private Random random = new Random();
@@ -336,5 +336,10 @@ public class GamePlay extends BaseScene {
         ScoreManager.getInstance().dispose();
 
         if (font != null) font.dispose();
+    }
+
+    @Override
+    public void onGameOver() {
+
     }
 }

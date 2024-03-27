@@ -28,7 +28,7 @@ public class BucketActor extends CollidableActor {
     private Texture textureDown;
     private Sprite currentSprite;
     private float speed;
-//    private Texture texture;
+    //    private Texture texture;
 //    private String possessionValue;
     private boolean itemPickedUp; // Flag to check if an item has been picked up
     private ItemType itemType; // Type of item picked up
