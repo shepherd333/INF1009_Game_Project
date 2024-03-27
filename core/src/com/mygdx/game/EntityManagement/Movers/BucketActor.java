@@ -70,7 +70,10 @@ public class BucketActor extends CollidableActor {
         if (isShaking) {
             shakeTimer += delta;
             if (shakeTimer <= shakeDuration) {
-                // Shaking logic
+                // Apply shaking by randomly offsetting the actor's position within the shake intensity range
+                float shakeOffsetX = MathUtils.random(-shakeIntensity, shakeIntensity);
+                float shakeOffsetY = MathUtils.random(-shakeIntensity, shakeIntensity);
+                setPosition(getX() + shakeOffsetX, getY() + shakeOffsetY);
             } else {
                 isShaking = false;
                 shakeTimer = 0;
@@ -89,8 +92,6 @@ public class BucketActor extends CollidableActor {
             }
         }
     }
-
-
     private void handleInput(float deltaTime) {
         float newX = getX(), newY = getY();
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { newX -= speed * deltaTime; changeDirection(Direction.LEFT); }
