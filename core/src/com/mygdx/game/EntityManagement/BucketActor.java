@@ -89,7 +89,7 @@ public class BucketActor extends CollidableActor {
         this.heldItemType = null; // Assuming heldItemType is used to track the current item
         this.setItemPickedUp(false);
         // Reset the texture or visual representation of the bucket
-        this.heldItemTextureRegion = null;
+        this.heldItemSprite = null;
     }
     @Override
     public void draw(Batch batch, float parentAlpha) {
