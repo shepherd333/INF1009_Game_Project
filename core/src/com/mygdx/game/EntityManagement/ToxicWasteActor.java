@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class ToxicWasteActor extends CollidableActor{
@@ -11,7 +12,7 @@ public class ToxicWasteActor extends CollidableActor{
 
     public ToxicWasteActor() {
         sprite = new Sprite(new Texture(Gdx.files.internal("toxicWaste.png")));
-        sprite.setSize(80, 80); // Set your desired size
+        sprite.setSize(50, 50); // Set your desired size
 
         float minX = 50; // Minimum X-coordinate
         float maxX = Gdx.graphics.getWidth() - 50 - sprite.getWidth(); // Maximum X-coordinate, assuming ToxicWasteActor has a width of 120
@@ -22,6 +23,11 @@ public class ToxicWasteActor extends CollidableActor{
         float randomY = MathUtils.random(minY, maxY);
         setPosition(randomX,randomY);
     }
+
+    public Rectangle getBounds() {
+        return new Rectangle(getX(), getY(), sprite.getWidth(), sprite.getHeight());
+    }
+
     private float calculateMinY() {
         // Assuming bins/items occupy up to 150 pixels from the bottom
         return 150;

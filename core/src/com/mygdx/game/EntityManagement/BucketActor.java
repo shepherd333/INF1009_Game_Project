@@ -57,25 +57,38 @@ public class BucketActor extends CollidableActor {
         this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
         setTouchable(Touchable.enabled);
     }
+
     @Override
     public void act(float delta) {
         super.act(delta);
         handleInput(delta);
         ensureInBounds();
+        checkToxicWasteCollision();
 
+        // Existing logic for handling shaking, etc.
         if (isShaking) {
             shakeTimer += delta;
             if (shakeTimer <= shakeDuration) {
-                // Apply shaking by randomly offsetting the actor's position within the shake intensity range
-                float shakeOffsetX = MathUtils.random(-shakeIntensity, shakeIntensity);
-                float shakeOffsetY = MathUtils.random(-shakeIntensity, shakeIntensity);
-                setPosition(getX() + shakeOffsetX, getY() + shakeOffsetY);
+                // Shaking logic
             } else {
-                isShaking = false; // Stop shaking after the duration has passed
+                isShaking = false;
                 shakeTimer = 0;
             }
         }
     }
+
+    private void checkToxicWasteCollision() {
+        for (Actor actor : getStage().getActors()) {
+            if (actor instanceof ToxicWasteActor) {
+                ToxicWasteActor toxicWaste = (ToxicWasteActor) actor;
+                if (getBounds().overlaps(toxicWaste.getBounds())) {
+                    decreaseLife(1); // Decrease life by 1 or another value based on your game's balance
+                    break; // Optional: break if you only want to apply damage from one toxic waste per frame
+                }
+            }
+        }
+    }
+
 
     private void handleInput(float deltaTime) {
         float newX = getX(), newY = getY();

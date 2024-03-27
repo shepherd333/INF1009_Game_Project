@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -51,7 +52,7 @@ public class GamePlay extends BaseScene {
     private long startTime;
     private TrashMonsterActor trashMonsterActor;
     private AIManager aiManager;
-    private ToxicWasteActor toxicWaste;
+    private ToxicWasteActor toxicWasteActor;
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
@@ -199,7 +200,7 @@ public class GamePlay extends BaseScene {
 
     public void update(float deltaTime) {
         spawnTimer += deltaTime;
-        if (spawnTimer >= 3/ levelConfig.spawnSpeedFactor) {
+        if (spawnTimer >= 3 / levelConfig.spawnSpeedFactor) {
             spawnItem();
             spawnTimer = 0;
         }
@@ -210,9 +211,9 @@ public class GamePlay extends BaseScene {
             // Decrease life of the bucket actor
             bucket.decreaseLife(10); // You need to define the decreaseLife method in BucketActor
             trashMonsterActor.respawnAtRandomEdge();
-
         }
     }
+
 
     @Override
     public void render() {
