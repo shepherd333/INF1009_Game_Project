@@ -17,7 +17,7 @@ public class Leaderboard extends BaseScene {
 
     @Override
     protected String getBackgroundTexturePath() {
-        return "LeaderBoard.png"; // Set the path to the background texture for the leaderboard scene
+        return "Leaderboard.jpg"; // Set the path to the background texture for the leaderboard scene
     }
 
     @Override
