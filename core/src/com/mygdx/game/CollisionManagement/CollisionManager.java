@@ -10,6 +10,7 @@ import com.mygdx.game.CollisionManagement.CollisionCriterias.Criterias;
 import com.mygdx.game.CollisionManagement.CollisionCriterias.PickUpCollisionCriteria;
 import com.mygdx.game.CollisionManagement.handlers.PickUpCollisionHandler;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.mygdx.game.EntityManagement.Items.*;
 
 import java.util.HashMap;
 import java.util.List;

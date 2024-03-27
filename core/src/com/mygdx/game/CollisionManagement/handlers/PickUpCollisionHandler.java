@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.EntityManagement.*;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.EntityManagement.Bins.BinActor;
+import com.mygdx.game.EntityManagement.Items.*;
 import com.mygdx.game.enums.ItemType;
 
 public class PickUpCollisionHandler extends BaseCollisionHandler {

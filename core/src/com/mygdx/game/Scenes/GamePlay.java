@@ -18,7 +18,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.*;
+import com.mygdx.game.EntityManagement.Bins.*;
+import com.mygdx.game.EntityManagement.Items.*;
+import com.mygdx.game.EntityManagement.Static.ConveyorBeltActor;
 import com.mygdx.game.InputManagement.InputManager;
+import com.mygdx.game.enums.ItemType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,11 +54,11 @@ public class GamePlay extends BaseScene {
     private Array<PlasticItemsActor> plasticitems = new Array<>();
     private Array<TrashItemsActor> trashitems = new Array<>();
     private List<CollidableActor> actors = new ArrayList<>();
-    private GlassBinActor glassBin;
-    private PaperBinActor paperBin;
-    private PlasticBinActor plasticBin;
-    private MetalBinActor metalBin;
-    private TrashBinActor trashBin;
+//    private GlassBinActor glassBin;
+//    private PaperBinActor paperBin;
+//    private PlasticBinActor plasticBin;
+//    private MetalBinActor metalBin;
+//    private TrashBinActor trashBin;
     private LevelConfig levelConfig;
     private CollisionManager collisionManager;
     private ConveyorBeltActor conveyorBelt;
@@ -74,15 +78,19 @@ public class GamePlay extends BaseScene {
         bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        glassBin = new GlassBinActor();
+        BinActor glassBin = new BinActor(ItemType.GLASS, 0); // First position
         stage.addActor(glassBin);
-        paperBin = new PaperBinActor();
+
+        BinActor paperBin = new BinActor(ItemType.PAPER, 1); // Second position
         stage.addActor(paperBin);
-        plasticBin = new PlasticBinActor(4);
+
+        BinActor plasticBin = new BinActor(ItemType.PLASTIC, 2); // Third position
         stage.addActor(plasticBin);
-        metalBin = new MetalBinActor();
+
+        BinActor metalBin = new BinActor(ItemType.METAL, 3); // Fourth position
         stage.addActor(metalBin);
-        trashBin = new TrashBinActor(5);
+
+        BinActor trashBin = new BinActor(ItemType.TRASH, 4); // Fifth position
         stage.addActor(trashBin);
         conveyorBelt = new ConveyorBeltActor();
         stage.addActor(conveyorBelt);
@@ -121,8 +129,6 @@ public class GamePlay extends BaseScene {
         });
         stage.addActor(homebtn);
 
-
-
         bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
         bucket = new BucketActor( 100, 100, 200,100);
 //        bucket.setSize(75,75);
@@ -132,10 +138,6 @@ public class GamePlay extends BaseScene {
         stage.addActor(bucket);
         bucket.debug();
         stage.setDebugAll(true);
-
-
-
-
 
         paperitemsTexture = new Texture(Gdx.files.internal("paperitems.png"));
         metalitemsTexture = new Texture(Gdx.files.internal("metalitems.png"));
@@ -323,11 +325,11 @@ public class GamePlay extends BaseScene {
         if (glassitemsTexture != null) glassitemsTexture.dispose();
         if (plasticitemsTexture != null) plasticitemsTexture.dispose();
         if (trashitemsTexture != null) trashitemsTexture.dispose();
-        glassBin.dispose();
-        paperBin.dispose();
-        plasticBin.dispose();
-        metalBin.dispose();
-        trashBin.dispose();
+//        glassBin.dispose();
+//        paperBin.dispose();
+//        plasticBin.dispose();
+//        metalBin.dispose();
+//        trashBin.dispose();
         conveyorBelt.dispose();
     }
 }

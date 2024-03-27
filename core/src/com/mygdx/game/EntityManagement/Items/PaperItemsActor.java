@@ -1,32 +1,35 @@
-package com.mygdx.game.EntityManagement;
+package com.mygdx.game.EntityManagement.Items;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.mygdx.game.EntityManagement.CollidableActor;
 import com.mygdx.game.Scenes.GamePlay;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 
-public class PlasticItemsActor extends CollidableActor {
+public class PaperItemsActor extends CollidableActor {
     private TextureRegion textureRegion;
     private float speed;
     public float bucketX, bucketWidth;
     private GamePlay gamePlay;
     private String uniqueValue;
 
-    private static TextureAtlas plasticItemsAtlas = new TextureAtlas(Gdx.files.internal("plasticitems.atlas"));
-    private static Array<TextureAtlas.AtlasRegion> plasticItemsRegions =  plasticItemsAtlas.findRegions("plasticItem");
+    private static TextureAtlas paperItemsAtlas = new TextureAtlas(Gdx.files.internal("paperitems.atlas"));
+    private static Array<TextureAtlas.AtlasRegion> paperItemsRegions = paperItemsAtlas.findRegions("paperItem");
 
-    public PlasticItemsActor(float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
+    public PaperItemsActor(float speed, float bucketX, float bucketWidth, GamePlay gamePlay) {
         this.speed = speed;
         this.bucketX = bucketX; // Store the X position
         this.bucketWidth = bucketWidth; // Store the width
         this.gamePlay = gamePlay;
 
-        int index = (int) (Math.random() * plasticItemsRegions.size);
-        this.textureRegion = plasticItemsRegions.get(index);
+        int index = (int) (Math.random() * paperItemsRegions.size);
+        this.textureRegion = paperItemsRegions.get(index);
 
         setTouchable(Touchable.enabled);
         this.setSize(75, 75);
@@ -69,7 +72,7 @@ public class PlasticItemsActor extends CollidableActor {
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
         // Log the current bounds
-        Gdx.app.log("PlasticItemsActor", "Bounds: " + bounds.toString());
+        Gdx.app.log("PaperItemsActor", "Bounds: " + bounds.toString());
         return bounds;
     }
 
@@ -82,7 +85,7 @@ public class PlasticItemsActor extends CollidableActor {
     }
 
     public void dispose() {
-        plasticItemsAtlas.dispose();
+        paperItemsAtlas.dispose();
     }
     public String getUniqueValue() {
         return uniqueValue;

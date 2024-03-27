@@ -2,7 +2,7 @@ package com.mygdx.game.AIManagement;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.mygdx.game.EntityManagement.PaperItemsActor;
+import com.mygdx.game.EntityManagement.Items.PaperItemsActor;
 //import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
 
 public class AIManager {

@@ -79,6 +79,18 @@ public class BucketActor extends CollidableActor {
         this.heldItemSprite = new Sprite(texture);
         this.heldItemSprite.setSize(50, 50); // Set the size of the sprite
     }
+
+    public void clearHeldItem() {
+        this.heldItemType = null; // Assuming heldItemType is used to track the current item
+        this.setItemPickedUp(false);
+        // Reset the texture or visual representation of the bucket
+        setDefaultTexture();
+    }
+
+    private void setDefaultTexture() {
+        // Logic to reset the bucket's texture to its default state
+        this.heldItemSprite.setSize(0, 0); // Set the size of the sprite
+    }
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
@@ -114,7 +126,6 @@ public class BucketActor extends CollidableActor {
     // Provides a bounding box for the bucket, useful for collision detection.
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
-        Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
 //        Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
         return bounds;
     }
@@ -143,12 +154,6 @@ public class BucketActor extends CollidableActor {
     public float getSpeed() {
         return speed;
     }
-    public void setPossessionValue(String value) {
-        this.possessionValue = value;
-    }
-    public String getPossessionValue() {
-        return possessionValue;
-    }
     public boolean isItemPickedUp() {
         return itemPickedUp;
     }
@@ -159,7 +164,6 @@ public class BucketActor extends CollidableActor {
     public void setHeldItemType(ItemType itemType) {
         this.heldItemType = itemType;
     }
-
     public ItemType getHeldItemType() {
         return heldItemType;
     }

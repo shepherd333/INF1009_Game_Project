@@ -1,4 +1,4 @@
-package com.mygdx.game.EntityManagement;
+package com.mygdx.game.EntityManagement.Foundation;
 
 // iMovable is an interface defining a contract for all entities in the game that can move.
 // This interface ensures that any class that implements it will provide an implementation for the move method.
