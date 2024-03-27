@@ -28,6 +28,7 @@ import com.mygdx.game.enums.ItemType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import com.mygdx.game.AIManagement.AIManager;
 
 public class GamePlay extends BaseScene {
     private ShapeRenderer shapeRenderer;
@@ -48,6 +49,9 @@ public class GamePlay extends BaseScene {
     private CollisionManager collisionManager;
     private ConveyorBeltActor conveyorBelt;
     private long startTime;
+    private TrashMonsterActor trashMonsterActor;
+    private AIManager aiManager;
+    private ToxicWasteActor toxicWaste;
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
@@ -58,6 +62,7 @@ public class GamePlay extends BaseScene {
         Gdx.input.setInputProcessor(stage);
         inputManager = new InputManager(stage);
         skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
+        spawnToxicWaste(levelConfig.spawnToxicWaste);
 
         bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
         bgSprite = new Sprite(bg);
@@ -131,6 +136,9 @@ public class GamePlay extends BaseScene {
         collisionManager = new CollisionManager(actors, stage);
         shapeRenderer = new ShapeRenderer();
         startTime = System.nanoTime();
+        this.aiManager = new AIManager(stage, bucket);
+        trashMonsterActor = new TrashMonsterActor();
+        stage.addActor(trashMonsterActor);
     }
 
     @Override
@@ -160,6 +168,14 @@ public class GamePlay extends BaseScene {
             item.remove(); // If there's a collision upon spawning, remove the item
         }
     }
+
+    private void spawnToxicWaste(int spawnToxicWaste) {
+        for (int i = 0; i < spawnToxicWaste; i++) {
+            ToxicWasteActor toxicwaste = new ToxicWasteActor();
+            stage.addActor(toxicwaste);
+        }
+    }
+
     public void removeItemFromList(ItemActor item) {
         if (items.contains(item, true)) {
             items.removeValue(item, true);
@@ -187,6 +203,8 @@ public class GamePlay extends BaseScene {
             spawnItem();
             spawnTimer = 0;
         }
+        float followSpeed = 50; // Speed at which the monster follows the bucket, adjust as needed
+        aiManager.updateFollower(trashMonsterActor, deltaTime, followSpeed);
     }
 
     @Override
