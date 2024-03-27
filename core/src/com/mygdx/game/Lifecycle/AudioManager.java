@@ -86,13 +86,13 @@ public class AudioManager {
         if (countdownSound != null) {
             countdownSound.dispose();
 
-            if (powerOffSound != null) {
-                powerOffSound.dispose();
-            }
-            if (itemPickupSound != null) {
-                itemPickupSound.dispose();
-            }
+        if (powerOffSound != null) {
+            powerOffSound.dispose();
         }
+        if (itemPickupSound != null) {
+            itemPickupSound.dispose();
+        }
+    }
 
 
         // Dispose other sounds if you're keeping references to them
