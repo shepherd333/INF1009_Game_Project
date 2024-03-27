@@ -13,7 +13,6 @@ public class LifeManager {
     private float lifeBarHeight;
     private Color lifeBarColor;
     private ShapeRenderer shapeRenderer;
-
     private Color backgroundColor = new Color(0.3f, 0.3f, 0.3f, 1); // Dark gray
     private Color borderColor = new Color(0.7f, 0.7f, 0.7f, 1); // Light gray
     private float borderWidth = 2;
@@ -86,6 +85,10 @@ public class LifeManager {
     public void decreaseHealth(float amount) {
         // Decrease health but do not drop below 0
         this.currentHealth = Math.max(0, this.currentHealth - amount);
+    }
+
+    public float getLife(){
+        return currentHealth;
     }
 
     public void dispose() {

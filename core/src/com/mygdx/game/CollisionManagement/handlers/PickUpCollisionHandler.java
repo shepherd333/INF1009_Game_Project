@@ -2,12 +2,16 @@ package com.mygdx.game.CollisionManagement.handlers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.EntityManagement.BucketActor;
 import com.mygdx.game.EntityManagement.Items.ItemActor;
 
 public class PickUpCollisionHandler extends BaseCollisionHandler {
-    public PickUpCollisionHandler(Actor actor1, Actor actor2) {
+    private Stage stage;
+
+    public PickUpCollisionHandler(Actor actor1, Actor actor2, Stage stage) {
         super(actor1, actor2);
+        this.stage = stage;
     }
 
     @Override
@@ -21,10 +25,11 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
 
     private void handlePickUp(BucketActor bucket, ItemActor item) {
         if (!bucket.isItemPickedUp()) {
-            // Example: assign item's texture to the bucket or handle as needed
+            // Assign item's properties to the bucket
             bucket.setHeldItemType(item.getItemType());
             bucket.setHeldItemSprite(item.getTextureRegion());
             bucket.setItemPickedUp(true);
+            bucket.holdItem(item);
             item.removeItem();
             Gdx.app.log("PickUpCollisionHandler", "Item picked up: " + item.getItemType());
         }

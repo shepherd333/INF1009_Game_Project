@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -23,11 +24,12 @@ import com.mygdx.game.EntityManagement.Items.*;
 import com.mygdx.game.EntityManagement.Static.ConveyorBeltActor;
 import com.mygdx.game.InputManagement.InputManager;
 import com.mygdx.game.Lifecycle.LevelConfig;
+import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
 import com.mygdx.game.enums.ItemType;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import com.mygdx.game.AIManagement.AIManager;
 
 public class GamePlay extends BaseScene {
     private ShapeRenderer shapeRenderer;
@@ -47,6 +49,10 @@ public class GamePlay extends BaseScene {
     private LevelConfig levelConfig;
     private CollisionManager collisionManager;
     private ConveyorBeltActor conveyorBelt;
+    private long startTime;
+    private TrashMonsterActor trashMonsterActor;
+    private AIManager aiManager;
+    private ToxicWasteActor toxicWasteActor;
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
@@ -57,6 +63,7 @@ public class GamePlay extends BaseScene {
         Gdx.input.setInputProcessor(stage);
         inputManager = new InputManager(stage);
         skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
+        spawnToxicWaste(levelConfig.spawnToxicWaste);
 
         bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
         bgSprite = new Sprite(bg);
@@ -117,22 +124,22 @@ public class GamePlay extends BaseScene {
         stage.addActor(homebtn);
 
         bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
-        bucket = new BucketActor( 100, 100, 200,100);
+        bucket = new BucketActor( 100, 100, 300,100,this);
 //        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
         collisionManager = new CollisionManager(actors,stage);
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
 
-        metalBin.setDebug(true);
         bucket.debug();
         stage.setDebugAll(true);
 
         collisionManager = new CollisionManager(actors, stage);
         shapeRenderer = new ShapeRenderer();
-
-
-
+        startTime = System.nanoTime();
+        this.aiManager = new AIManager(stage, bucket);
+        trashMonsterActor = new TrashMonsterActor();
+        stage.addActor(trashMonsterActor);
     }
 
     @Override
@@ -151,7 +158,7 @@ public class GamePlay extends BaseScene {
         int itemToSpawnIndex = random.nextInt(itemTypes.length); // Randomly pick an item type
         ItemType itemType = itemTypes[itemToSpawnIndex];
 
-        float baseSpeed = 100;
+        float baseSpeed = 75;
         ItemActor item = new ItemActor(itemType, baseSpeed * levelConfig.movementSpeedFactor, 0, 0, this);
         if (!checkCollision(item)) {
             items.add(item);
@@ -162,6 +169,14 @@ public class GamePlay extends BaseScene {
             item.remove(); // If there's a collision upon spawning, remove the item
         }
     }
+
+    private void spawnToxicWaste(int spawnToxicWaste) {
+        for (int i = 0; i < spawnToxicWaste; i++) {
+            ToxicWasteActor toxicwaste = new ToxicWasteActor();
+            stage.addActor(toxicwaste);
+        }
+    }
+
     public void removeItemFromList(ItemActor item) {
         if (items.contains(item, true)) {
             items.removeValue(item, true);
@@ -173,6 +188,7 @@ public class GamePlay extends BaseScene {
         }
     }
 
+
     private boolean checkCollision(CollidableActor actor) {
         for (CollidableActor existingActor : actors) {
             if (actor.getBounds().overlaps(existingActor.getBounds())) {
@@ -182,16 +198,22 @@ public class GamePlay extends BaseScene {
         return false; // No collision detected
     }
 
-
     public void update(float deltaTime) {
         spawnTimer += deltaTime;
-        if (spawnTimer >= 3/ levelConfig.spawnSpeedFactor) {
+        if (spawnTimer >= 3 / levelConfig.spawnSpeedFactor) {
             spawnItem();
             spawnTimer = 0;
         }
+        float followSpeed = 50; // Speed at which the monster follows the bucket, adjust as needed
+        aiManager.updateFollower(trashMonsterActor, deltaTime, followSpeed);
 
-
+        if (trashMonsterActor.overlaps(bucket)) {
+            // Decrease life of the bucket actor
+            bucket.decreaseLife(10); // You need to define the decreaseLife method in BucketActor
+            trashMonsterActor.respawnAtRandomEdge();
+        }
     }
+
 
     @Override
     public void render() {
@@ -200,6 +222,7 @@ public class GamePlay extends BaseScene {
         stage.act(Gdx.graphics.getDeltaTime());
 
         batch.begin();
+
         bgSprite.draw(batch);
         batch.end();
 
@@ -207,6 +230,8 @@ public class GamePlay extends BaseScene {
 
         stage.draw();
         update(Gdx.graphics.getDeltaTime());
+
+        ScoreManager.getInstance().render(batch, stage.getViewport());
 
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
@@ -220,6 +245,13 @@ public class GamePlay extends BaseScene {
 
         shapeRenderer.end();
         inputManager.handleInput(Gdx.graphics.getDeltaTime());
+//        logFPS();
+    }
+    private void logFPS() {
+        if (System.nanoTime() - startTime >= 1000000000) { // Check if a second has passed
+            Gdx.app.log("FPS", "Current FPS: " + Gdx.graphics.getFramesPerSecond());
+            startTime = System.nanoTime();
+        }
     }
     @Override
     public void resize(int width, int height) {
@@ -227,20 +259,12 @@ public class GamePlay extends BaseScene {
             stage.getViewport().update(width, height, true);
         }
     }
+
     @Override
     public void dispose() {
         super.dispose();
         if (bucketTexture != null) bucketTexture.dispose();
-//        if (paperitemsTexture != null) paperitemsTexture.dispose();
-//        if (metalitemsTexture != null) metalitemsTexture.dispose();
-//        if (glassitemsTexture != null) glassitemsTexture.dispose();
-//        if (plasticitemsTexture != null) plasticitemsTexture.dispose();
-//        if (trashitemsTexture != null) trashitemsTexture.dispose();
-//        glassBin.dispose();
-//        paperBin.dispose();
-//        plasticBin.dispose();
-//        metalBin.dispose();
-//        trashBin.dispose();
         conveyorBelt.dispose();
+        ScoreManager.getInstance().dispose();
     }
 }

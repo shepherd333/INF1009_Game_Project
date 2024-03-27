@@ -19,15 +19,15 @@ public class PauseMenu extends BaseScene {
 
     @Override
     protected String getBackgroundTexturePath() {
-        return "PauseMenu.png"; // Set the path to the background texture for the pause menu
+        return "PauseMenu.jpg"; // Set the path to the background texture for the pause menu
     }
 
     @Override
     public void initialize() {
         super.initialize(); // Call the initialize method of the superclass
 
-        int buttonWidth = 100;
-        int buttonHeight = 25;
+        int buttonWidth = 200;
+        int buttonHeight = 50;
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
         int verticalOffset = (screenHeight - ((buttonHeight + 5) * 5)) / 2; // Calculate vertical offset for button placement
@@ -38,19 +38,19 @@ public class PauseMenu extends BaseScene {
             public void clicked(InputEvent event, float x, float y) {
                 getSceneManager().popScene(); // Return to the gameplay scene
             }
-        }, (screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 100, buttonWidth, buttonHeight);
+        }, (screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 70, buttonWidth, buttonHeight);
 
         addButton("How to Play", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 getSceneManager().set(new PauseMenuHowToPlay(getSceneManager())); // Transition to the main menu
             }
-        }, (screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 120, buttonWidth, buttonHeight);
+        }, (screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 140, buttonWidth, buttonHeight);
 
         // Mute button setup
         final TextButton muteButton = new TextButton(AudioManager.getInstance().isMusicMuted() ? "Unmute" : "Mute", skin);
         muteButton.setSize(buttonWidth, buttonHeight); // Set the size as before
-        muteButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 140);
+        muteButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 210);
         muteButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -67,28 +67,21 @@ public class PauseMenu extends BaseScene {
             public void clicked(InputEvent event, float x, float y) {
                 getSceneManager().set(new MainMenu(getSceneManager())); // Transition to the main menu
             }
-        }, (screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 160, buttonWidth, buttonHeight);
+        }, (screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 280, buttonWidth, buttonHeight);
     }
 
     @Override
     public void render() {
         // Enable blending using LibGDX's GL20 wrapper
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Ensure the shape renderer's matrix is set correctly
-        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
+        // Start the SpriteBatch to draw the background and other textures
+        batch.begin();
+        // Assuming bgSprite is correctly initialized and set to cover the whole screen
+        bgSprite.draw(batch);
+        batch.end();
 
-        // Draw a semi-transparent grey rectangle to serve as the overlay
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0.5f, 0.5f, 0.5f, 0.05f); // Semi-transparent grey
-        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        shapeRenderer.end();
-
-        // Disable blending to reset state for other rendering operations
-        Gdx.gl.glDisable(GL20.GL_BLEND);
-
-        // Proceed with the rest of the pause menu rendering
+        // Update and draw the stage which contains UI elements like buttons
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }

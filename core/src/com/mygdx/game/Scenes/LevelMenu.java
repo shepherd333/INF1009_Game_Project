@@ -18,8 +18,8 @@ public class LevelMenu extends BaseScene{
     public void initialize() {
         super.initialize(); // Call the initialize method of the superclass
 
-        int buttonWidth = 100;
-        int buttonHeight = 25;
+        int buttonWidth = 200;
+        int buttonHeight = 50;
         int buttonSpacing = 10;
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
@@ -28,11 +28,11 @@ public class LevelMenu extends BaseScene{
 
         TextButton level1btn = new TextButton("Level 1", skin);
         level1btn.setSize(buttonWidth, buttonHeight);
-        level1btn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 100); // Adjust Y position as needed
+        level1btn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 70); // Adjust Y position as needed
         level1btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig defaultLevelConfig = new LevelConfig(1f,1f);
+                LevelConfig defaultLevelConfig = new LevelConfig(0.5f,1f, 0);
                 getSceneManager().set(new GamePlay(getSceneManager(), defaultLevelConfig));
             }
         });
@@ -43,25 +43,25 @@ public class LevelMenu extends BaseScene{
         level2btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig lvl2config = new LevelConfig(4f, 4f);
+                LevelConfig lvl2config = new LevelConfig(1f, 1.5f, 2);
                 getSceneManager().set(new GamePlay(getSceneManager(), lvl2config));
             }
         });
         stage.addActor(level2btn);
         TextButton level3btn = new TextButton("Level 3", skin);
         level3btn.setSize(buttonWidth, buttonHeight);
-        level3btn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 180); // Adjust Y position as needed
+        level3btn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 210); // Adjust Y position as needed
         level3btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig lvl3config = new LevelConfig(7f, 7f);
+                LevelConfig lvl3config = new LevelConfig(1.5f, 2f, 3);
                 getSceneManager().set(new GamePlay(getSceneManager(),lvl3config));
             }
         });
         stage.addActor(level3btn);
         TextButton backbtn = new TextButton("Back", skin);
         backbtn.setSize(buttonWidth, buttonHeight);
-        backbtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 220); // Adjust Y position as needed
+        backbtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 280); // Adjust Y position as needed
         backbtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

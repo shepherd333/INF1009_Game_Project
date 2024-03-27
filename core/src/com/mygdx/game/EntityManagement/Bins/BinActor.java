@@ -11,17 +11,18 @@ public class BinActor extends CollidableActor {
     private Sprite sprite;
     private ItemType acceptsType;
     private int positionIndex; // Position index to determine xPosition
+    private ItemType itemType;
 
     public BinActor(ItemType itemType, int positionIndex) {
         this.acceptsType = itemType;
         this.positionIndex = positionIndex;
         String texturePath = itemType.toString() + "Bin.png"; // Assuming naming convention holds
         sprite = new Sprite(new Texture(Gdx.files.internal(texturePath)));
-        sprite.setSize(120, 120);
+        sprite.setSize(150, 150);
 
         // Position this actor
-        float xPosition = 20 + (75 + 10) * positionIndex;
-        float yPosition = Gdx.graphics.getHeight() - sprite.getHeight() - 20; // 20 pixels from the top
+        float xPosition = 20 + (75 + 150) * positionIndex;
+        float yPosition = Gdx.graphics.getHeight() - sprite.getHeight() - 50; // 20 pixels from the top
         setPosition(xPosition, yPosition);
     }
 
@@ -46,5 +47,9 @@ public class BinActor extends CollidableActor {
 
     public boolean acceptsItemType(ItemType itemType) {
         return this.acceptsType == itemType;
+    }
+
+    public ItemType getItemType() {
+        return itemType;
     }
 }
