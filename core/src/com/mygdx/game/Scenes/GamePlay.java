@@ -116,7 +116,7 @@ public class GamePlay extends BaseScene {
         stage.addActor(homebtn);
 
         bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
-        bucket = new BucketActor( 100, 100, 200,100);
+        bucket = new BucketActor( 100, 100, 200,100,this);
 //        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
         collisionManager = new CollisionManager(actors,stage);
@@ -172,6 +172,12 @@ public class GamePlay extends BaseScene {
         }
     }
 
+    public void dropItemInBin(BucketActor bucket, ItemActor item) {
+        // Remove the specific item from the stage and items array
+        item.removeItem();
+    }
+
+
     private boolean checkCollision(CollidableActor actor) {
         for (CollidableActor existingActor : actors) {
             if (actor.getBounds().overlaps(existingActor.getBounds())) {
@@ -188,8 +194,6 @@ public class GamePlay extends BaseScene {
             spawnItem();
             spawnTimer = 0;
         }
-
-
     }
 
     @Override
@@ -226,20 +230,11 @@ public class GamePlay extends BaseScene {
             stage.getViewport().update(width, height, true);
         }
     }
+
     @Override
     public void dispose() {
         super.dispose();
         if (bucketTexture != null) bucketTexture.dispose();
-//        if (paperitemsTexture != null) paperitemsTexture.dispose();
-//        if (metalitemsTexture != null) metalitemsTexture.dispose();
-//        if (glassitemsTexture != null) glassitemsTexture.dispose();
-//        if (plasticitemsTexture != null) plasticitemsTexture.dispose();
-//        if (trashitemsTexture != null) trashitemsTexture.dispose();
-//        glassBin.dispose();
-//        paperBin.dispose();
-//        plasticBin.dispose();
-//        metalBin.dispose();
-//        trashBin.dispose();
         conveyorBelt.dispose();
     }
 }

@@ -25,6 +25,7 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             bucket.setHeldItemType(item.getItemType());
             bucket.setHeldItemSprite(item.getTextureRegion());
             bucket.setItemPickedUp(true);
+            bucket.holdItem(item);
             item.removeItem();
             Gdx.app.log("PickUpCollisionHandler", "Item picked up: " + item.getItemType());
         }

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.EntityManagement.CollidableActor;
 import com.mygdx.game.Scenes.GamePlay;
 import com.mygdx.game.enums.ItemType;
