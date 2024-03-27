@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
+import com.mygdx.game.enums.ItemType;
 
 public class BucketActor extends CollidableActor {
     private Texture textureLeft;
@@ -23,6 +24,9 @@ public class BucketActor extends CollidableActor {
     private int itemType; // Type of item picked up
     private Sprite heldItemSprite; // Sprite to display the item picked up
     private LifeManager lifeManager;
+    private ItemType heldItemType;
+
+
     // Constructor
     public BucketActor(float x, float y, float speed, float maxHealth ) {
         this.lifeManager = new LifeManager(maxHealth, 100, 10, Color.GREEN);
@@ -150,6 +154,14 @@ public class BucketActor extends CollidableActor {
     }
     public void setItemPickedUp(boolean itemPickedUp) {
         this.itemPickedUp = itemPickedUp;
+    }
+
+    public void setHeldItemType(ItemType itemType) {
+        this.heldItemType = itemType;
+    }
+
+    public ItemType getHeldItemType() {
+        return heldItemType;
     }
     public enum Direction {
         LEFT, RIGHT, UP, DOWN

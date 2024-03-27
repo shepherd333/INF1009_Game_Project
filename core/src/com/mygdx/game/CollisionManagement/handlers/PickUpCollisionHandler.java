@@ -4,12 +4,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.EntityManagement.*;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.enums.ItemType;
+
 public class PickUpCollisionHandler extends BaseCollisionHandler {
     private Array<PaperItemsActor> paperitems;
     private Array<MetalItemsActor> metalitems;
     private Array<GlassItemsActor> glassitems;
     private Array<PlasticItemsActor> plasticitems;
     private Array<TrashItemsActor> trashitems;
+    private ItemType heldItemType;
     public PickUpCollisionHandler(Actor actor1, Actor actor2, Array<PaperItemsActor> paperitems, Array<MetalItemsActor> metalitems, Array<GlassItemsActor> glassitems, Array<PlasticItemsActor> plasticitems, Array<TrashItemsActor> trashitems) {
         super(actor1, actor2);
         this.paperitems = paperitems;
@@ -20,103 +23,62 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
     }
     @Override
     public void handleCollision() {
-        if (actor1 instanceof BucketActor && actor2 instanceof PaperItemsActor) {
+        if (actor1 instanceof BucketActor) {
             BucketActor bucket = (BucketActor) actor1;
-            PaperItemsActor paperitem = (PaperItemsActor) actor2;
             if (!bucket.isItemPickedUp()) {
-                handlePickUp(bucket, paperitem);
-                bucket.setItemPickedUp(true); // Mark item as picked up
-                System.out.println("Paper item picked up");
-            }
-        }
-        else if (actor1 instanceof BucketActor && actor2 instanceof MetalItemsActor) {
-            BucketActor bucket = (BucketActor) actor1;
-            MetalItemsActor metalitem = (MetalItemsActor) actor2;
-            if (!bucket.isItemPickedUp()) {
-                handlePickUpMetal(bucket, metalitem);
-                bucket.setItemPickedUp(true); // Mark item as picked up
-                System.out.println("Metal item picked up");
-            }
-        }
-        else if (actor1 instanceof BucketActor && actor2 instanceof GlassItemsActor) {
-            BucketActor bucket = (BucketActor) actor1;
-            GlassItemsActor glassitem = (GlassItemsActor) actor2;
-            if (!bucket.isItemPickedUp()) {
-                handlePickUpGlass(bucket, glassitem);
-                bucket.setItemPickedUp(true); // Mark item as picked up
-                System.out.println("Glass item picked up");
-            }
-        }
-        else if (actor1 instanceof BucketActor && actor2 instanceof PlasticItemsActor) {
-            BucketActor bucket = (BucketActor) actor1;
-            PlasticItemsActor plasticitem = (PlasticItemsActor) actor2;
-            if (!bucket.isItemPickedUp()) {
-                handlePickUpPlastic(bucket, plasticitem);
-                bucket.setItemPickedUp(true); // Mark item as picked up
-                System.out.println("Plastic item picked up");
-            }
-        }
-        else if (actor1 instanceof BucketActor && actor2 instanceof TrashItemsActor) {
-            BucketActor bucket = (BucketActor) actor1;
-            TrashItemsActor trashitem = (TrashItemsActor) actor2;
-            if (!bucket.isItemPickedUp()) {
-                handlePickUpTrash(bucket, trashitem);
-                bucket.setItemPickedUp(true); // Mark item as picked up
-                System.out.println("Trash item picked up");
+                if (actor2 instanceof PaperItemsActor) {
+                    handlePickUp(bucket, ItemType.PAPER, "paperBag.png");
+                    System.out.println("Paper item picked up");
+                } else if (actor2 instanceof MetalItemsActor) {
+                    handlePickUp(bucket, ItemType.METAL, "metalCanSmall.png");
+                    System.out.println("Metal item picked up");
+                } else if (actor2 instanceof GlassItemsActor) {
+                    handlePickUp(bucket, ItemType.GLASS, "glassSodaBottle.png");
+                    System.out.println("Glass item picked up");
+                } else if (actor2 instanceof PlasticItemsActor) {
+                    handlePickUp(bucket, ItemType.PLASTIC, "plasticBottle.png");
+                    System.out.println("Plastic item picked up");
+                } else if (actor2 instanceof TrashItemsActor) {
+                    handlePickUp(bucket, ItemType.TRASH, "styrofoam.png");
+                    System.out.println("Trash item picked up");
+                }
+                bucket.setItemPickedUp(true);
             }
         }
     }
-    private void handlePickUp(BucketActor bucket, PaperItemsActor paperitem) {
-        // Remove the paper actor
-        paperitem.remove();
-        // Remove the raindrop from the array
-        paperitems.removeValue(paperitem, true);
-        // Assign value '1' to the bucket actor
-        bucket.setItemType(1);
-        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("paperBag.png")));
-        Gdx.app.log("PickUpCollisionHandler", "Item type assigned: " + bucket.getItemType());
-    }
-    private void handlePickUpMetal(BucketActor bucket, MetalItemsActor metalitem) {
-        // Remove the metal actor
-        metalitem.remove();
-        // Remove the raindrop from the array
-        metalitems.removeValue(metalitem, true);
-        // Assign value '2' to the bucket actor
-        bucket.setItemType(2);
-        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("metalCanSmall.png")));
-        Gdx.app.log("PickUpCollisionHandler", "Item type assigned: " + bucket.getItemType());
-    }
-    private void handlePickUpGlass(BucketActor bucket, GlassItemsActor glassitem) {
-        // Remove the glass actor
-        glassitem.remove();
-        // Remove the raindrop from the array
-        glassitems.removeValue(glassitem, true);
-        // Assign value '3' to the bucket actor
-        bucket.setItemType(3);
-        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("glassSodaBottle.png")));
-        Gdx.app.log("PickUpCollisionHandler", "Item type assigned: " + bucket.getItemType());
-    }
-    private void handlePickUpPlastic(BucketActor bucket, PlasticItemsActor plasticitem) {
-        // Remove the plastic actor
-        plasticitem.remove();
-        // Remove the raindrop from the array
-        plasticitems.removeValue(plasticitem, true);
-        // Assign a unique value to the bucket actor
-        bucket.setPossessionValue(plasticitem.getUniqueValue());
-        // Assign value '4' to the bucket actor
-        bucket.setItemType(4);
-        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("plasticBottle.png")));
+    private void handlePickUp(BucketActor bucket, ItemType itemType, String textureFilename) {
+        // Assuming you have a way to get the correct items array based on the ItemType
+        Array<Actor> items = getItemsArrayForType(itemType);
+
+        // Cast actor2 to the correct item type based on the ItemType
+        Actor itemActor = (Actor) actor2;
+
+        // Remove the item actor
+        itemActor.remove();
+        // Remove the item from the corresponding array
+        items.removeValue(itemActor, true);
+        // Assign the ItemType to the bucket actor
+        bucket.setItemType(itemType.ordinal());
+        // Set the texture for the held item
+        bucket.setHeldItemSprite(new Texture(Gdx.files.internal(textureFilename)));
+        Gdx.app.log("PickUpCollisionHandler", "Item type assigned: " + itemType);
     }
 
-    private void handlePickUpTrash(BucketActor bucket, TrashItemsActor trashitem) {
-        // Remove the trash actor
-        trashitem.remove();
-        // Remove the raindrop from the array
-        trashitems.removeValue(trashitem, true);
-        // Assign a unique value to the bucket actor
-        bucket.setPossessionValue(trashitem.getUniqueValue());
-        // Assign value '5' to the bucket actor
-        bucket.setItemType(5);
-        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("styrofoam.png")));
+    private Array<Actor> getItemsArrayForType(ItemType itemType) {
+        // This method is not type-safe and assumes that the caller knows the correct item type.
+        switch (itemType) {
+            case PAPER:
+                return (Array<Actor>)(Array<?>) paperitems;
+            case METAL:
+                return (Array<Actor>)(Array<?>) metalitems;
+            case GLASS:
+                return (Array<Actor>)(Array<?>) glassitems;
+            case PLASTIC:
+                return (Array<Actor>)(Array<?>) plasticitems;
+            case TRASH:
+                return (Array<Actor>)(Array<?>) trashitems;
+            default:
+                throw new IllegalArgumentException("Unknown ItemType: " + itemType);
+        }
     }
 }
