@@ -2,12 +2,16 @@ package com.mygdx.game.EntityManagement;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
+
 
 public class BucketActor extends CollidableActor {
     private Texture textureLeft;
@@ -16,13 +20,16 @@ public class BucketActor extends CollidableActor {
     private Texture textureDown;
     private Sprite currentSprite;
     private float speed;
-
     private Texture texture;
     private String possessionValue;
     private boolean itemPickedUp; // Flag to check if an item has been picked up
+    private LifeManager lifeManager;
+
+
 
     // Constructor
-    public BucketActor(float x, float y, float speed) {
+    public BucketActor(float x, float y, float speed, float maxHealth) {
+        this.lifeManager = new LifeManager(maxHealth, 100, 10, Color.GREEN);
         this.speed = speed;
         this.setPosition(x, y);
         textureLeft = new Texture(Gdx.files.internal("WalleLeft.png"));
@@ -34,6 +41,7 @@ public class BucketActor extends CollidableActor {
         currentSprite.setSize(125,125);
         this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
         setTouchable(Touchable.enabled);
+
     }
 
     @Override
@@ -71,6 +79,7 @@ public class BucketActor extends CollidableActor {
             float clampedY = MathUtils.clamp(getY(), 0, getStage().getViewport().getWorldHeight() - getHeight());
             setPosition(clampedX, clampedY);
         }
+
     }
 
 
@@ -96,12 +105,17 @@ public class BucketActor extends CollidableActor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(currentSprite, getX(), getY(), getWidth(), getHeight());
+        lifeManager.draw(batch, getX(), getY(), getWidth(), getHeight());
+    }
+
+    public void setHealth(float health) {
+        lifeManager.updateHealth(health);
     }
 
     // Provides a bounding box for the bucket, useful for collision detection.
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
-        Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
+        //Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
         return bounds;
     }
 
@@ -121,6 +135,7 @@ public class BucketActor extends CollidableActor {
         textureRight.dispose();
         textureUp.dispose();
         textureDown.dispose();
+        lifeManager.dispose();
     }
 
     public float getSpeed() {
@@ -133,6 +148,10 @@ public class BucketActor extends CollidableActor {
 
     public String getPossessionValue() {
         return possessionValue;
+    }
+
+    public Vector2 getBucketPosition() {
+        return new Vector2(getX(), getY());
     }
 
     public boolean isItemPickedUp() {

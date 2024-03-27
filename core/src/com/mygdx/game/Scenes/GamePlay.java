@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.CollisionManagement.CollisionManager;
 import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.InputManagement.InputManager;
-import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +58,7 @@ public class GamePlay extends BaseScene {
     private LevelConfig levelConfig;
     private CollisionManager collisionManager;
     private ConveyorBeltActor conveyorBelt;
-    private LifeManager lifeManager;
+
     private int initialLives = 3;
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
@@ -122,10 +121,10 @@ public class GamePlay extends BaseScene {
         });
         stage.addActor(homebtn);
 
-        lifeManager = new LifeManager(stage, initialLives);
+
 
         bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
-        bucket = new BucketActor( 100, 100, 200);
+        bucket = new BucketActor( 100, 100, 200,100);
 //        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
         collisionManager = new CollisionManager(actors, paperitems, metalitems, glassitems, plasticitems, trashitems ,stage);
@@ -133,6 +132,8 @@ public class GamePlay extends BaseScene {
         stage.addActor(bucket);
         bucket.debug();
         stage.setDebugAll(true);
+
+
 
 
 
@@ -256,7 +257,7 @@ public class GamePlay extends BaseScene {
             spawnTimer = 0;
         }
 
-        lifeManager.updateLives(initialLives);
+
     }
 
     @Override
