@@ -23,6 +23,7 @@ import com.mygdx.game.EntityManagement.Items.*;
 import com.mygdx.game.EntityManagement.Static.ConveyorBeltActor;
 import com.mygdx.game.InputManagement.InputManager;
 import com.mygdx.game.Lifecycle.LevelConfig;
+import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
 import com.mygdx.game.enums.ItemType;
 
 import java.util.ArrayList;
@@ -124,7 +125,6 @@ public class GamePlay extends BaseScene {
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
 
-        metalBin.setDebug(true);
         bucket.debug();
         stage.setDebugAll(true);
 
@@ -212,6 +212,8 @@ public class GamePlay extends BaseScene {
         stage.draw();
         update(Gdx.graphics.getDeltaTime());
 
+        ScoreManager.getInstance().render(batch, stage.getViewport());
+
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
 
@@ -237,5 +239,6 @@ public class GamePlay extends BaseScene {
         super.dispose();
         if (bucketTexture != null) bucketTexture.dispose();
         conveyorBelt.dispose();
+        ScoreManager.getInstance().dispose();
     }
 }

@@ -3,11 +3,16 @@ package com.mygdx.game.Scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
 
 public class Leaderboard extends BaseScene {
+    private BitmapFont font;
 
     public Leaderboard(SceneManager sceneManager) {
         super(sceneManager);
+        this.font = new BitmapFont(); // Or use a custom font
+        ScoreManager.getInstance().loadScores(); // Load scores at scene initialization
     }
 
     @Override
@@ -45,11 +50,27 @@ public class Leaderboard extends BaseScene {
     @Override
     public void render() {
         super.render(); // Call the render method of the superclass
+
+        batch.begin();
+        font.getData().setScale(1.0f); // Set font scale if needed
+
+        int startY = 300; // Start Y position for scores
+        int offsetX = 100; // X position for scores
+        int gap = 30; // Gap between scores
+
+        // Assuming ScoreManager provides a method to get formatted scores as List<String>
+        for (String score : ScoreManager.getInstance().getFormattedScores()) {
+            font.draw(batch, score, offsetX, startY);
+            startY -= gap; // Move to the next line
+        }
+
+        batch.end();
     }
 
     @Override
     public void dispose() {
         super.dispose(); // Call the dispose method of the superclass
         // Dispose any additional resources specific to Leaderboard
+        if (font != null) font.dispose();
     }
 }
