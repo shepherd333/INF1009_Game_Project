@@ -12,7 +12,7 @@ public class ToxicWasteActor extends CollidableActor {
 
     public ToxicWasteActor() {
         sprite = new Sprite(new Texture(Gdx.files.internal("toxicWaste.png")));
-        sprite.setSize(50, 50); // Set your desired size
+        sprite.setSize(100, 100); // Set your desired size
 
         float minX = 50; // Minimum X-coordinate
         float maxX = Gdx.graphics.getWidth() - 50 - sprite.getWidth(); // Maximum X-coordinate, assuming ToxicWasteActor has a width of 120
