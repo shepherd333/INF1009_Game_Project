@@ -225,10 +225,19 @@ public class BucketActor extends CollidableActor {
     }
 
     public ItemType getOverlappingBinType() {
+        float proximityMargin = 50; // Define a margin for how close the bucket needs to be
+
         for (Actor actor : getStage().getActors()) {
             if (actor instanceof BinActor) {
                 BinActor bin = (BinActor) actor;
-                if (this.getBounds().overlaps(bin.getBounds())) {
+                // Create a larger rectangle around the bin based on the proximity margin
+                Rectangle expandedBinBounds = new Rectangle(
+                        bin.getBounds().x - proximityMargin / 2,
+                        bin.getBounds().y - proximityMargin / 2,
+                        bin.getBounds().width + proximityMargin,
+                        bin.getBounds().height + proximityMargin);
+
+                if (this.getBounds().overlaps(expandedBinBounds)) {
                     return bin.getAcceptsType();
                 }
             }

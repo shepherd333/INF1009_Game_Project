@@ -24,6 +24,8 @@ import com.mygdx.game.EntityManagement.Static.ConveyorBeltActor;
 import com.mygdx.game.InputManagement.InputManager;
 import com.mygdx.game.Lifecycle.LevelConfig;
 import com.mygdx.game.enums.ItemType;
+import com.badlogic.gdx.graphics.FPSLogger;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,7 @@ public class GamePlay extends BaseScene {
     private LevelConfig levelConfig;
     private CollisionManager collisionManager;
     private ConveyorBeltActor conveyorBelt;
+    private long startTime;
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
@@ -117,7 +120,7 @@ public class GamePlay extends BaseScene {
         stage.addActor(homebtn);
 
         bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
-        bucket = new BucketActor( 100, 100, 200,100,this);
+        bucket = new BucketActor( 100, 100, 50,100,this);
 //        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
         collisionManager = new CollisionManager(actors,stage);
@@ -130,7 +133,7 @@ public class GamePlay extends BaseScene {
 
         collisionManager = new CollisionManager(actors, stage);
         shapeRenderer = new ShapeRenderer();
-
+        startTime = System.nanoTime();
 
 
     }
@@ -151,7 +154,7 @@ public class GamePlay extends BaseScene {
         int itemToSpawnIndex = random.nextInt(itemTypes.length); // Randomly pick an item type
         ItemType itemType = itemTypes[itemToSpawnIndex];
 
-        float baseSpeed = 100;
+        float baseSpeed = 75;
         ItemActor item = new ItemActor(itemType, baseSpeed * levelConfig.movementSpeedFactor, 0, 0, this);
         if (!checkCollision(item)) {
             items.add(item);
@@ -204,6 +207,7 @@ public class GamePlay extends BaseScene {
         stage.act(Gdx.graphics.getDeltaTime());
 
         batch.begin();
+
         bgSprite.draw(batch);
         batch.end();
 
@@ -224,6 +228,13 @@ public class GamePlay extends BaseScene {
 
         shapeRenderer.end();
         inputManager.handleInput(Gdx.graphics.getDeltaTime());
+        logFPS();
+    }
+    private void logFPS() {
+        if (System.nanoTime() - startTime >= 1000000000) { // Check if a second has passed
+            Gdx.app.log("FPS", "Current FPS: " + Gdx.graphics.getFramesPerSecond());
+            startTime = System.nanoTime();
+        }
     }
     @Override
     public void resize(int width, int height) {
