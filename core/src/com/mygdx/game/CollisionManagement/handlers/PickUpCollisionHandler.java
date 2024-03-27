@@ -1,7 +1,6 @@
 package com.mygdx.game.CollisionManagement.handlers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.EntityManagement.BucketActor;
 import com.mygdx.game.EntityManagement.Items.ItemActor;
@@ -26,9 +25,8 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             bucket.setHeldItemType(item.getItemType());
             bucket.setHeldItemSprite(item.getTextureRegion());
             bucket.setItemPickedUp(true);
-            item.remove(); // Remove the item actor from the stage
+            item.removeItem();
             Gdx.app.log("PickUpCollisionHandler", "Item picked up: " + item.getItemType());
-//            bucket.setHeldItemSprite(new Texture(Gdx.files.internal(textureFilename)));
         }
     }
 }

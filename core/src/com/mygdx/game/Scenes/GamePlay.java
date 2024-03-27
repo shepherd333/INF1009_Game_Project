@@ -161,6 +161,16 @@ public class GamePlay extends BaseScene {
             item.remove(); // If there's a collision upon spawning, remove the item
         }
     }
+    public void removeItemFromList(ItemActor item) {
+        if (items.contains(item, true)) {
+            items.removeValue(item, true);
+        }
+
+        // Remove the item from the actors list
+        if (actors.contains(item)) {
+            actors.remove(item);
+        }
+    }
 
     private boolean checkCollision(CollidableActor actor) {
         for (CollidableActor existingActor : actors) {

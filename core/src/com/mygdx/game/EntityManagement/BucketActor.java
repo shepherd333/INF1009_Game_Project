@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.game.EntityManagement.Items.ItemActor;
 import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
 import com.mygdx.game.enums.ItemType;
 
@@ -86,10 +87,11 @@ public class BucketActor extends CollidableActor {
 
 
     public void clearHeldItem() {
-        this.heldItemType = null; // Assuming heldItemType is used to track the current item
+        if (heldItemSprite != null) {
+            heldItemSprite = null; // Remove reference to the sprite
+        }
+        this.heldItemType = null;// Assuming heldItemType is used to track the current item
         this.setItemPickedUp(false);
-        // Reset the texture or visual representation of the bucket
-        this.heldItemTextureRegion = null;
     }
     @Override
     public void draw(Batch batch, float parentAlpha) {
