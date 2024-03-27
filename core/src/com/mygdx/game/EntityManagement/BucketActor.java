@@ -77,14 +77,14 @@ public class BucketActor extends CollidableActor {
         }
     }
 
+    private void handleInput(float deltaTime) {
 
-    private void handleInput(float delta) {
         if (!itemPickedUp) {
             float newX = getX(), newY = getY();
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { newX -= speed * delta; changeDirection(Direction.LEFT); }
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { newX += speed * delta; changeDirection(Direction.RIGHT); }
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) { newY += speed * delta; changeDirection(Direction.UP); }
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) { newY -= speed * delta; changeDirection(Direction.DOWN); }
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { newX -= speed * deltaTime; changeDirection(Direction.LEFT); }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { newX += speed * deltaTime; changeDirection(Direction.RIGHT); }
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) { newY += speed * deltaTime; changeDirection(Direction.UP); }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) { newY -= speed * deltaTime; changeDirection(Direction.DOWN); }
             setPosition(newX, newY);
         }
         if (itemPickedUp){
@@ -183,8 +183,6 @@ public class BucketActor extends CollidableActor {
         // Optionally, set the origin of the sprite if you need to rotate it around its center
         this.heldItemSprite.setOrigin(25, 25); // Set origin to center for a 50x50 sprite
     }
-
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);

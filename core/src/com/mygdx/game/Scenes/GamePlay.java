@@ -25,9 +25,6 @@ import com.mygdx.game.InputManagement.InputManager;
 import com.mygdx.game.Lifecycle.LevelConfig;
 import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
 import com.mygdx.game.enums.ItemType;
-import com.badlogic.gdx.graphics.FPSLogger;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -134,8 +131,6 @@ public class GamePlay extends BaseScene {
         collisionManager = new CollisionManager(actors, stage);
         shapeRenderer = new ShapeRenderer();
         startTime = System.nanoTime();
-
-
     }
 
     @Override
@@ -177,7 +172,6 @@ public class GamePlay extends BaseScene {
     }
 
 
-
     private boolean checkCollision(CollidableActor actor) {
         for (CollidableActor existingActor : actors) {
             if (actor.getBounds().overlaps(existingActor.getBounds())) {
@@ -186,7 +180,6 @@ public class GamePlay extends BaseScene {
         }
         return false; // No collision detected
     }
-
 
     public void update(float deltaTime) {
         spawnTimer += deltaTime;

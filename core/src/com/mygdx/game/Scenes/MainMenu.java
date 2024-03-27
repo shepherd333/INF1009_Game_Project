@@ -21,8 +21,8 @@ public class MainMenu extends BaseScene {
     public void initialize() {
         super.initialize(); // Call the initialize method of the superclass
 
-        int buttonWidth = 100;
-        int buttonHeight = 25;
+        int buttonWidth = 200;
+        int buttonHeight = 50;
         int buttonSpacing = 10;
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
@@ -43,7 +43,7 @@ public class MainMenu extends BaseScene {
 
         TextButton howtoplayButton = new TextButton("How to Play", skin);
         howtoplayButton.setSize(buttonWidth, buttonHeight);
-        howtoplayButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 100); // Adjust Y position as needed
+        howtoplayButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 140); // Adjust Y position as needed
         howtoplayButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -55,7 +55,7 @@ public class MainMenu extends BaseScene {
 
         TextButton leaderboardButton = new TextButton("Leaderboard", skin);
         leaderboardButton.setSize(buttonWidth, buttonHeight);
-        leaderboardButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 130); // Adjust Y position as needed
+        leaderboardButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 210); // Adjust Y position as needed
         leaderboardButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -67,7 +67,7 @@ public class MainMenu extends BaseScene {
 
         TextButton mutebtn = new TextButton(AudioManager.getInstance().isMusicMuted() ? "Unmute" : "Mute", skin);
         mutebtn.setSize(buttonWidth, buttonHeight);
-        mutebtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 160); // Adjust Y position as needed
+        mutebtn.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 280); // Adjust Y position as needed
         mutebtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -80,7 +80,7 @@ public class MainMenu extends BaseScene {
 
         TextButton exitButton = new TextButton("Exit Game", skin);
         exitButton.setSize(buttonWidth, buttonHeight);
-        exitButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 190); // Adjust Y position as needed
+        exitButton.setPosition((screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 350); // Adjust Y position as needed
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
