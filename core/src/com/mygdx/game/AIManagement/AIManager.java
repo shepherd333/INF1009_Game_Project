@@ -1,8 +1,8 @@
-//package com.mygdx.game.AIManagement;
-//
-//import com.badlogic.gdx.math.MathUtils;
-//import com.badlogic.gdx.scenes.scene2d.Stage;
-////import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
+package com.mygdx.game.AIManagement;
+
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+//import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
 //
 //public class AIManager {
 //    // Reference to the game's stage to access viewport and actors.
@@ -43,3 +43,32 @@
 //
 //    // Add other AI management methods as needed for different entity types or behaviors.
 //}
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+
+public class AIManager {
+    private Stage stage;
+    private Actor player; // The player actor that enemies will follow.
+
+    public AIManager(Stage stage, Actor player) {
+        this.stage = stage;
+        this.player = player;
+    }
+
+    // Method to make an actor follow the player.
+    public void updateFollower(Actor follower, float deltaTime, float speed) {
+        if (follower == null || player == null) return; // Add this check
+        Vector2 followerPos = new Vector2(follower.getX(), follower.getY());
+        Vector2 playerPos = new Vector2(player.getX(), player.getY());
+
+        // Calculate the direction vector from follower to player
+        Vector2 direction = playerPos.sub(followerPos).nor();
+
+        // Move the follower towards the player based on the speed
+        followerPos.add(direction.scl(speed * deltaTime));
+
+        // Update the follower's position
+        follower.setPosition(followerPos.x, followerPos.y);
+    }
+}

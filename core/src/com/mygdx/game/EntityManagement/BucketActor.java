@@ -68,6 +68,12 @@ public class BucketActor extends CollidableActor {
             setPosition(newX, newY);
         }
         if (itemPickedUp){
+            float newX = getX(), newY = getY();
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { newX -= speed * deltaTime; changeDirection(Direction.LEFT); }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { newX += speed * deltaTime; changeDirection(Direction.RIGHT); }
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) { newY += speed * deltaTime; changeDirection(Direction.UP); }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) { newY -= speed * deltaTime; changeDirection(Direction.DOWN); }
+            setPosition(newX, newY);
             if (Gdx.input.isKeyPressed(Input.Keys.D)){
                 clearHeldItem();
             }
