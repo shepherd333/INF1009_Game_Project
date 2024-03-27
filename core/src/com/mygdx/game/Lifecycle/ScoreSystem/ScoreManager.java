@@ -41,12 +41,12 @@ public class ScoreManager {
 
     public void addToCurrentScore(int points) {
         currentScore += points;
+        Gdx.app.log("ScoreManager", "Added score, new score: " + currentScore);
     }
 
     public void subtractFromCurrentScore(int points) {
-        if (currentScore >= 20) {
-            currentScore -= points;
-        }
+        currentScore -= points;
+        Gdx.app.log("ScoreManager", "Subtracted score, new score: " + currentScore);
     }
 
     public void resetCurrentScore() {

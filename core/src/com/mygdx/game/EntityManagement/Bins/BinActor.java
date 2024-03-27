@@ -11,6 +11,7 @@ public class BinActor extends CollidableActor {
     private Sprite sprite;
     private ItemType acceptsType;
     private int positionIndex; // Position index to determine xPosition
+    private ItemType itemType;
 
     public BinActor(ItemType itemType, int positionIndex) {
         this.acceptsType = itemType;
@@ -46,5 +47,9 @@ public class BinActor extends CollidableActor {
 
     public boolean acceptsItemType(ItemType itemType) {
         return this.acceptsType == itemType;
+    }
+
+    public ItemType getItemType() {
+        return itemType;
     }
 }

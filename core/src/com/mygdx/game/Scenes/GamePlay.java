@@ -121,7 +121,7 @@ public class GamePlay extends BaseScene {
         stage.addActor(homebtn);
 
         bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
-        bucket = new BucketActor( 100, 100, 50,100,this);
+        bucket = new BucketActor( 100, 100, 300,100,this);
 //        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
         collisionManager = new CollisionManager(actors,stage);
@@ -176,10 +176,6 @@ public class GamePlay extends BaseScene {
         }
     }
 
-    public void dropItemInBin(BucketActor bucket, ItemActor item) {
-        // Remove the specific item from the stage and items array
-        item.removeItem();
-    }
 
 
     private boolean checkCollision(CollidableActor actor) {
@@ -230,7 +226,7 @@ public class GamePlay extends BaseScene {
 
         shapeRenderer.end();
         inputManager.handleInput(Gdx.graphics.getDeltaTime());
-        logFPS();
+//        logFPS();
     }
     private void logFPS() {
         if (System.nanoTime() - startTime >= 1000000000) { // Check if a second has passed
