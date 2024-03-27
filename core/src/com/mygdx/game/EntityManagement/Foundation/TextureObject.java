@@ -1,8 +1,7 @@
-package com.mygdx.game.EntityManagement;
+package com.mygdx.game.EntityManagement.Foundation;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.math.Rectangle;
 
 // TextureObject now extends Entity, which in turn extends Actor.

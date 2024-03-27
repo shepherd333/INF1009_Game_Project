@@ -1,9 +1,11 @@
 package com.mygdx.game.CollisionManagement.CollisionCriterias;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.game.EntityManagement.*;
-import com.mygdx.game.InputManagement.InputManager;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.mygdx.game.CollisionManagement.CollisionCriterias.Criterias;
+import com.mygdx.game.EntityManagement.BucketActor;
+import com.mygdx.game.EntityManagement.Items.ItemActor;
+import com.mygdx.game.InputManagement.InputManager;
 
 public class PickUpCollisionCriteria implements Criterias {
     private InputManager inputManager;
@@ -14,33 +16,18 @@ public class PickUpCollisionCriteria implements Criterias {
             throw new IllegalArgumentException("Stage cannot be null");
         }
         this.stage = stage;
-        this.inputManager = new InputManager(this.stage); // Pass the stage to the InputManager constructor
+        this.inputManager = new InputManager(this.stage);
     }
-
 
     @Override
     public boolean meetsCriteria(Actor actor1, Actor actor2) {
         boolean isSpacePressed = this.inputManager.isSpacePressed();
-        System.out.println("Space pressed: " + isSpacePressed);
+        boolean isBucketActor1 = actor1 instanceof BucketActor;
+        boolean isBucketActor2 = actor2 instanceof BucketActor;
+        boolean isItemActor1 = actor1 instanceof ItemActor;
+        boolean isItemActor2 = actor2 instanceof ItemActor;
 
-        // Check if actor2 is a MetalItemActor
-        boolean isMetalItemsActor = actor2 instanceof MetalItemsActor;
-        boolean isGlassItemsActor = actor2 instanceof GlassItemsActor;
-        boolean isPlasticItemsActor = actor2 instanceof PlasticItemsActor;
-        boolean isTrashItemsActor = actor2 instanceof  TrashItemsActor;
-
-
-        return isSpacePressed && (
-                ((actor1 instanceof BucketActor && actor2 instanceof PaperItemsActor) ||
-                        (actor1 instanceof PaperItemsActor && actor2 instanceof BucketActor)) ||
-                        (isMetalItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor)) ||
-                        (isGlassItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor)) ||
-                        (isPlasticItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor)) ||
-                        (isTrashItemsActor && (actor1 instanceof BucketActor || actor1 instanceof PaperItemsActor))
-        );
+        return isSpacePressed && ((isBucketActor1 && isItemActor2) || (isBucketActor2 && isItemActor1));
     }
-
-
-
-
 }
+

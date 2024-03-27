@@ -44,6 +44,8 @@ public class InputManager {
     public boolean isSpacePressed() {
         return Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
     }
+
+    public boolean isDropPressed() {return Gdx.input.isKeyPressed(Input.Keys.D);}
 }
 
      //Handles inputs related to opening different scenes like gameplay, leaderboard, etc.

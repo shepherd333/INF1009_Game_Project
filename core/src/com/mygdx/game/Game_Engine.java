@@ -10,7 +10,7 @@ import com.mygdx.game.Scenes.SceneManager;
 import com.badlogic.gdx.Graphics.DisplayMode;
 //import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
 //import com.mygdx.game.Lifecycle.HighScore.ScoreFileHandler;
-//import com.mygdx.game.Lifecycle.LifeManager;
+//import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
 
 public class Game_Engine extends ApplicationAdapter {
 	SceneManager sm;

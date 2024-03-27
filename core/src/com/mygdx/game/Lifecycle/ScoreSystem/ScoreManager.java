@@ -1,30 +1,28 @@
-package com.mygdx.game.Lifecycle.HighScore;
+package com.mygdx.game.Lifecycle.ScoreSystem;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class HighScoreManager {
+public class ScoreManager {
     private ArrayList<Integer> highScores;
     private static final int MAX_SCORES = 10;
     private int currentScore = 500;
-    private static HighScoreManager instance;
+    private static ScoreManager instance;
 
-    private HighScoreManager() {
+    private ScoreManager() {
         highScores = new ArrayList<>();
     }
 
-    public static HighScoreManager getInstance() {
+    public static ScoreManager getInstance() {
         if (instance == null) {
-            instance = new HighScoreManager();
+            instance = new ScoreManager();
         }
         return instance;
     }

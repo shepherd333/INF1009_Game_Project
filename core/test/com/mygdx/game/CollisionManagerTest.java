@@ -3,7 +3,7 @@
 //import com.mygdx.game.CollisionManagement.CollisionManager;
 //import com.mygdx.game.EntityManagement.BucketActor;
 //import com.mygdx.game.EntityManagement.RaindropActor;
-//import com.mygdx.game.EntityManagement.Entity;
+//import com.mygdx.game.EntityManagement.Foundation.Entity;
 //
 //import org.junit.jupiter.api.Test;
 //import static org.junit.jupiter.api.Assertions.*;
