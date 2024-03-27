@@ -63,6 +63,7 @@ public class GamePlay extends BaseScene {
     private AIManager aiManager;
     private ToxicWasteActor toxicWaste;
     private float timer;
+    private ScoreManager scoreManager;
     public float getTimer() {
         return timer;
     }
@@ -87,6 +88,8 @@ public class GamePlay extends BaseScene {
 
             if (timer <= 0) {
                 timer = 0; // Stop the timer at 0
+                int score = (int) Math.floor(getTimer());
+                ScoreManager.getInstance().addScore(score);
                 goToLeaderboard(); // Transition to the EndMenu scene
             }
         }
@@ -112,6 +115,8 @@ public class GamePlay extends BaseScene {
 
         spawnBins();
 
+        scoreManager = ScoreManager.getInstance();
+        scoreManager.resetCurrentScore();
 
         conveyorBelt = new ConveyorBeltActor();
         stage.addActor(conveyorBelt);
@@ -172,7 +177,7 @@ public class GamePlay extends BaseScene {
         trashMonsterActor = new TrashMonsterActor();
         stage.addActor(trashMonsterActor);
 
-        setTimer(90);
+        setTimer(30);
     }
 
     private void spawnBins() {

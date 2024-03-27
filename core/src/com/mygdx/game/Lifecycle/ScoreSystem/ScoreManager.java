@@ -59,6 +59,8 @@ public class ScoreManager {
         if (scores.size() > MAX_SCORES) {
             scores.remove(scores.size() - 1);
         }
+
+        saveScores(score);
     }
 
     public ArrayList<Integer> getScores() {
@@ -73,17 +75,20 @@ public class ScoreManager {
         }
     }
 
-    public void saveScores() {
+    public void saveScores(int score) {
         FileHandle file = Gdx.files.local("scores.txt");
         try {
-            file.writeString(String.valueOf(currentScore), false); // Overwrites the file.
+            file.writeString(String.valueOf(currentScore) + "\n", true); // Append to the file.
         } catch (Exception e) {
             Gdx.app.error("ScoreManager", "Error writing score", e);
         }
     }
 
+
+
+
     public void loadScores() {
-        FileHandle file = Gdx.files.internal("highscoreDB.txt");
+        FileHandle file = Gdx.files.internal("scores.txt");
         if (file.exists()) {
             String scoreContents = file.readString();
             Gdx.app.log("ScoreManager", "File contents: \n" + scoreContents);
@@ -98,8 +103,10 @@ public class ScoreManager {
                     Gdx.app.error("ScoreManager", "Error parsing score: " + line, e);
                 }
             }
+            // Sort scores in descending order
+            Collections.sort(scores, Collections.reverseOrder());
         } else {
-            Gdx.app.log("ScoreManager", "highscores.txt file not found.");
+            Gdx.app.log("ScoreManager", "scores.txt file not found.");
         }
     }
 
