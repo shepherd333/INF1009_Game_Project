@@ -16,6 +16,7 @@ import com.mygdx.game.EntityManagement.Static.ToxicWasteActor;
 import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
 import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
 import com.mygdx.game.Scenes.GamePlay;
+import com.mygdx.game.Scenes.SceneManager;
 import com.mygdx.game.enums.ItemType;
 
 public class BucketActor extends CollidableActor {
@@ -39,13 +40,13 @@ public class BucketActor extends CollidableActor {
     private float shakeDuration = 0f;
     private float shakeIntensity = 5f;
     private float shakeTimer = 0f;
-
-
+    private SceneManager sceneManager;
 
     // Constructor
-    public BucketActor(float x, float y, float speed, float maxHealth, GamePlay gamePlay ) {
+    public BucketActor(float x, float y, float speed, float maxHealth, GamePlay gamePlay) {
         this.gamePlay = gamePlay;
-        this.lifeManager = new LifeManager(maxHealth, 100, 10, Color.GREEN);
+        this.sceneManager = sceneManager; // Initialize the SceneManager
+        this.lifeManager = new LifeManager(maxHealth, 100, 10, Color.GREEN, gamePlay);
         this.speed = speed;
         this.setPosition(x, y);
         textureLeft = new Texture(Gdx.files.internal("WalleLeft.png"));
@@ -185,9 +186,6 @@ public class BucketActor extends CollidableActor {
         lifeManager.draw(batch, getX(), getY(), getWidth(), getHeight());
     }
 
-    public void setHealth(float health) {
-        lifeManager.updateHealth(health);
-    }
     public void changeDirection(Direction direction) {
         switch (direction) {
             case LEFT:
