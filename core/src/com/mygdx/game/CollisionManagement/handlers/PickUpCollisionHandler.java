@@ -1,17 +1,15 @@
 package com.mygdx.game.CollisionManagement.handlers;
-
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.EntityManagement.*;
 import com.badlogic.gdx.utils.Array;
-
 public class PickUpCollisionHandler extends BaseCollisionHandler {
     private Array<PaperItemsActor> paperitems;
     private Array<MetalItemsActor> metalitems;
     private Array<GlassItemsActor> glassitems;
     private Array<PlasticItemsActor> plasticitems;
     private Array<TrashItemsActor> trashitems;
-
-
     public PickUpCollisionHandler(Actor actor1, Actor actor2, Array<PaperItemsActor> paperitems, Array<MetalItemsActor> metalitems, Array<GlassItemsActor> glassitems, Array<PlasticItemsActor> plasticitems, Array<TrashItemsActor> trashitems) {
         super(actor1, actor2);
         this.paperitems = paperitems;
@@ -20,7 +18,6 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
         this.plasticitems = plasticitems;
         this.trashitems = trashitems;
     }
-
     @Override
     public void handleCollision() {
         if (actor1 instanceof BucketActor && actor2 instanceof PaperItemsActor) {
@@ -29,6 +26,7 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             if (!bucket.isItemPickedUp()) {
                 handlePickUp(bucket, paperitem);
                 bucket.setItemPickedUp(true); // Mark item as picked up
+                System.out.println("Paper item picked up");
             }
         }
         else if (actor1 instanceof BucketActor && actor2 instanceof MetalItemsActor) {
@@ -37,6 +35,7 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             if (!bucket.isItemPickedUp()) {
                 handlePickUpMetal(bucket, metalitem);
                 bucket.setItemPickedUp(true); // Mark item as picked up
+                System.out.println("Metal item picked up");
             }
         }
         else if (actor1 instanceof BucketActor && actor2 instanceof GlassItemsActor) {
@@ -45,6 +44,7 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             if (!bucket.isItemPickedUp()) {
                 handlePickUpGlass(bucket, glassitem);
                 bucket.setItemPickedUp(true); // Mark item as picked up
+                System.out.println("Glass item picked up");
             }
         }
         else if (actor1 instanceof BucketActor && actor2 instanceof PlasticItemsActor) {
@@ -53,6 +53,7 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             if (!bucket.isItemPickedUp()) {
                 handlePickUpPlastic(bucket, plasticitem);
                 bucket.setItemPickedUp(true); // Mark item as picked up
+                System.out.println("Plastic item picked up");
             }
         }
         else if (actor1 instanceof BucketActor && actor2 instanceof TrashItemsActor) {
@@ -61,37 +62,40 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             if (!bucket.isItemPickedUp()) {
                 handlePickUpTrash(bucket, trashitem);
                 bucket.setItemPickedUp(true); // Mark item as picked up
+                System.out.println("Trash item picked up");
             }
         }
     }
-
     private void handlePickUp(BucketActor bucket, PaperItemsActor paperitem) {
         // Remove the paper actor
         paperitem.remove();
         // Remove the raindrop from the array
         paperitems.removeValue(paperitem, true);
-        // Assign a unique value to the bucket actor
-        bucket.setPossessionValue(paperitem.getUniqueValue());
+        // Assign value '1' to the bucket actor
+        bucket.setItemType(1);
+        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("paperBag.png")));
+        Gdx.app.log("PickUpCollisionHandler", "Item type assigned: " + bucket.getItemType());
     }
-
     private void handlePickUpMetal(BucketActor bucket, MetalItemsActor metalitem) {
         // Remove the metal actor
         metalitem.remove();
         // Remove the raindrop from the array
         metalitems.removeValue(metalitem, true);
-        // Assign a unique value to the bucket actor
-        bucket.setPossessionValue(metalitem.getUniqueValue());
+        // Assign value '2' to the bucket actor
+        bucket.setItemType(2);
+        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("metalCanSmall.png")));
+        Gdx.app.log("PickUpCollisionHandler", "Item type assigned: " + bucket.getItemType());
     }
-
     private void handlePickUpGlass(BucketActor bucket, GlassItemsActor glassitem) {
         // Remove the glass actor
         glassitem.remove();
         // Remove the raindrop from the array
         glassitems.removeValue(glassitem, true);
-        // Assign a unique value to the bucket actor
-        bucket.setPossessionValue(glassitem.getUniqueValue());
+        // Assign value '3' to the bucket actor
+        bucket.setItemType(3);
+        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("glassSodaBottle.png")));
+        Gdx.app.log("PickUpCollisionHandler", "Item type assigned: " + bucket.getItemType());
     }
-
     private void handlePickUpPlastic(BucketActor bucket, PlasticItemsActor plasticitem) {
         // Remove the plastic actor
         plasticitem.remove();
@@ -99,6 +103,9 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
         plasticitems.removeValue(plasticitem, true);
         // Assign a unique value to the bucket actor
         bucket.setPossessionValue(plasticitem.getUniqueValue());
+        // Assign value '4' to the bucket actor
+        bucket.setItemType(4);
+        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("plasticBottle.png")));
     }
 
     private void handlePickUpTrash(BucketActor bucket, TrashItemsActor trashitem) {
@@ -108,5 +115,8 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
         trashitems.removeValue(trashitem, true);
         // Assign a unique value to the bucket actor
         bucket.setPossessionValue(trashitem.getUniqueValue());
+        // Assign value '5' to the bucket actor
+        bucket.setItemType(5);
+        bucket.setHeldItemSprite(new Texture(Gdx.files.internal("styrofoam.png")));
     }
 }

@@ -1,5 +1,4 @@
 package com.mygdx.game.EntityManagement;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -7,11 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
-
 
 public class BucketActor extends CollidableActor {
     private Texture textureLeft;
@@ -23,12 +20,11 @@ public class BucketActor extends CollidableActor {
     private Texture texture;
     private String possessionValue;
     private boolean itemPickedUp; // Flag to check if an item has been picked up
+    private int itemType; // Type of item picked up
+    private Sprite heldItemSprite; // Sprite to display the item picked up
     private LifeManager lifeManager;
-
-
-
     // Constructor
-    public BucketActor(float x, float y, float speed, float maxHealth) {
+    public BucketActor(float x, float y, float speed, float maxHealth ) {
         this.lifeManager = new LifeManager(maxHealth, 100, 10, Color.GREEN);
         this.speed = speed;
         this.setPosition(x, y);
@@ -41,9 +37,7 @@ public class BucketActor extends CollidableActor {
         currentSprite.setSize(125,125);
         this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
         setTouchable(Touchable.enabled);
-
     }
-
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -52,7 +46,6 @@ public class BucketActor extends CollidableActor {
             // Get current bucket position
             float newX = getX();
             float newY = getY();
-
             // Update position based on input
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 newX -= speed * delta;
@@ -66,11 +59,9 @@ public class BucketActor extends CollidableActor {
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                 newY -= speed * delta;
             }
-
             // Clamp position within screen bounds
             newX = MathUtils.clamp(newX, 0, getStage().getViewport().getWorldWidth() - getWidth());
             newY = MathUtils.clamp(newY, 0, getStage().getViewport().getWorldHeight() - getHeight());
-
             // Update bucket position
             setPosition(newX, newY);
         } else {
@@ -79,10 +70,25 @@ public class BucketActor extends CollidableActor {
             float clampedY = MathUtils.clamp(getY(), 0, getStage().getViewport().getWorldHeight() - getHeight());
             setPosition(clampedX, clampedY);
         }
-
+    }
+    public void setHeldItemSprite(Texture texture) {
+        this.heldItemSprite = new Sprite(texture);
+        this.heldItemSprite.setSize(50, 50); // Set the size of the sprite
+    }
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        batch.draw(currentSprite, getX(), getY(), getWidth(), getHeight());
+        if (heldItemSprite != null) {
+            heldItemSprite.setPosition(getX(), getY() + getHeight()); // Position the sprite above the bucket
+            heldItemSprite.draw(batch);
+        }
+        lifeManager.draw(batch, getX(), getY(), getWidth(), getHeight());
     }
 
-
+    public void setHealth(float health) {
+        lifeManager.updateHealth(health);
+    }
     public void changeDirection(Direction direction) {
         switch (direction) {
             case LEFT:
@@ -101,21 +107,11 @@ public class BucketActor extends CollidableActor {
         // Update the size of the actor to match the new sprite's size
         this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
     }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        batch.draw(currentSprite, getX(), getY(), getWidth(), getHeight());
-        lifeManager.draw(batch, getX(), getY(), getWidth(), getHeight());
-    }
-
-    public void setHealth(float health) {
-        lifeManager.updateHealth(health);
-    }
-
     // Provides a bounding box for the bucket, useful for collision detection.
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
-        //Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
+        Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
+//        Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
         return bounds;
     }
 
@@ -123,45 +119,38 @@ public class BucketActor extends CollidableActor {
     public void setWidth(float width) {
         super.setWidth(width);
     }
-
     @Override
     public void setHeight(float height) {
         super.setHeight(height);
     }
-
+    public void setItemType(int itemType) {
+        this.itemType = itemType;
+    }
+    public int getItemType() {
+        return itemType;
+    }
     public void dispose() {
         // Dispose of the texture when the object is no longer needed to free up resources.
         textureLeft.dispose();
         textureRight.dispose();
         textureUp.dispose();
         textureDown.dispose();
-        lifeManager.dispose();
     }
-
     public float getSpeed() {
         return speed;
     }
-
     public void setPossessionValue(String value) {
         this.possessionValue = value;
     }
-
     public String getPossessionValue() {
         return possessionValue;
     }
-
-    public Vector2 getBucketPosition() {
-        return new Vector2(getX(), getY());
-    }
-
     public boolean isItemPickedUp() {
         return itemPickedUp;
     }
-
     public void setItemPickedUp(boolean itemPickedUp) {
         this.itemPickedUp = itemPickedUp;
     }
-
     public enum Direction {
         LEFT, RIGHT, UP, DOWN
     }
