@@ -28,7 +28,7 @@ public class BucketActor extends CollidableActor {
     private Texture textureDown;
     private Sprite currentSprite;
     private float speed;
-//    private Texture texture;
+    //    private Texture texture;
 //    private String possessionValue;
     private boolean itemPickedUp; // Flag to check if an item has been picked up
     private ItemType itemType; // Type of item picked up
@@ -121,6 +121,7 @@ public class BucketActor extends CollidableActor {
     // Call this method when the item is picked up
     public void holdItem(ItemActor item) {
         this.heldItem = item;
+        AudioManager.itemPickupSound.play();
         setHeldItemType(item.getItemType());
         setHeldItemSprite(item.getTextureRegion());
         setItemPickedUp(true);

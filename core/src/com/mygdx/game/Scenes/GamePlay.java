@@ -30,7 +30,6 @@ import com.mygdx.game.EntityManagement.Static.ToxicWasteActor;
 import com.mygdx.game.InputManagement.InputManager;
 import com.mygdx.game.Lifecycle.AudioManager;
 import com.mygdx.game.Lifecycle.LevelConfig;
-import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
 import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
 import com.mygdx.game.enums.ItemType;
 import java.util.ArrayList;
@@ -64,7 +63,8 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private AIManager aiManager;
     private ToxicWasteActor toxicWaste;
     private float timer;
-    private LifeManager lifeManager;
+    private boolean countdownPlayed = false;
+    private ScoreManager scoreManager;
 
     public float getTimer() {
         return timer;
@@ -84,13 +84,25 @@ public class GamePlay extends BaseScene implements GameOverListener {
         sceneManager.pushScene(new Leaderboard(sceneManager));
         // If you use pushScene for a stack-based navigation, replace setScene with pushScene as needed.
     }
-
     public void timerCountdown(float deltaTime) {
         if (timer > 0) {
             timer -= deltaTime;
 
+            // If timer reaches 10 seconds, play the countdown sound effect
+            if ((int)Math.floor(timer) == 10 && !countdownPlayed) {
+                AudioManager.getInstance().playCountdownSound();
+                countdownPlayed = true; // Make sure the sound is only played once
+            }
+
             if (timer <= 0) {
                 timer = 0; // Stop the timer at 0
+
+                int score = (int) Math.floor(getTimer());
+                ScoreManager.getInstance().addScore(score);
+                AudioManager.getInstance().stopCountdownSound(); // Stop the countdown sound
+
+                AudioManager.powerOffSound.play();
+
                 goToLeaderboard();
             }
         }
@@ -116,6 +128,8 @@ public class GamePlay extends BaseScene implements GameOverListener {
 
         spawnBins();
 
+        scoreManager = ScoreManager.getInstance();
+        scoreManager.resetCurrentScore();
 
         conveyorBelt = new ConveyorBeltActor();
         stage.addActor(conveyorBelt);
@@ -177,9 +191,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
         stage.addActor(trashMonsterActor);
 
         setTimer(90);
-
-        // Make sure GamePlay implements GameOverListener
-        this.lifeManager = new LifeManager(100, 200, 20, Color.GREEN, this);
     }
 
     private void spawnBins() {
@@ -189,10 +200,13 @@ public class GamePlay extends BaseScene implements GameOverListener {
         }
     }
 
+
     public void onGameOver() {
+        AudioManager.powerOffSound.play();
         // Handle the transition to the leaderboard scene
         sceneManager.pushScene(new Leaderboard(sceneManager));
     }
+
 
 
     @Override
@@ -336,4 +350,5 @@ public class GamePlay extends BaseScene implements GameOverListener {
 
         if (font != null) font.dispose();
     }
+
 }
