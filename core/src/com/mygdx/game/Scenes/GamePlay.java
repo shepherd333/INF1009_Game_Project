@@ -90,6 +90,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
 
             if (timer <= 0) {
                 timer = 0; // Stop the timer at 0
+                AudioManager.powerOffSound.play();
                 goToLeaderboard();
             }
         }
@@ -189,6 +190,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     }
 
     public void onGameOver() {
+        AudioManager.powerOffSound.play();
         // Handle the transition to the leaderboard scene
         sceneManager.pushScene(new Leaderboard(sceneManager));
     }
