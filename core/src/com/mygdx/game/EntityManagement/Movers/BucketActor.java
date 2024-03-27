@@ -121,6 +121,7 @@ public class BucketActor extends CollidableActor {
     // Call this method when the item is picked up
     public void holdItem(ItemActor item) {
         this.heldItem = item;
+        AudioManager.itemPickupSound.play();
         setHeldItemType(item.getItemType());
         setHeldItemSprite(item.getTextureRegion());
         setItemPickedUp(true);

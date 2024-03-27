@@ -95,9 +95,13 @@ public class GamePlay extends BaseScene implements GameOverListener {
 
             if (timer <= 0) {
                 timer = 0; // Stop the timer at 0
+
                 int score = (int) Math.floor(getTimer());
                 ScoreManager.getInstance().addScore(score);
                 AudioManager.getInstance().stopCountdownSound(); // Stop the countdown sound
+
+                AudioManager.powerOffSound.play();
+
                 goToLeaderboard();
             }
         }
@@ -185,7 +189,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         trashMonsterActor = new TrashMonsterActor();
         stage.addActor(trashMonsterActor);
 
-        setTimer(30);
+        setTimer(90);
     }
 
     private void spawnBins() {
@@ -194,6 +198,14 @@ public class GamePlay extends BaseScene implements GameOverListener {
             stage.addActor(bin);
         }
     }
+
+
+    public void onGameOver() {
+        AudioManager.powerOffSound.play();
+        // Handle the transition to the leaderboard scene
+        sceneManager.pushScene(new Leaderboard(sceneManager));
+    }
+
 
 
     @Override
@@ -338,8 +350,4 @@ public class GamePlay extends BaseScene implements GameOverListener {
         if (font != null) font.dispose();
     }
 
-    @Override
-    public void onGameOver() {
-
-    }
 }
