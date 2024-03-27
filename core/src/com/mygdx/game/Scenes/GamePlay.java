@@ -1,6 +1,7 @@
 package com.mygdx.game.Scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,6 +28,7 @@ import com.mygdx.game.EntityManagement.Movers.TrashMonsterActor;
 import com.mygdx.game.EntityManagement.Static.ConveyorBeltActor;
 import com.mygdx.game.EntityManagement.Static.ToxicWasteActor;
 import com.mygdx.game.InputManagement.InputManager;
+import com.mygdx.game.Lifecycle.AudioManager;
 import com.mygdx.game.Lifecycle.LevelConfig;
 import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
 import com.mygdx.game.enums.ItemType;
@@ -252,6 +254,7 @@ public class GamePlay extends BaseScene {
         if (trashMonsterActor.overlaps(bucket)) {
             // Decrease life of the bucket actor
             bucket.decreaseLife(10); // You need to define the decreaseLife method in BucketActor
+            AudioManager.collisionSound.play();
             trashMonsterActor.respawnAtRandomEdge();
         }
 

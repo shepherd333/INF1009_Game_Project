@@ -1,6 +1,7 @@
 package com.mygdx.game.EntityManagement.Movers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.EntityManagement.Bins.BinActor;
 import com.mygdx.game.EntityManagement.Foundation.CollidableActor;
 import com.mygdx.game.EntityManagement.Static.ToxicWasteActor;
+import com.mygdx.game.Lifecycle.AudioManager;
 import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
 import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
 import com.mygdx.game.Scenes.GamePlay;
@@ -39,6 +41,8 @@ public class BucketActor extends CollidableActor {
     private float shakeDuration = 0f;
     private float shakeIntensity = 5f;
     private float shakeTimer = 0f;
+
+
 
 
 
@@ -129,6 +133,7 @@ public class BucketActor extends CollidableActor {
             // If there is a bin overlapping and the item's type matches the bin's type
             if (overlappingBinType != null && overlappingBinType == heldItem.getItemType()) {
                 // Correct bin
+                AudioManager.correctBinSound.play();
                 ScoreManager.getInstance().addToCurrentScore(100); // Add 100 points for correct placement
                 Gdx.app.log("GamePlay", "Correct bin! Score added!!!");
             }
@@ -145,6 +150,7 @@ public class BucketActor extends CollidableActor {
             ItemType overlappingBinType = getOverlappingBinType();
             if (overlappingBinType != null && overlappingBinType != heldItem.getItemType()){
                 // Incorrect bin or no bin
+                AudioManager.errorSound.play();
                 ScoreManager.getInstance().subtractFromCurrentScore(50); // Subtract 50 points for incorrect placement
                 Gdx.app.log("GamePlay", "Incorrect bin or no bin overlapping! Score subtracted.");
             }
