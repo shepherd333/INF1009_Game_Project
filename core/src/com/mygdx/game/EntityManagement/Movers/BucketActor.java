@@ -91,6 +91,7 @@ public class BucketActor extends CollidableActor {
                 ToxicWasteActor toxicWaste = (ToxicWasteActor) actor;
                 if (getBounds().overlaps(toxicWaste.getBounds())) {
                     decreaseLife(0.1F); // Decrease life by 1 or another value based on your game's balance
+                    AudioManager.collisionSound.play();
                     break; // Optional: break if you only want to apply damage from one toxic waste per frame
                 }
             }
