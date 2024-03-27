@@ -25,9 +25,6 @@ import com.mygdx.game.InputManagement.InputManager;
 import com.mygdx.game.Lifecycle.LevelConfig;
 import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
 import com.mygdx.game.enums.ItemType;
-import com.badlogic.gdx.graphics.FPSLogger;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -121,7 +118,7 @@ public class GamePlay extends BaseScene {
         stage.addActor(homebtn);
 
         bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
-        bucket = new BucketActor( 100, 100, 50,100,this);
+        bucket = new BucketActor( 100, 100, 300,100,this);
 //        bucket.setSize(75,75);
         actors.add(bucket); // Add the bucket to the actors list
         collisionManager = new CollisionManager(actors,stage);
@@ -134,8 +131,6 @@ public class GamePlay extends BaseScene {
         collisionManager = new CollisionManager(actors, stage);
         shapeRenderer = new ShapeRenderer();
         startTime = System.nanoTime();
-
-
     }
 
     @Override
@@ -181,7 +176,6 @@ public class GamePlay extends BaseScene {
         item.removeItem();
     }
 
-
     private boolean checkCollision(CollidableActor actor) {
         for (CollidableActor existingActor : actors) {
             if (actor.getBounds().overlaps(existingActor.getBounds())) {
@@ -190,7 +184,6 @@ public class GamePlay extends BaseScene {
         }
         return false; // No collision detected
     }
-
 
     public void update(float deltaTime) {
         spawnTimer += deltaTime;

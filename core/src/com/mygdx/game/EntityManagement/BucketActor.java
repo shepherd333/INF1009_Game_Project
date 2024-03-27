@@ -58,13 +58,13 @@ public class BucketActor extends CollidableActor {
         ensureInBounds(); // Ensure the actor remains within the screen bounds
     }
 
-    private void handleInput(float delta) {
+    private void handleInput(float deltaTime) {
         if (!itemPickedUp) {
             float newX = getX(), newY = getY();
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { newX -= speed * delta; changeDirection(Direction.LEFT); }
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { newX += speed * delta; changeDirection(Direction.RIGHT); }
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) { newY += speed * delta; changeDirection(Direction.UP); }
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) { newY -= speed * delta; changeDirection(Direction.DOWN); }
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { newX -= speed * deltaTime; changeDirection(Direction.LEFT); }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { newX += speed * deltaTime; changeDirection(Direction.RIGHT); }
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) { newY += speed * deltaTime; changeDirection(Direction.UP); }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) { newY -= speed * deltaTime; changeDirection(Direction.DOWN); }
             setPosition(newX, newY);
         }
         if (itemPickedUp){
@@ -136,8 +136,6 @@ public class BucketActor extends CollidableActor {
         // Optionally, set the origin of the sprite if you need to rotate it around its center
         this.heldItemSprite.setOrigin(25, 25); // Set origin to center for a 50x50 sprite
     }
-
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
@@ -225,7 +223,7 @@ public class BucketActor extends CollidableActor {
     }
 
     public ItemType getOverlappingBinType() {
-        float proximityMargin = 50; // Define a margin for how close the bucket needs to be
+        float proximityMargin = 100; // Define a margin for how close the bucket needs to be
 
         for (Actor actor : getStage().getActors()) {
             if (actor instanceof BinActor) {
