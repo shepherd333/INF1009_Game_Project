@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,8 +72,8 @@ public class ScoreManager {
         }
     }
 
-    public void saveScores() {
-        FileHandle file = Gdx.files.local("scores.txt");
+    public void saveScores(int level) {
+        FileHandle file = Gdx.files.local("scores_level_" + level + ".txt");
         try {
             file.writeString(String.valueOf(currentScore), false); // Overwrites the file.
         } catch (Exception e) {
