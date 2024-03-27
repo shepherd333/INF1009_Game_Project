@@ -84,17 +84,6 @@ public class BucketActor extends CollidableActor {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) { newY += speed * deltaTime; changeDirection(Direction.UP); }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) { newY -= speed * deltaTime; changeDirection(Direction.DOWN); }
         setPosition(newX, newY);
-        if (itemPickedUp){
-            float newX = getX(), newY = getY();
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { newX -= speed * deltaTime; changeDirection(Direction.LEFT); }
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { newX += speed * deltaTime; changeDirection(Direction.RIGHT); }
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) { newY += speed * deltaTime; changeDirection(Direction.UP); }
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) { newY -= speed * deltaTime; changeDirection(Direction.DOWN); }
-            setPosition(newX, newY);
-            if (Gdx.input.isKeyPressed(Input.Keys.D)){
-                clearHeldItem();
-            }
-        }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             ItemType overlappingBinType = getOverlappingBinType();
             if (overlappingBinType != null && overlappingBinType == this.heldItemType) {
@@ -238,6 +227,15 @@ public class BucketActor extends CollidableActor {
         textureUp.dispose();
         textureDown.dispose();
     }
+
+    public void decreaseLife(float amount) {
+        lifeManager.decreaseHealth(amount); // Assuming LifeManager has a method to decrease life
+        if (lifeManager.getLife() <= 0) {
+            // Handle the bucket's life reaching zero or below
+            // For example, trigger a game over or respawn the bucket
+        }
+    }
+
     public float getSpeed() {
         return speed;
     }
