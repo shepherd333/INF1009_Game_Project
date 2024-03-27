@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -32,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import com.mygdx.game.AIManagement.AIManager;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GamePlay extends BaseScene {
     private ShapeRenderer shapeRenderer;
@@ -46,6 +50,7 @@ public class GamePlay extends BaseScene {
     private Texture bucketTexture;
     private float spawnTimer = 0;
     private InputManager inputManager;
+    private BitmapFont font;
     private Array<ItemActor> items = new Array<>();
     private List<CollidableActor> actors = new ArrayList<>();
     private LevelConfig levelConfig;
@@ -54,7 +59,37 @@ public class GamePlay extends BaseScene {
     private long startTime;
     private TrashMonsterActor trashMonsterActor;
     private AIManager aiManager;
-    private ToxicWasteActor toxicWasteActor;
+    private ToxicWasteActor toxicWaste;
+    private float timer;
+    public float getTimer() {
+        return timer;
+    }
+    public void setTimer(int t) {
+        timer = t;
+    }
+    public void increaseTimer(int t) {
+        timer += t;
+    }
+    public void decreaseTimer(int t) {
+        timer -= t;
+    }
+
+    private void goToLeaderboard() {
+        // Assuming sceneManager is a member of GamePlay and is initialized in its constructor
+        sceneManager.pushScene(new Leaderboard(sceneManager));
+        // If you use pushScene for a stack-based navigation, replace setScene with pushScene as needed.
+    }
+    public void timerCountdown(float deltaTime) {
+        if (timer > 0) {
+            timer -= deltaTime;
+
+            if (timer <= 0) {
+                timer = 0; // Stop the timer at 0
+                goToLeaderboard(); // Transition to the EndMenu scene
+            }
+        }
+    }
+    private Label timerLabel;
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
@@ -71,12 +106,17 @@ public class GamePlay extends BaseScene {
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        font = new BitmapFont();
 
         spawnBins();
 
 
         conveyorBelt = new ConveyorBeltActor();
         stage.addActor(conveyorBelt);
+
+//        timerLabel = new Label(String.format("Time: %d", (int)Math.floor(timer)), skin);
+//        timerLabel.setPosition(Gdx.graphics.getWidth() / 2 - timerLabel.getWidth() / 2, Gdx.graphics.getHeight() - timerLabel.getHeight() - 20); // Example position
+//        stage.addActor(timerLabel);
 
         int buttonWidth = 100;
         int buttonHeight = 25;
@@ -129,6 +169,8 @@ public class GamePlay extends BaseScene {
         this.aiManager = new AIManager(stage, bucket);
         trashMonsterActor = new TrashMonsterActor();
         stage.addActor(trashMonsterActor);
+
+        setTimer(90);
     }
 
     private void spawnBins() {
@@ -200,23 +242,21 @@ public class GamePlay extends BaseScene {
 
     public void update(float deltaTime) {
         spawnTimer += deltaTime;
-        if (spawnTimer >= 3 / levelConfig.spawnSpeedFactor) {
+        if (spawnTimer >= 3/ levelConfig.spawnSpeedFactor) {
             spawnItem();
             spawnTimer = 0;
         }
         float followSpeed = 50; // Speed at which the monster follows the bucket, adjust as needed
         aiManager.updateFollower(trashMonsterActor, deltaTime, followSpeed);
 
-        if (trashMonsterActor.overlaps(bucket)) {
-            // Decrease life of the bucket actor
-            bucket.decreaseLife(10); // You need to define the decreaseLife method in BucketActor
-            trashMonsterActor.respawnAtRandomEdge();
-        }
+        timerCountdown(deltaTime);
     }
 
-
-    @Override
+//    @Override
     public void render() {
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.input.setInputProcessor(stage);
         stage.act(Gdx.graphics.getDeltaTime());
@@ -224,6 +264,12 @@ public class GamePlay extends BaseScene {
         batch.begin();
 
         bgSprite.draw(batch);
+        String timerText = String.format("Time: %d", (int)Math.floor(timer));
+        GlyphLayout timerLayout = new GlyphLayout(); // Declare the GlyphLayout object
+        timerLayout.setText(font, timerText); // Set the text for the layout
+        float timerX = screenWidth - timerLayout.width - 10; // Right-align the timer
+        float timerY = screenHeight - timerLayout.height - 100; // Adjust the y-coordinate as needed
+        font.draw(batch, timerText, timerX, timerY);
         batch.end();
 
         collisionManager.handleCollisions();
@@ -266,5 +312,7 @@ public class GamePlay extends BaseScene {
         if (bucketTexture != null) bucketTexture.dispose();
         conveyorBelt.dispose();
         ScoreManager.getInstance().dispose();
+
+        if (font != null) font.dispose();
     }
 }
