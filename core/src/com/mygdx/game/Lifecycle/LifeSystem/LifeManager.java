@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.mygdx.game.Scenes.GameOverListener;
+import com.mygdx.game.Scenes.Leaderboard;
 
 public class LifeManager {
     private float maxHealth;
@@ -16,14 +18,16 @@ public class LifeManager {
     private Color backgroundColor = new Color(0.3f, 0.3f, 0.3f, 1); // Dark gray
     private Color borderColor = new Color(0.7f, 0.7f, 0.7f, 1); // Light gray
     private float borderWidth = 2;
+    private GameOverListener gameOverListener;
 
-    public LifeManager(float maxHealth, float lifeBarWidth, float lifeBarHeight, Color lifeBarColor) {
+    public LifeManager(float maxHealth, float lifeBarWidth, float lifeBarHeight, Color lifeBarColor, GameOverListener listener) {
         this.maxHealth = maxHealth;
         this.currentHealth = maxHealth; // Start with full health
         this.lifeBarWidth = lifeBarWidth;
         this.lifeBarHeight = lifeBarHeight;
         this.lifeBarColor = lifeBarColor;
         this.shapeRenderer = new ShapeRenderer();
+        this.gameOverListener = listener;
 
     }
 
@@ -85,6 +89,15 @@ public class LifeManager {
     public void decreaseHealth(float amount) {
         // Decrease health but do not drop below 0
         this.currentHealth = Math.max(0, this.currentHealth - amount);
+        if (this.currentHealth <= 0) {
+            onGameOver(); // Call the game-over handler
+        }
+    }
+
+    private void onGameOver() {
+        if (gameOverListener != null) {
+            gameOverListener.onGameOver();
+        }
     }
 
     public float getLife(){
