@@ -97,8 +97,6 @@ public class GamePlay extends BaseScene {
                 timer = 0; // Stop the timer at 0
                 int score = (int) Math.floor(getTimer());
                 ScoreManager.getInstance().addScore(score);
-                goToLeaderboard(); // Transition to the EndMenu scene
-                timer = 0;
                 AudioManager.getInstance().stopCountdownSound(); // Stop the countdown sound
                 goToLeaderboard();
             }
