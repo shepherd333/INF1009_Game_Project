@@ -63,6 +63,7 @@ public class GamePlay extends BaseScene {
     private AIManager aiManager;
     private ToxicWasteActor toxicWaste;
     private float timer;
+    private boolean countdownPlayed = false;
     public float getTimer() {
         return timer;
     }
@@ -85,13 +86,19 @@ public class GamePlay extends BaseScene {
         if (timer > 0) {
             timer -= deltaTime;
 
+            // If timer reaches 10 seconds, play the countdown sound effect
+            if ((int)Math.floor(timer) == 10 && !countdownPlayed) {
+                AudioManager.getInstance().playCountdownSound();
+                countdownPlayed = true; // Make sure the sound is only played once
+            }
+
             if (timer <= 0) {
-                timer = 0; // Stop the timer at 0
-                goToLeaderboard(); // Transition to the EndMenu scene
+                timer = 0;
+                AudioManager.getInstance().stopCountdownSound(); // Stop the countdown sound
+                goToLeaderboard();
             }
         }
     }
-    private Label timerLabel;
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
@@ -115,10 +122,6 @@ public class GamePlay extends BaseScene {
 
         conveyorBelt = new ConveyorBeltActor();
         stage.addActor(conveyorBelt);
-
-//        timerLabel = new Label(String.format("Time: %d", (int)Math.floor(timer)), skin);
-//        timerLabel.setPosition(Gdx.graphics.getWidth() / 2 - timerLabel.getWidth() / 2, Gdx.graphics.getHeight() - timerLabel.getHeight() - 20); // Example position
-//        stage.addActor(timerLabel);
 
         int buttonWidth = 100;
         int buttonHeight = 25;
@@ -172,7 +175,7 @@ public class GamePlay extends BaseScene {
         trashMonsterActor = new TrashMonsterActor();
         stage.addActor(trashMonsterActor);
 
-        setTimer(90);
+        setTimer(15);
     }
 
     private void spawnBins() {
