@@ -78,26 +78,12 @@ public class BucketActor extends CollidableActor {
     }
 
     private void handleInput(float deltaTime) {
-
-        if (!itemPickedUp) {
-            float newX = getX(), newY = getY();
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { newX -= speed * deltaTime; changeDirection(Direction.LEFT); }
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { newX += speed * deltaTime; changeDirection(Direction.RIGHT); }
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) { newY += speed * deltaTime; changeDirection(Direction.UP); }
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) { newY -= speed * deltaTime; changeDirection(Direction.DOWN); }
-            setPosition(newX, newY);
-        }
-        if (itemPickedUp){
-            float newX = getX(), newY = getY();
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { newX -= speed * deltaTime; changeDirection(Direction.LEFT); }
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { newX += speed * deltaTime; changeDirection(Direction.RIGHT); }
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) { newY += speed * deltaTime; changeDirection(Direction.UP); }
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) { newY -= speed * deltaTime; changeDirection(Direction.DOWN); }
-            setPosition(newX, newY);
-            if (Gdx.input.isKeyPressed(Input.Keys.D)){
-                clearHeldItem();
-            }
-        }
+        float newX = getX(), newY = getY();
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { newX -= speed * deltaTime; changeDirection(Direction.LEFT); }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { newX += speed * deltaTime; changeDirection(Direction.RIGHT); }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) { newY += speed * deltaTime; changeDirection(Direction.UP); }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) { newY -= speed * deltaTime; changeDirection(Direction.DOWN); }
+        setPosition(newX, newY);
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             ItemType overlappingBinType = getOverlappingBinType();
             if (overlappingBinType != null && overlappingBinType == this.heldItemType) {
@@ -156,22 +142,6 @@ public class BucketActor extends CollidableActor {
         this.heldItem = null; // Clear the reference
         setItemPickedUp(false);
     }
-
-//    private void dropItem() {
-//        if (heldItemSprite != null && heldItemType != null) {
-//            // Communicate with the GamePlay class to remove the item from the stage
-//            gamePlay.dropItemInBin(this, heldItemType);
-//            clearHeldItem(); // Clear the held item
-//        }
-//    }
-
-//    public void clearHeldItem() {
-//        if (heldItemSprite != null) {
-//            heldItemSprite = null; // Remove reference to the sprite
-//        }
-//        this.heldItemType = null;// Assuming heldItemType is used to track the current item
-//        this.setItemPickedUp(false);
-//    }
 
     private void ensureInBounds() {
         float clampedX = MathUtils.clamp(getX(), 0, getStage().getViewport().getWorldWidth() - getWidth());
@@ -257,6 +227,15 @@ public class BucketActor extends CollidableActor {
         textureUp.dispose();
         textureDown.dispose();
     }
+
+    public void decreaseLife(float amount) {
+        lifeManager.decreaseHealth(amount); // Assuming LifeManager has a method to decrease life
+        if (lifeManager.getLife() <= 0) {
+            // Handle the bucket's life reaching zero or below
+            // For example, trigger a game over or respawn the bucket
+        }
+    }
+
     public float getSpeed() {
         return speed;
     }
