@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -18,13 +19,14 @@ public class BucketActor extends CollidableActor {
     private Texture textureDown;
     private Sprite currentSprite;
     private float speed;
-    private Texture texture;
-    private String possessionValue;
+//    private Texture texture;
+//    private String possessionValue;
     private boolean itemPickedUp; // Flag to check if an item has been picked up
     private int itemType; // Type of item picked up
     private Sprite heldItemSprite; // Sprite to display the item picked up
     private LifeManager lifeManager;
     private ItemType heldItemType;
+    private TextureRegion heldItemTextureRegion;
 
 
     // Constructor
@@ -45,58 +47,56 @@ public class BucketActor extends CollidableActor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        // Update logic to prevent picking up items if already picked up
+        handleInput(delta); // Handle user input separately
+        ensureInBounds(); // Ensure the actor remains within the screen bounds
+    }
+
+    private void handleInput(float delta) {
         if (!itemPickedUp) {
-            // Get current bucket position
-            float newX = getX();
-            float newY = getY();
-            // Update position based on input
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                newX -= speed * delta;
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                newX += speed * delta;
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                newY += speed * delta;
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                newY -= speed * delta;
-            }
-            // Clamp position within screen bounds
-            newX = MathUtils.clamp(newX, 0, getStage().getViewport().getWorldWidth() - getWidth());
-            newY = MathUtils.clamp(newY, 0, getStage().getViewport().getWorldHeight() - getHeight());
-            // Update bucket position
+            float newX = getX(), newY = getY();
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { newX -= speed * delta; changeDirection(Direction.LEFT); }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { newX += speed * delta; changeDirection(Direction.RIGHT); }
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) { newY += speed * delta; changeDirection(Direction.UP); }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) { newY -= speed * delta; changeDirection(Direction.DOWN); }
             setPosition(newX, newY);
-        } else {
-            // If item is picked up, clamp the bucket's position within screen bounds
-            float clampedX = MathUtils.clamp(getX(), 0, getStage().getViewport().getWorldWidth() - getWidth());
-            float clampedY = MathUtils.clamp(getY(), 0, getStage().getViewport().getWorldHeight() - getHeight());
-            setPosition(clampedX, clampedY);
+        }
+        if (itemPickedUp){
+            if (Gdx.input.isKeyPressed(Input.Keys.D)){
+                clearHeldItem();
+            }
         }
     }
-    public void setHeldItemSprite(Texture texture) {
-        this.heldItemSprite = new Sprite(texture);
-        this.heldItemSprite.setSize(50, 50); // Set the size of the sprite
+
+    private void ensureInBounds() {
+        float clampedX = MathUtils.clamp(getX(), 0, getStage().getViewport().getWorldWidth() - getWidth());
+        float clampedY = MathUtils.clamp(getY(), 0, getStage().getViewport().getWorldHeight() - getHeight());
+        setPosition(clampedX, clampedY);
     }
+
+    public void setHeldItemSprite(TextureRegion textureRegion) {
+        // Initialize the sprite with the new texture region
+        this.heldItemSprite = new Sprite(textureRegion);
+
+        // Set the size of the sprite
+        this.heldItemSprite.setSize(50, 50); // You can use any size you want
+
+        // Optionally, set the origin of the sprite if you need to rotate it around its center
+        this.heldItemSprite.setOrigin(25, 25); // Set origin to center for a 50x50 sprite
+    }
+
 
     public void clearHeldItem() {
         this.heldItemType = null; // Assuming heldItemType is used to track the current item
         this.setItemPickedUp(false);
         // Reset the texture or visual representation of the bucket
-        setDefaultTexture();
-    }
-
-    private void setDefaultTexture() {
-        // Logic to reset the bucket's texture to its default state
-        this.heldItemSprite.setSize(0, 0); // Set the size of the sprite
+        this.heldItemTextureRegion = null;
     }
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         batch.draw(currentSprite, getX(), getY(), getWidth(), getHeight());
         if (heldItemSprite != null) {
-            heldItemSprite.setPosition(getX(), getY() + getHeight()); // Position the sprite above the bucket
+            heldItemSprite.setPosition(this.getX(), this.getY() + this.getHeight()); // Position it relative to the bucket
             heldItemSprite.draw(batch);
         }
         lifeManager.draw(batch, getX(), getY(), getWidth(), getHeight());
@@ -159,6 +159,11 @@ public class BucketActor extends CollidableActor {
     }
     public void setItemPickedUp(boolean itemPickedUp) {
         this.itemPickedUp = itemPickedUp;
+    }
+
+    public void setHeldItemTextureRegion(TextureRegion textureRegion) {
+        this.heldItemTextureRegion = textureRegion;
+        // Update any sprite or drawable that uses this texture region
     }
 
     public void setHeldItemType(ItemType itemType) {
