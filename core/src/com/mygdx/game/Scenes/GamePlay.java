@@ -65,6 +65,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private ToxicWasteActor toxicWaste;
     private float timer;
     private LifeManager lifeManager;
+
     public float getTimer() {
         return timer;
     }
