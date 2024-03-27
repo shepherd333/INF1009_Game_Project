@@ -46,10 +46,15 @@ public class CollisionManager {
     private void processCollision(CollidableActor actor1, CollidableActor actor2) {
         for (Map.Entry<Class<? extends Criterias>, Class<? extends ICollisionHandler>> entry : criteriaToHandlers.entrySet()) {
             try {
+                // Instantiate the criteria using the stage constructor
                 Criterias criteria = entry.getKey().getConstructor(Stage.class).newInstance(stage);
 
                 if (criteria.meetsCriteria(actor1, actor2)) {
-                    ICollisionHandler handler = entry.getValue().getDeclaredConstructor(Actor.class, Actor.class).newInstance(actor1, actor2);
+                    // Reflectively instantiate the handler using the correct constructor
+                    // that includes both Actor instances and the Stage instance.
+                    ICollisionHandler handler = entry.getValue()
+                            .getDeclaredConstructor(Actor.class, Actor.class, Stage.class)
+                            .newInstance(actor1, actor2, stage);
                     handler.handleCollision();
                     break; // Assuming only one criteria can be met at a time
                 }
@@ -58,4 +63,5 @@ public class CollisionManager {
             }
         }
     }
+
 }

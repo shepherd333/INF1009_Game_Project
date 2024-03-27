@@ -1,4 +1,4 @@
-package com.mygdx.game.Scenes;
+package com.mygdx.game.Lifecycle;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;

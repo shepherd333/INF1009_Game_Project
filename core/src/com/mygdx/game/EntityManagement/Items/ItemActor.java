@@ -100,6 +100,16 @@ public class ItemActor extends CollidableActor {
         }
     }
 
+    @Override
+    public boolean remove() {
+        boolean removed = super.remove();  // This line actually removes the actor from the stage
+        if (removed) {
+            // Perform any additional cleanup here if necessary
+        }
+        return removed;
+    }
+
+
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
         // Log the current bounds

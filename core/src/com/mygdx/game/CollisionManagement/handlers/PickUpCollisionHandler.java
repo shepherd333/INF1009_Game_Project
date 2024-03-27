@@ -3,12 +3,16 @@ package com.mygdx.game.CollisionManagement.handlers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.EntityManagement.BucketActor;
 import com.mygdx.game.EntityManagement.Items.ItemActor;
 
 public class PickUpCollisionHandler extends BaseCollisionHandler {
-    public PickUpCollisionHandler(Actor actor1, Actor actor2) {
+    private Stage stage;
+
+    public PickUpCollisionHandler(Actor actor1, Actor actor2, Stage stage) {
         super(actor1, actor2);
+        this.stage = stage;
     }
 
     @Override
@@ -22,13 +26,17 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
 
     private void handlePickUp(BucketActor bucket, ItemActor item) {
         if (!bucket.isItemPickedUp()) {
-            // Example: assign item's texture to the bucket or handle as needed
+            // Assign item's properties to the bucket
             bucket.setHeldItemType(item.getItemType());
             bucket.setHeldItemSprite(item.getTextureRegion());
             bucket.setItemPickedUp(true);
-            item.remove(); // Remove the item actor from the stage
-            Gdx.app.log("PickUpCollisionHandler", "Item picked up: " + item.getItemType());
-//            bucket.setHeldItemSprite(new Texture(Gdx.files.internal(textureFilename)));
+            int actorCountBefore = stage.getActors().size;
+            item.remove();  // This should remove the actor from the stage
+            int actorCountAfter = stage.getActors().size;
+
+            Gdx.app.log("Debug", "Actor count before removal: " + actorCountBefore);
+            Gdx.app.log("Debug", "Actor count after removal: " + actorCountAfter);
+            Gdx.app.log("Debug", "Removal successful: " + (actorCountBefore > actorCountAfter));
         }
     }
 }

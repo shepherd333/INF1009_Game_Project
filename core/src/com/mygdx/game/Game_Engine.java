@@ -1,13 +1,10 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
-import com.mygdx.game.Scenes.AudioManager;
+import com.mygdx.game.Lifecycle.AudioManager;
 import com.mygdx.game.Scenes.MainMenu;
 import com.mygdx.game.Scenes.SceneManager;
-import com.badlogic.gdx.Graphics.DisplayMode;
 //import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
 //import com.mygdx.game.Lifecycle.HighScore.ScoreFileHandler;
 //import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;

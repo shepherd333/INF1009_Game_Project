@@ -1,4 +1,4 @@
-package com.mygdx.game.Scenes;
+package com.mygdx.game.Lifecycle;
 
 public class LevelConfig {
     public float spawnSpeedFactor;
