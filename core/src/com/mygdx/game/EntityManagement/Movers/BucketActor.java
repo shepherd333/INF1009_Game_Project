@@ -1,4 +1,4 @@
-package com.mygdx.game.EntityManagement;
+package com.mygdx.game.EntityManagement.Movers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -11,7 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.EntityManagement.Bins.BinActor;
-import com.mygdx.game.EntityManagement.Items.ItemActor;
+import com.mygdx.game.EntityManagement.Foundation.CollidableActor;
+import com.mygdx.game.EntityManagement.Static.ToxicWasteActor;
 import com.mygdx.game.Lifecycle.LifeSystem.LifeManager;
 import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
 import com.mygdx.game.Scenes.GamePlay;

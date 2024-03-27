@@ -7,7 +7,7 @@
 //import com.badlogic.gdx.utils.Timer;
 //import com.mygdx.game.EntityManagement.RaindropActor;
 //import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
-//import com.mygdx.game.EntityManagement.CollidableActor;
+//import com.mygdx.game.EntityManagement.Foundation.CollidableActor;
 //
 //public class CollectCollisionHandler extends BaseCollisionHandler {
 //    private HighScoreManager highScoreManager;

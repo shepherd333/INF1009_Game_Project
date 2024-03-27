@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.mygdx.game.EntityManagement.CollidableActor;
+import com.mygdx.game.EntityManagement.Foundation.CollidableActor;
 import com.mygdx.game.enums.ItemType;
 
 public class BinActor extends CollidableActor {

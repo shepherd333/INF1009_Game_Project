@@ -1,16 +1,18 @@
 package com.mygdx.game.Lifecycle;
 
+import com.mygdx.game.enums.ItemType;
+
 public class LevelConfig {
     public float spawnSpeedFactor;
     public float movementSpeedFactor;
-    public final int spawnToxicWaste;
+    public int spawnToxicWaste;
+    public ItemType[] spawnTypes; // Array of bin types to spawn
 
-    // Constructor
-    public LevelConfig(float spawnSpeedFactor, float movementSpeedFactor, int spawnToxicWaste) {
+    public LevelConfig(float spawnSpeedFactor, float movementSpeedFactor, int spawnToxicWaste, ItemType[] spawnTypes) {
         this.spawnSpeedFactor = spawnSpeedFactor;
         this.movementSpeedFactor = movementSpeedFactor;
         this.spawnToxicWaste = spawnToxicWaste;
-    }
+        this.spawnTypes = spawnTypes; // Initialize with desired bin types
 
-    // Add any other level-specific settings or methods here
+    }
 }

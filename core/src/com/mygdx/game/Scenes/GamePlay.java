@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -18,10 +17,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.CollisionManagement.CollisionManager;
-import com.mygdx.game.EntityManagement.*;
 import com.mygdx.game.EntityManagement.Bins.*;
-import com.mygdx.game.EntityManagement.Items.*;
+import com.mygdx.game.EntityManagement.Foundation.CollidableActor;
+import com.mygdx.game.EntityManagement.Movers.BucketActor;
+import com.mygdx.game.EntityManagement.Movers.ItemActor;
+import com.mygdx.game.EntityManagement.Movers.TrashMonsterActor;
 import com.mygdx.game.EntityManagement.Static.ConveyorBeltActor;
+import com.mygdx.game.EntityManagement.Static.ToxicWasteActor;
 import com.mygdx.game.InputManagement.InputManager;
 import com.mygdx.game.Lifecycle.LevelConfig;
 import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
@@ -70,20 +72,7 @@ public class GamePlay extends BaseScene {
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
-        BinActor glassBin = new BinActor(ItemType.GLASS, 0); // First position
-        stage.addActor(glassBin);
-
-        BinActor paperBin = new BinActor(ItemType.PAPER, 1); // Second position
-        stage.addActor(paperBin);
-
-        BinActor plasticBin = new BinActor(ItemType.PLASTIC, 2); // Third position
-        stage.addActor(plasticBin);
-
-        BinActor metalBin = new BinActor(ItemType.METAL, 3); // Fourth position
-        stage.addActor(metalBin);
-
-        BinActor trashBin = new BinActor(ItemType.TRASH, 4); // Fifth position
-        stage.addActor(trashBin);
+        spawnBins();
 
 
         conveyorBelt = new ConveyorBeltActor();
@@ -142,6 +131,14 @@ public class GamePlay extends BaseScene {
         stage.addActor(trashMonsterActor);
     }
 
+    private void spawnBins() {
+        for (int i = 0; i < levelConfig.spawnTypes.length; i++) {
+            BinActor bin = new BinActor(levelConfig.spawnTypes[i], i); // Position might need adjusting
+            stage.addActor(bin);
+        }
+    }
+
+
     @Override
     protected String getBackgroundTexturePath() {
         return "FloorBG.png";
@@ -154,21 +151,24 @@ public class GamePlay extends BaseScene {
     }
 
     private void spawnItem() {
-        ItemType[] itemTypes = ItemType.values();
-        int itemToSpawnIndex = random.nextInt(itemTypes.length); // Randomly pick an item type
-        ItemType itemType = itemTypes[itemToSpawnIndex];
+        if (levelConfig.spawnTypes.length > 0) {
+            // Select a random item type from the level-configured bin types
+            int itemToSpawnIndex = random.nextInt(levelConfig.spawnTypes.length);
+            ItemType itemType = levelConfig.spawnTypes[itemToSpawnIndex];
 
-        float baseSpeed = 75;
-        ItemActor item = new ItemActor(itemType, baseSpeed * levelConfig.movementSpeedFactor, 0, 0, this);
-        if (!checkCollision(item)) {
-            items.add(item);
-            actors.add(item); // Assuming 'actors' can include any CollidableActor
-            stage.addActor(item);
-            item.resetPosition(item.bucketX, item.bucketWidth);
-        } else {
-            item.remove(); // If there's a collision upon spawning, remove the item
+            float baseSpeed = 75; // Consider making this part of LevelConfig if it varies by level
+            ItemActor item = new ItemActor(itemType, baseSpeed * levelConfig.movementSpeedFactor, 0, 0, this);
+            if (!checkCollision(item)) {
+                items.add(item);
+                actors.add(item); // Assuming 'actors' can include any CollidableActor
+                stage.addActor(item);
+                item.resetPosition(item.bucketX, item.bucketWidth);
+            } else {
+                item.remove(); // Remove the item if there's a collision upon spawning
+            }
         }
     }
+
 
     private void spawnToxicWaste(int spawnToxicWaste) {
         for (int i = 0; i < spawnToxicWaste; i++) {

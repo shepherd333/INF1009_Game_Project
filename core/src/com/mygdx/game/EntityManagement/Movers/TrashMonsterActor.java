@@ -1,12 +1,14 @@
-package com.mygdx.game.EntityManagement;
+package com.mygdx.game.EntityManagement.Movers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.EntityManagement.Foundation.CollidableActor;
+import com.mygdx.game.EntityManagement.Movers.BucketActor;
 
-public class TrashMonsterActor extends CollidableActor{
+public class TrashMonsterActor extends CollidableActor {
     private Sprite sprite;
 
     public TrashMonsterActor() {

@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.mygdx.game.EntityManagement.BucketActor;
+import com.mygdx.game.EntityManagement.Movers.BucketActor;
 
 public class InputManager {
     private Stage stage;

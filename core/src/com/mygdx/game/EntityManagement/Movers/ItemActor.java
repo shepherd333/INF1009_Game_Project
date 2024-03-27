@@ -1,4 +1,4 @@
-package com.mygdx.game.EntityManagement.Items;
+package com.mygdx.game.EntityManagement.Movers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.mygdx.game.EntityManagement.CollidableActor;
+import com.mygdx.game.EntityManagement.Foundation.CollidableActor;
 import com.mygdx.game.Scenes.GamePlay;
 import com.mygdx.game.enums.ItemType;
 

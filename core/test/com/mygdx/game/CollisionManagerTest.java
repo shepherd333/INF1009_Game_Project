@@ -1,7 +1,7 @@
 //package com.mygdx.game;
 //
 //import com.mygdx.game.CollisionManagement.CollisionManager;
-//import com.mygdx.game.EntityManagement.BucketActor;
+//import com.mygdx.game.EntityManagement.Movers.BucketActor;
 //import com.mygdx.game.EntityManagement.RaindropActor;
 //import com.mygdx.game.EntityManagement.Foundation.Entity;
 //

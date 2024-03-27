@@ -3,8 +3,8 @@ package com.mygdx.game.CollisionManagement.handlers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.mygdx.game.EntityManagement.BucketActor;
-import com.mygdx.game.EntityManagement.Items.ItemActor;
+import com.mygdx.game.EntityManagement.Movers.BucketActor;
+import com.mygdx.game.EntityManagement.Movers.ItemActor;
 
 public class PickUpCollisionHandler extends BaseCollisionHandler {
     private Stage stage;

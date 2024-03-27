@@ -1,7 +1,7 @@
 //package com.mygdx.game.CollisionManagement.CollisionCriterias;
 //
 //import com.badlogic.gdx.scenes.scene2d.Actor;
-//import com.mygdx.game.EntityManagement.BucketActor;
+//import com.mygdx.game.EntityManagement.Movers.BucketActor;
 //import com.mygdx.game.EntityManagement.RaindropActor;
 //
 //public class CollectCollisionCriteria implements Criterias {

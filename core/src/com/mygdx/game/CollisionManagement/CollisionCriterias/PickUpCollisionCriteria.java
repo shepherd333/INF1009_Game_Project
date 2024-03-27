@@ -2,9 +2,8 @@ package com.mygdx.game.CollisionManagement.CollisionCriterias;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.mygdx.game.CollisionManagement.CollisionCriterias.Criterias;
-import com.mygdx.game.EntityManagement.BucketActor;
-import com.mygdx.game.EntityManagement.Items.ItemActor;
+import com.mygdx.game.EntityManagement.Movers.BucketActor;
+import com.mygdx.game.EntityManagement.Movers.ItemActor;
 import com.mygdx.game.InputManagement.InputManager;
 
 public class PickUpCollisionCriteria implements Criterias {

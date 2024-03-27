@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.mygdx.game.Lifecycle.LevelConfig;
+import com.mygdx.game.enums.ItemType;
 
 
 public class LevelMenu extends BaseScene{
@@ -32,7 +33,8 @@ public class LevelMenu extends BaseScene{
         level1btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig defaultLevelConfig = new LevelConfig(0.5f,1f, 0);
+                LevelConfig defaultLevelConfig = new LevelConfig(0.5f, 1f, 0,
+                        new ItemType[] { ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC });
                 getSceneManager().set(new GamePlay(getSceneManager(), defaultLevelConfig));
             }
         });
@@ -43,7 +45,9 @@ public class LevelMenu extends BaseScene{
         level2btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig lvl2config = new LevelConfig(1f, 1.5f, 2);
+                LevelConfig lvl2config = new LevelConfig(1f, 1.5f, 2,
+                        new ItemType[] { ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC, ItemType.METAL}
+                        );
                 getSceneManager().set(new GamePlay(getSceneManager(), lvl2config));
             }
         });
@@ -54,7 +58,8 @@ public class LevelMenu extends BaseScene{
         level3btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig lvl3config = new LevelConfig(1.5f, 2f, 3);
+                LevelConfig lvl3config = new LevelConfig(1.5f, 2f, 3,
+                        new ItemType[] { ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC, ItemType.METAL, ItemType.TRASH});
                 getSceneManager().set(new GamePlay(getSceneManager(),lvl3config));
             }
         });

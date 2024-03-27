@@ -6,9 +6,8 @@ import com.mygdx.game.CollisionManagement.handlers.ICollisionHandler;
 import com.mygdx.game.CollisionManagement.handlers.PickUpCollisionHandler;
 import com.mygdx.game.CollisionManagement.CollisionCriterias.PickUpCollisionCriteria;
 import com.mygdx.game.CollisionManagement.CollisionCriterias.Criterias;
-import com.mygdx.game.EntityManagement.CollidableActor;
+import com.mygdx.game.EntityManagement.Foundation.CollidableActor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
