@@ -91,7 +91,7 @@ public class BucketActor extends CollidableActor {
                 ToxicWasteActor toxicWaste = (ToxicWasteActor) actor;
                 if (getBounds().overlaps(toxicWaste.getBounds())) {
                     decreaseLife(0.1F); // Decrease life by 1 or another value based on your game's balance
-                    AudioManager.collisionSound.play();
+                    AudioManager.getInstance().playSoundEffect("collision", 1.0f);
                     break; // Optional: break if you only want to apply damage from one toxic waste per frame
                 }
             }
@@ -120,7 +120,7 @@ public class BucketActor extends CollidableActor {
     // Call this method when the item is picked up
     public void holdItem(ItemActor item) {
         this.heldItem = item;
-        AudioManager.itemPickupSound.play();
+        AudioManager.getInstance().playSoundEffect("itemPickup", 1.0f);
         setHeldItemType(item.getItemType());
         setHeldItemSprite(item.getTextureRegion());
         setItemPickedUp(true);
@@ -135,7 +135,7 @@ public class BucketActor extends CollidableActor {
             // If there is a bin overlapping and the item's type matches the bin's type
             if (overlappingBinType != null && overlappingBinType == heldItem.getItemType()) {
                 // Correct bin
-                AudioManager.correctBinSound.play();
+                AudioManager.getInstance().playSoundEffect("correctBin", 1.0f);
                 ScoreManager.getInstance().addToCurrentScore(100); // Add 100 points for correct placement
                 Gdx.app.log("GamePlay", "Correct bin! Score added!!!");
             }
@@ -152,7 +152,7 @@ public class BucketActor extends CollidableActor {
             ItemType overlappingBinType = getOverlappingBinType();
             if (overlappingBinType != null && overlappingBinType != heldItem.getItemType()){
                 // Incorrect bin or no bin
-                AudioManager.errorSound.play();
+                AudioManager.getInstance().playSoundEffect("errorSound", 1.0f);
                 ScoreManager.getInstance().subtractFromCurrentScore(50); // Subtract 50 points for incorrect placement
                 Gdx.app.log("GamePlay", "Incorrect bin or no bin overlapping! Score subtracted.");
             }

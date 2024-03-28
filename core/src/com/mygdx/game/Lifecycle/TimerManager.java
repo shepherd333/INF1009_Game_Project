@@ -27,15 +27,14 @@ public class TimerManager {
 
             // Trigger countdown sound at 10 seconds
             if ((int) Math.floor(timer) == 10 && !countdownPlayed) {
-                audioManager.playCountdownSound();
+                AudioManager.getInstance().playSoundEffect("countdown", 1.0f);
                 countdownPlayed = true;
             }
 
             // Handle timer reaching zero
             if (timer <= 0) {
                 timer = 0;
-                audioManager.stopCountdownSound();
-                audioManager.powerOffSound.play();
+                AudioManager.getInstance().playSoundEffect("powerOff", 1.0f);
                 if (onTimerEnd != null) {
                     onTimerEnd.run();
                 }

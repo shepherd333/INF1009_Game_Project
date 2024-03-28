@@ -3,18 +3,29 @@ package com.mygdx.game.Lifecycle;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AudioManager {
     private static AudioManager instance;
     private Music backgroundMusic;
     private boolean isMusicMuted;
+    private Map<String, Sound> soundEffects;
 
     private AudioManager() {
-        // Private constructor to prevent instantiation
+        soundEffects = new HashMap<>();
+        loadSoundEffects();
     }
 
-    private Sound countdownSound;
-
+    private void loadSoundEffects() {
+        soundEffects.put("collision", Gdx.audio.newSound(Gdx.files.internal("HitImpactSound.mp3")));
+        soundEffects.put("errorSound", Gdx.audio.newSound(Gdx.files.internal("ErrorSound.mp3")));
+        soundEffects.put("correctBin", Gdx.audio.newSound(Gdx.files.internal("CorrectBinSound.mp3")));
+        soundEffects.put("powerOff", Gdx.audio.newSound(Gdx.files.internal("PowerOffSound.mp3")));
+        soundEffects.put("itemPickup", Gdx.audio.newSound(Gdx.files.internal("ItemPickupSound.mp3")));
+        soundEffects.put("countdown", Gdx.audio.newSound(Gdx.files.internal("countdown.mp3")));
+        // Add other sound effects here
+    }
 
     public static AudioManager getInstance() {
         if (instance == null) {
@@ -22,11 +33,6 @@ public class AudioManager {
         }
         return instance;
     }
-    public static final Sound collisionSound = Gdx.audio.newSound(Gdx.files.internal("HitImpactSound.mp3"));
-    public static final Sound errorSound = Gdx.audio.newSound(Gdx.files.internal("ErrorSound.mp3"));
-    public static final Sound correctBinSound = Gdx.audio.newSound(Gdx.files.internal("CorrectBinSound.mp3"));
-    public static final Sound powerOffSound = Gdx.audio.newSound(Gdx.files.internal("PowerOffSound.mp3"));
-    public static final Sound itemPickupSound = Gdx.audio.newSound(Gdx.files.internal("ItemPickUpSound.mp3"));
     public void playBackgroundMusic(String filePath, boolean isLooping, float volume) {
         if (backgroundMusic != null) {
             backgroundMusic.stop(); // Stop any currently playing music
@@ -37,23 +43,11 @@ public class AudioManager {
         backgroundMusic.play();
     }
 
-    public void playCountdownSound() {
-        // Check if the sound is already playing, if not, play it
-        if (countdownSound == null) {
-            countdownSound = Gdx.audio.newSound(Gdx.files.internal("countdown.mp3"));
-        }
-        countdownSound.play(0.5f); // Replace 1.0f with the desired volume
-    }
 
     public void stopCountdownSound() {
+        Sound countdownSound = soundEffects.get("countdown");
         if (countdownSound != null) {
             countdownSound.stop();
-        }
-    }
-
-    public void stopBackgroundMusic() {
-        if (backgroundMusic != null) {
-            backgroundMusic.stop();
         }
     }
 
@@ -65,37 +59,23 @@ public class AudioManager {
     }
 
     // Method to play sound effects
-    public void playSoundEffect(String filePath, float volume) {
-        Sound soundEffect = Gdx.audio.newSound(Gdx.files.internal(filePath));
-        soundEffect.play(isMusicMuted ? 0 : volume);
+    public void playSoundEffect(String name, float volume) {
+        Sound soundEffect = soundEffects.get(name);
+        if (soundEffect != null) {
+            soundEffect.play();
+        }
     }
 
     public void dispose() {
         if (backgroundMusic != null) {
             backgroundMusic.dispose();
         }
-        if (collisionSound != null) {
-            collisionSound.dispose();
+        for (Sound sound : soundEffects.values()) {
+            if (sound != null) {
+                sound.dispose();
+            }
         }
-        if (errorSound != null) {
-            errorSound.dispose();
-        }
-        if (correctBinSound != null) {
-            correctBinSound.dispose();
-        }
-        if (countdownSound != null) {
-            countdownSound.dispose();
 
-        if (powerOffSound != null) {
-            powerOffSound.dispose();
-        }
-        if (itemPickupSound != null) {
-            itemPickupSound.dispose();
-        }
-    }
-
-
-        // Dispose other sounds if you're keeping references to them
     }
     public boolean isMusicMuted() {
         return isMusicMuted;

@@ -77,7 +77,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
 
         // Now that all dependencies are assured to be initialized, set up the TimerManager.
         // This step is done last to ensure 'font', 'batch', and 'AudioManager' are ready.
-        timerManager = new TimerManager(90, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
+        timerManager = new TimerManager(30, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
     }
 
     public void update(float deltaTime) {
@@ -279,14 +279,15 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private void checkMonsterBucketCollision() {
         if (trashMonsterActor.overlaps(bucket)) {
             bucket.decreaseLife(10); // This method needs to be defined in the BucketActor class
-            AudioManager.collisionSound.play(); // Play sound on collision
+            AudioManager.getInstance().playSoundEffect("collision", 1.0f);
             trashMonsterActor.respawnAtRandomEdge(); // Respawns the monster
         }
     }
 
     //GameOver
     public void onGameOver() {
-        AudioManager.powerOffSound.play();
+        AudioManager.getInstance().playSoundEffect("powerOff", 1.0f);
+        AudioManager.getInstance().stopCountdownSound();
         // Handle the transition to the leaderboard scene
         sceneManager.pushScene(new Leaderboard(sceneManager));
     }
