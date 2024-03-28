@@ -29,13 +29,13 @@ public class PauseMenuHowToPlay extends BaseScene {
         int screenHeight = Gdx.graphics.getHeight();
         int verticalOffset = (screenHeight - buttonHeight) / 2;
 
-        addButton("Back", new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // Transition to the PlayScene
-                getSceneManager().set(new PauseMenu(getSceneManager()));
-            }
-        }, screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin, buttonWidth, buttonHeight);
+//        addButton("Back", new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                // Transition to the PlayScene
+//                getSceneManager().set(new PauseMenu(getSceneManager()));
+//            }
+//        }, screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin, buttonWidth, buttonHeight);
 
     }
 

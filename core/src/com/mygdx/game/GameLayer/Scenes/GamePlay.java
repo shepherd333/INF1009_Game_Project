@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Random;
 import GameEngine.AIControl.AIManager;
 
+
 public class GamePlay extends BaseScene implements GameOverListener {
     private ShapeRenderer shapeRenderer;
     private Random random = new Random();
@@ -129,20 +130,20 @@ public class GamePlay extends BaseScene implements GameOverListener {
 
     private void initializeUIComponents() {
         skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
-        createPauseButton();
+//        createPauseButton();
         createHomeButton();
     }
 
-    private void createPauseButton() {
-        TextButton pauseBtn = new TextButton("Pause", skin);
-        setupButton(pauseBtn, 1);
-        pauseBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                sceneManager.pushScene(new PauseMenu(sceneManager));
-            }
-        });
-    }
+//    private void createPauseButton() {
+//        TextButton pauseBtn = new TextButton("Pause", skin);
+//        setupButton(pauseBtn, 1);
+//        pauseBtn.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                sceneManager.pushScene(new PauseMenu(sceneManager));
+//            }
+//        });
+//    }
 
     private void createHomeButton() {
         TextButton homeBtn = new TextButton("Home", skin);
