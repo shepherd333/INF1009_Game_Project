@@ -64,6 +64,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
         this.levelConfig = levelConfig;
+        ScoreManager.getInstance().setCurrentLevel(levelConfig.levelNumber);
 
         // First, initialize all graphical components and input processors.
         // This step ensures that 'font' and 'batch' are initialized before being used.
@@ -281,14 +282,18 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private void checkMonsterBucketCollision() {
         if (trashMonsterActor.overlaps(bucket)) {
             bucket.decreaseLife(10); // This method needs to be defined in the BucketActor class
-            AudioManager.collisionSound.play(); // Play sound on collision
+            AudioManager.getInstance().playSoundEffect("collision", 1.0f);
             trashMonsterActor.respawnAtRandomEdge(); // Respawns the monster
         }
     }
 
     //GameOver
     public void onGameOver() {
-        AudioManager.powerOffSound.play();
+        AudioManager.getInstance().playSoundEffect("powerOff", 1.0f);
+        AudioManager.getInstance().stopCountdownSound();
+        int currentScore = ScoreManager.getInstance().getCurrentScore();
+        ScoreManager.getInstance().addScore(currentScore); // Add the current score to the high scores
+        ScoreManager.getInstance().resetCurrentScore(); // Optionally reset the current score
         // Handle the transition to the leaderboard scene
         sceneManager.pushScene(new Leaderboard(sceneManager));
     }

@@ -36,7 +36,7 @@ public class LevelMenu extends BaseScene {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 LevelConfig defaultLevelConfig = new LevelConfig(0.5f, 1f, 0,
-                        new ItemType[] { ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC });
+                        new ItemType[] { ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC }, 1);
                 getSceneManager().set(new GamePlay(getSceneManager(), defaultLevelConfig));
             }
         });
@@ -48,8 +48,7 @@ public class LevelMenu extends BaseScene {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 LevelConfig lvl2config = new LevelConfig(1f, 1.5f, 2,
-                        new ItemType[] { ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC, ItemType.METAL}
-                        );
+                        new ItemType[] { ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC, ItemType.METAL}, 2);
                 getSceneManager().set(new GamePlay(getSceneManager(), lvl2config));
             }
         });
@@ -61,7 +60,7 @@ public class LevelMenu extends BaseScene {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 LevelConfig lvl3config = new LevelConfig(1.5f, 2f, 3,
-                        new ItemType[] { ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC, ItemType.METAL, ItemType.TRASH});
+                        new ItemType[] { ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC, ItemType.METAL, ItemType.TRASH}, 3);
                 getSceneManager().set(new GamePlay(getSceneManager(),lvl3config));
             }
         });
@@ -90,6 +89,8 @@ public class LevelMenu extends BaseScene {
     public void resize(int width, int height) {
         super.resize(width, height); // Call the resize method of the superclass
     }
+
+
     @Override
     public void dispose() {
         super.dispose(); // Call the dispose method of the superclass

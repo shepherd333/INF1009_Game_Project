@@ -32,7 +32,7 @@ public class EndMenu extends BaseScene {
                 // Transition to the PlayScene
                 getSceneManager().set(new MainMenu(getSceneManager()));
             }
-        }, (screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 70, buttonWidth, buttonHeight);
+        }, (screenWidth - buttonWidth) / 2, 50, buttonWidth, buttonHeight);
     }
 
     @Override

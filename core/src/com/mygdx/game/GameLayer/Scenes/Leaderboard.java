@@ -35,13 +35,13 @@ public class Leaderboard extends BaseScene {
 
         int verticalOffset = (screenHeight - totalHeight) / 2;
 
-        addButton("Home", new ClickListener() {
+        addButton("Next", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Transition to the MainMenuScene
-                getSceneManager().set(new MainMenu(getSceneManager()));
+                getSceneManager().set(new EndMenu(getSceneManager()));
             }
-        }, (screenWidth - buttonWidth) / 2, screenHeight - verticalOffset - 100, buttonWidth, buttonHeight);
+        }, 1085, 745, buttonWidth, buttonHeight);
     }
 
     @Override
@@ -53,12 +53,15 @@ public class Leaderboard extends BaseScene {
     public void render() {
         super.render();
         batch.begin();
-        font.getData().setScale(1.0f); // Adjust the scale as needed
+        font.getData().setScale(5.0f); // Adjust the scale as needed
 
-        int startY = Gdx.graphics.getHeight() - 100; // Starting Y position for the scores
+        int startY = Gdx.graphics.getHeight() - 222; // Starting Y position for the scores
+
+
+        // Retrieve and render scores
         for (String entry : ScoreManager.getInstance().getFormattedScores()) {
-            font.draw(batch, entry, 100, startY); // Adjust X position as needed
-            startY -= 30; // Adjust for the next entry
+            font.draw(batch, entry, 530, startY); // Adjust X position as needed
+            startY -= 107; // Adjust for the next entry
         }
 
         batch.end();

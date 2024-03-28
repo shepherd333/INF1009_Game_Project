@@ -1,8 +1,10 @@
 package GameEngine.SimulationLifecycleManagement;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import GameEngine.SimulationLifecycleManagement.ScoreSystem.ScoreManager;
 
 public class TimerManager {
     private float timer;
@@ -26,15 +28,17 @@ public class TimerManager {
 
             // Trigger countdown sound at 10 seconds
             if ((int) Math.floor(timer) == 10 && !countdownPlayed) {
-                audioManager.playCountdownSound();
+                AudioManager.getInstance().playSoundEffect("countdown", 1.0f);
                 countdownPlayed = true;
             }
 
             // Handle timer reaching zero
             if (timer <= 0) {
                 timer = 0;
-                audioManager.stopCountdownSound();
-                audioManager.powerOffSound.play();
+                AudioManager.getInstance().playSoundEffect("powerOff", 1.0f);
+                int currentScore = ScoreManager.getInstance().getCurrentScore();
+                ScoreManager.getInstance().addScore(currentScore); // Add the current score to the high scores
+                ScoreManager.getInstance().resetCurrentScore(); // Optionally reset the current score
                 if (onTimerEnd != null) {
                     onTimerEnd.run();
                 }
