@@ -67,7 +67,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private TimerManager timerManager;
     private BucketItemHandler bucketItemHandler;
     private PlayerController playerController;
-    private GameInitializationManager initManager;
+    private InitializationGameManagers initManager;
 
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
@@ -79,7 +79,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
         initializeUIComponents();
         initializeGameComponents();
         initializeGameManagers();
-
     }
 
     public void update(float deltaTime) {
@@ -116,7 +115,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     }
 
     private void initializeGameManagers() {
-        initManager = new GameInitializationManager(
+        initManager = new InitializationGameManagers(
                 sceneManager, AudioManager.getInstance(), font, batch, bucket
         );
 
