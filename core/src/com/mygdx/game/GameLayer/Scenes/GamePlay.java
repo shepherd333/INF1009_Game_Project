@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import GameEngine.AIControl.AIManager;
+import GameEngine.Collisions.BucketItemHandler;
+import GameEngine.PlayerControl.PlayerController;
 
 public class GamePlay extends BaseScene implements GameOverListener {
     private ShapeRenderer shapeRenderer;
@@ -60,6 +62,9 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private AIManager aiManager;
     private ScoreManager scoreManager;
     private TimerManager timerManager;
+    private BucketItemHandler bucketItemHandler;
+    private PlayerController playerController;
+
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
@@ -81,6 +86,9 @@ public class GamePlay extends BaseScene implements GameOverListener {
         // Now that all dependencies are assured to be initialized, set up the TimerManager.
         // This step is done last to ensure 'font', 'batch', and 'AudioManager' are ready.
         timerManager = new TimerManager(90, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
+        float speed = 300; // Define the speed as per your requirement
+        playerController = new PlayerController(bucket, speed);
+        bucketItemHandler = new BucketItemHandler(bucket);
     }
 
     public void update(float deltaTime) {
@@ -90,6 +98,8 @@ public class GamePlay extends BaseScene implements GameOverListener {
         // Update timer
         timerManager.update(deltaTime);
         handleCollisions();
+        playerController.handleInput(deltaTime);
+        bucketItemHandler.handleItemPickupOrDrop();
     }
 
     @Override
