@@ -12,14 +12,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import GameEngine.EntityManagement.CollidableActor;
 import GameEngine.PlayerControl.BucketInputHandler;
 import GameEngine.SimulationLifecycleManagement.AudioManager;
-import GameEngine.SimulationLifecycleManagement.LifeSystem.LifeManager;
+import GameEngine.SimulationLifecycleManagement.LifeManager;
 import GameEngine.SimulationLifecycleManagement.ScoreSystem.ScoreManager;
 import com.mygdx.game.GameLayer.GameEntities.Movers.enums.Direction;
 import com.mygdx.game.GameLayer.GameEntities.Static.BinActor;
 import com.mygdx.game.GameLayer.Scenes.GamePlay;
 import GameEngine.SceneManagement.SceneManager;
 import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
-import com.mygdx.game.GameLayer.GameEntities.Movers.enums.Direction;
 
 
 public class BucketActor extends CollidableActor {
