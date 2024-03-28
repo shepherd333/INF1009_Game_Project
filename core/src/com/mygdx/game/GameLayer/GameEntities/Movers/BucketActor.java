@@ -15,11 +15,9 @@ import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.SimulationLifecycleManagement.LifeSystem.LifeManager;
 import GameEngine.SimulationLifecycleManagement.ScoreSystem.ScoreManager;
 import com.mygdx.game.GameLayer.GameEntities.Static.BinActor;
-import com.mygdx.game.GameLayer.GameEntities.Movers.ItemActor;
-import com.mygdx.game.GameLayer.GameEntities.Movers.ToxicWasteActor;
 import com.mygdx.game.GameLayer.Scenes.GamePlay;
 import GameEngine.SceneManagement.SceneManager;
-import com.mygdx.game.GameLayer.enums.ItemType;
+import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
 
 public class BucketActor extends CollidableActor {
     private Texture textureLeft;

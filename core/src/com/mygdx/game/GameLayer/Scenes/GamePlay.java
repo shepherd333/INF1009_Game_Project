@@ -32,7 +32,7 @@ import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.SimulationLifecycleManagement.LevelConfig;
 import GameEngine.SimulationLifecycleManagement.ScoreSystem.ScoreManager;
 import GameEngine.SimulationLifecycleManagement.TimerManager;
-import com.mygdx.game.GameLayer.enums.ItemType;
+import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

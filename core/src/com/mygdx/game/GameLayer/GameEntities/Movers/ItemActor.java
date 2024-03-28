@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import GameEngine.EntityManagement.CollidableActor;
 import com.mygdx.game.GameLayer.Scenes.GamePlay;
-import com.mygdx.game.GameLayer.enums.ItemType;
+import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
 
 import java.util.HashMap;
 import java.util.Map;

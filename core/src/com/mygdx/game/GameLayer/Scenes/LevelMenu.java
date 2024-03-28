@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import GameEngine.SimulationLifecycleManagement.LevelConfig;
-import com.mygdx.game.GameLayer.enums.ItemType;
+import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
 
 
 public class LevelMenu extends BaseScene {

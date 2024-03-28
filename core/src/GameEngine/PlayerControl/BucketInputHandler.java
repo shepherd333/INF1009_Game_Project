@@ -3,7 +3,7 @@ package GameEngine.PlayerControl;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
-import com.mygdx.game.GameLayer.enums.ItemType;
+import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
 
 public class BucketInputHandler {
     private final BucketActor bucketActor;
