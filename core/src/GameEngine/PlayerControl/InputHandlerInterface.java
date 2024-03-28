@@ -7,4 +7,5 @@ package GameEngine.PlayerControl;
  */
 public interface InputHandlerInterface {
     boolean isKeyPressed(int key);
+    boolean isSpaceBarPressed();
 }
