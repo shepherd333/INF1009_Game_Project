@@ -1,11 +1,11 @@
 // BucketItemHandler.java
-package GameEngine.Collisions;
+package GameEngine.Collisions.handlers;
 
 import GameEngine.AIControl.ShakingManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
-import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
+import GameEngine.Collisions.handlers.enums.ItemType;
 
 public class BucketItemHandler {
     private final BucketActor bucketActor;

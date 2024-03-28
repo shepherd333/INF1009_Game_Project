@@ -1,4 +1,4 @@
-package GameEngine.Collisions;
+package GameEngine.Collisions.handlers;
 
 import GameEngine.SimulationLifecycleManagement.AudioManager;
 import com.badlogic.gdx.scenes.scene2d.Actor;

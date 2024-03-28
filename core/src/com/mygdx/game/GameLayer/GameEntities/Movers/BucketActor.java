@@ -1,6 +1,6 @@
 package com.mygdx.game.GameLayer.GameEntities.Movers;
 import GameEngine.AIControl.ShakingHandler;
-import GameEngine.Collisions.BucketToxicHandler;
+import GameEngine.Collisions.handlers.BucketToxicHandler;
 import GameEngine.PlayerControl.GdxInputHandler;
 import GameEngine.PlayerControl.InputHandlerInterface;
 import com.badlogic.gdx.Gdx;
@@ -18,11 +18,10 @@ import GameEngine.PlayerControl.BucketMovementHandler;
 import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.SimulationLifecycleManagement.LifeManager;
 import GameEngine.SimulationLifecycleManagement.ScoreManager;
-import com.mygdx.game.GameLayer.GameEntities.Movers.enums.Direction;
-import com.mygdx.game.GameLayer.GameEntities.Static.BinActor;
-import com.mygdx.game.GameLayer.Scenes.GamePlay;
-import GameEngine.SceneManagement.SceneManager;
-import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
+import GameEngine.Collisions.handlers.enums.Direction;
+import com.mygdx.game.GameLayer.GameEntities.Movers.Static.BinActor;
+import com.mygdx.game.GameLayer.Scenes.Gameplay.GamePlay;
+import GameEngine.Collisions.handlers.enums.ItemType;
 
 import java.util.EnumMap;
 

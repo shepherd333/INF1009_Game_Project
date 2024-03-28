@@ -1,4 +1,4 @@
-package com.mygdx.game.GameLayer.GameEntities.Movers.enums;
+package GameEngine.Collisions.handlers.enums;
 
 public enum ItemType {
     GLASS, METAL, PAPER, PLASTIC, TRASH
