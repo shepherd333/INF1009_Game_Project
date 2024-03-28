@@ -112,6 +112,28 @@ public class BucketActor extends CollidableActor {
         movementHandler = new BucketMovementHandler(this, speed, inputHandler);
     }
 
+    private void ensureInBounds() {
+        float clampedX = MathUtils.clamp(getX(), 0, getStage().getViewport().getWorldWidth() - getWidth());
+        float clampedY = MathUtils.clamp(getY(), 0, getStage().getViewport().getWorldHeight() - getHeight());
+        setPosition(clampedX, clampedY);
+    }
+
+    public void changeDirection(Direction direction) {
+        Texture newDirectionTexture = directionTextures.get(direction);
+        if (newDirectionTexture != null) {
+            currentSprite.setTexture(newDirectionTexture);
+            this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
+            // You may also need to adjust the sprite's size or other properties here.
+        }
+    }
+
+    // Provides a bounding box for the bucket, useful for collision detection.
+    public Rectangle getBounds() {
+        Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
+//        Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
+        return bounds;
+    }
+
     //Item Methods
     // Call this method when the item is picked up
     public void holdItem(ItemActor item) {
@@ -177,19 +199,6 @@ public class BucketActor extends CollidableActor {
         }
     }
 
-    public void clearHeldItem() {
-        this.heldItemType = null;
-        this.heldItemSprite = null;
-        this.heldItem = null; // Clear the reference
-        setItemPickedUp(false);
-    }
-
-    private void ensureInBounds() {
-        float clampedX = MathUtils.clamp(getX(), 0, getStage().getViewport().getWorldWidth() - getWidth());
-        float clampedY = MathUtils.clamp(getY(), 0, getStage().getViewport().getWorldHeight() - getHeight());
-        setPosition(clampedX, clampedY);
-    }
-
     public void setHeldItemSprite(TextureRegion textureRegion) {
         // Initialize the sprite with the new texture region
         this.heldItemSprite = new Sprite(textureRegion);
@@ -202,57 +211,11 @@ public class BucketActor extends CollidableActor {
     }
 
 
-    public void changeDirection(Direction direction) {
-        Texture newDirectionTexture = directionTextures.get(direction);
-        if (newDirectionTexture != null) {
-            currentSprite.setTexture(newDirectionTexture);
-            this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
-            // You may also need to adjust the sprite's size or other properties here.
-        }
-    }
-
-    // Provides a bounding box for the bucket, useful for collision detection.
-    public Rectangle getBounds() {
-        Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
-//        Gdx.app.log("BucketActor", "Bounds: " + bounds.toString());
-        return bounds;
-    }
-
-    @Override
-    public void setWidth(float width) {
-        super.setWidth(width);
-    }
-    @Override
-    public void setHeight(float height) {
-        super.setHeight(height);
-    }
-
-    public void dispose() {
-        for (Texture texture : directionTextures.values()) {
-            texture.dispose();
-        }
-    }
-
-    public void decreaseLife(float amount) {
-        lifeManager.decreaseHealth(amount); // Assuming LifeManager has a method to decrease life
-        if (lifeManager.getLife() <= 0) {
-        }
-    }
-
-    public boolean isItemPickedUp() {
-        return itemPickedUp;
-    }
-    public void setItemPickedUp(boolean itemPickedUp) {
-        this.itemPickedUp = itemPickedUp;
-    }
-
-    public void setHeldItemType(ItemType itemType) {
-        this.heldItemType = itemType;
-        Gdx.app.log("BucketActor", "Held item type set to: " + itemType);
-    }
-
-    public ItemType getHeldItemType() {
-        return heldItemType;
+    public void clearHeldItem() {
+        this.heldItemType = null;
+        this.heldItemSprite = null;
+        this.heldItem = null; // Clear the reference
+        setItemPickedUp(false);
     }
 
     public ItemType getOverlappingBinType() {
@@ -276,6 +239,41 @@ public class BucketActor extends CollidableActor {
         return null;
     }
 
+    @Override
+    public void setWidth(float width) {
+        super.setWidth(width);
+    }
+    @Override
+    public void setHeight(float height) {
+        super.setHeight(height);
+    }
+
+    public void dispose() {
+        for (Texture texture : directionTextures.values()) {
+            texture.dispose();
+        }
+    }
+    public void decreaseLife(float amount) {
+        lifeManager.decreaseHealth(amount); // Assuming LifeManager has a method to decrease life
+        if (lifeManager.getLife() <= 0) {
+        }
+    }
+    //GETTERS AND SETTERS
+    public boolean isItemPickedUp() {
+        return itemPickedUp;
+    }
+    public void setItemPickedUp(boolean itemPickedUp) {
+        this.itemPickedUp = itemPickedUp;
+    }
+
+    public void setHeldItemType(ItemType itemType) {
+        this.heldItemType = itemType;
+        Gdx.app.log("BucketActor", "Held item type set to: " + itemType);
+    }
+
+    public ItemType getHeldItemType() {
+        return heldItemType;
+    }
     public void setShaking(boolean shaking) {
         this.isShaking = shaking;
     }
