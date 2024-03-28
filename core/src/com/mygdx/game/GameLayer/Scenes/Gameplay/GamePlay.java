@@ -349,6 +349,10 @@ public class GamePlay extends BaseScene implements GameOverListener {
         drawDebugShapes();
     }
 
+    private Stage getStage(){
+        return stage;
+    }
+
     private void setupShapeRenderer() {
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
