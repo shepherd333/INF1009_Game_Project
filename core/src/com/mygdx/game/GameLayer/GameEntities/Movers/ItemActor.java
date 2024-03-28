@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import GameEngine.EntityManagement.CollidableActor;
-import com.mygdx.game.GameLayer.Scenes.Gameplay.GamePlay;
+import com.mygdx.game.GameLayer.Scenes.GamePlay;
 import GameEngine.Collisions.handlers.enums.ItemType;
 
 import java.util.HashMap;

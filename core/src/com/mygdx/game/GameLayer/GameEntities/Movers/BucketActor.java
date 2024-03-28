@@ -21,7 +21,7 @@ import GameEngine.SimulationLifecycleManagement.LifeManager;
 import GameEngine.SimulationLifecycleManagement.ScoreManager;
 import GameEngine.Collisions.handlers.enums.Direction;
 import com.mygdx.game.GameLayer.GameEntities.Movers.Static.BinActor;
-import com.mygdx.game.GameLayer.Scenes.Gameplay.GamePlay;
+import com.mygdx.game.GameLayer.Scenes.GamePlay;
 import GameEngine.Collisions.handlers.enums.ItemType;
 
 import java.util.EnumMap;
