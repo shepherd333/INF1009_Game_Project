@@ -1,14 +1,12 @@
 package GameEngine.EntityManagement;
 
 import GameEngine.SimulationLifecycleManagement.LevelConfig;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.Static.ConveyorBeltActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.ToxicWasteActor;
-import com.mygdx.game.GameLayer.Scenes.Gameplay.GamePlay;
+import com.mygdx.game.GameLayer.Scenes.GamePlay;
 
 
 import java.util.ArrayList;

@@ -1,9 +1,10 @@
-package com.mygdx.game.GameLayer.Scenes.Gameplay;
+package com.mygdx.game.GameLayer.Scenes;
 
 import GameEngine.EntityManagement.EntityManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.GameOverListener;
 import GameEngine.SceneManagement.SceneManager;
+import GameEngine.SceneManagement.UIButtonManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -48,7 +49,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private ShapeRenderer shapeRenderer;
     private Random random = new Random();
     private Stage stage;
-    private Skin skin;
     private SpriteBatch batch;
     private Texture bg;
     private Sprite bgSprite;
@@ -69,8 +69,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private BucketItemHandler bucketItemHandler;
     private PlayerController playerController;
     private final EntityManager entityManager;
-    private InitializationGameManagers initManager;
-
+    private UIButtonManager uiButtonManager;
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
@@ -82,6 +81,20 @@ public class GamePlay extends BaseScene implements GameOverListener {
         initializeUIComponents();
         initializeGameComponents();
         initializeGameManagers();
+
+        skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
+        this.uiButtonManager = new UIButtonManager(skin, stage, sceneManager);
+        uiButtonManager.setupGamePlay();
+    }
+
+    private void initializeGraphics() {
+        batch = new SpriteBatch();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        Gdx.input.setInputProcessor(stage);
+        bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
+        bgSprite = new Sprite(bg);
+        bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        font = new BitmapFont();
     }
 
     public void update(float deltaTime) {
@@ -92,7 +105,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
         handleCollisions();
         playerController.handleInput(deltaTime);
         bucketItemHandler.handleItemPickupOrDrop();
-        processInput();
     }
 
     @Override
@@ -107,40 +119,28 @@ public class GamePlay extends BaseScene implements GameOverListener {
 
     //Initalizers
     @Override
+    public void initialize() {
+        // Set initial spawnTimer value to a smaller value
+        spawnTimer = MathUtils.random(1.0f, 2.0f); // Random initial delay between 1 and 3 seconds
+
+    }
+    private void initializeGameManagers() {
+        timerManager = new TimerManager(11, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
+        playerController = new PlayerController(bucket, 300);
+        bucketItemHandler = new BucketItemHandler(bucket);
+    }
+
+    @Override
     protected String getBackgroundTexturePath() {
         return "FloorBG.png";
     }
 
-    @Override
-    public void initialize() {
-        // Set initial spawnTimer value to a smaller value
-        spawnTimer = MathUtils.random(1.0f, 2.0f); // Random initial delay between 1 and 3 seconds
-    }
 
-    private void initializeGameManagers() {
-        initManager = new InitializationGameManagers(
-                sceneManager, AudioManager.getInstance(), font, batch, bucket
-        );
-
-        // Now you can access your managers through the initManager
-        timerManager = initManager.getTimerManager();
-        playerController = initManager.getPlayerController();
-        bucketItemHandler = initManager.getBucketItemHandler();
-    }
-    private void initializeGraphics() {
-        batch = new SpriteBatch();
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        Gdx.input.setInputProcessor(stage);
-        bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
-        bgSprite = new Sprite(bg);
-        bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        font = new BitmapFont();
-    }
 
     private void initializeUIComponents() {
-        skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
-        createPauseButton();
-        createHomeButton();
+//        skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
+//        createPauseButton();
+//        createHomeButton();
     }
 
     private void createPauseButton() {
@@ -314,9 +314,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
-    private void processInput() {
-        Gdx.input.setInputProcessor(stage);
-    }
 
     private void renderBatch() {
         batch.begin();
@@ -344,9 +341,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
         drawDebugShapes();
     }
 
-    private Stage getStage(){
-        return stage;
-    }
 
     private void setupShapeRenderer() {
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
@@ -359,6 +353,11 @@ public class GamePlay extends BaseScene implements GameOverListener {
         Rectangle bucketBounds = bucket.getBounds();
         shapeRenderer.rect(bucketBounds.x, bucketBounds.y, bucketBounds.width, bucketBounds.height);
         shapeRenderer.end();
+    }
+
+    private void goToLeaderboard() {
+        // logic to transition to the leaderboard scene
+        sceneManager.pushScene(new Leaderboard(sceneManager));
     }
 
     private void logFPS() {
@@ -377,6 +376,9 @@ public class GamePlay extends BaseScene implements GameOverListener {
     @Override
     public void dispose() {
         super.dispose();
+        if (stage != null) {
+            stage.dispose();
+        }
         if (bucketTexture != null) bucketTexture.dispose();
         conveyorBelt.dispose();
         ScoreManager.getInstance().dispose();

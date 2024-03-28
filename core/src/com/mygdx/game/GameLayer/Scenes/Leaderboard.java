@@ -15,6 +15,7 @@ public class Leaderboard extends BaseScene {
         super(sceneManager);
         this.font = new BitmapFont(); // Or use a custom font
         ScoreManager.getInstance().loadScores(); // Load scores at scene initialization
+
     }
 
     @Override
