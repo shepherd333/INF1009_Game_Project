@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.enums.Direction;
 
 public class InputManager {
     private Stage stage;
@@ -28,16 +29,16 @@ public class InputManager {
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             bucket.moveBy(-speed * deltaTime, 0);
-            bucket.changeDirection(BucketActor.Direction.LEFT);
+            bucket.changeDirection(Direction.LEFT);
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             bucket.moveBy(speed * deltaTime, 0);
-            bucket.changeDirection(BucketActor.Direction.RIGHT);
+            bucket.changeDirection(Direction.RIGHT);
         } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             bucket.moveBy(0, speed * deltaTime);
-            bucket.changeDirection(BucketActor.Direction.UP);
+            bucket.changeDirection(Direction.UP);
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             bucket.moveBy(0, -speed * deltaTime);
-            bucket.changeDirection(BucketActor.Direction.DOWN);
+            bucket.changeDirection(Direction.DOWN);
         }
     }
 

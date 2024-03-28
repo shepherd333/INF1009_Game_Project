@@ -3,6 +3,7 @@ package GameEngine.PlayerControl;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.enums.Direction;
 import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
 
 public class BucketInputHandler {
@@ -24,22 +25,22 @@ public class BucketInputHandler {
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             newX -= speed * deltaTime;
-            bucketActor.changeDirection(BucketActor.Direction.LEFT);
+            bucketActor.changeDirection(Direction.LEFT);
             moved = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             newX += speed * deltaTime;
-            bucketActor.changeDirection(BucketActor.Direction.RIGHT);
+            bucketActor.changeDirection(Direction.RIGHT);
             moved = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             newY += speed * deltaTime;
-            bucketActor.changeDirection(BucketActor.Direction.UP);
+            bucketActor.changeDirection(Direction.UP);
             moved = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             newY -= speed * deltaTime;
-            bucketActor.changeDirection(BucketActor.Direction.DOWN);
+            bucketActor.changeDirection(Direction.DOWN);
             moved = true;
         }
 
