@@ -24,6 +24,8 @@ import com.mygdx.game.GameLayer.Scenes.GamePlay;
 import GameEngine.SceneManagement.SceneManager;
 import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
 
+import java.util.EnumMap;
+
 
 public class BucketActor extends CollidableActor {
     private Texture textureLeft;
@@ -43,7 +45,7 @@ public class BucketActor extends CollidableActor {
     private float shakeIntensity = 5f;
     private float shakeTimer = 0f;
     private BucketMovementHandler movementHandler;
-
+    private EnumMap<Direction, Texture> directionTextures;
 
     // Constructor
     public BucketActor(float x, float y, float speed, float maxHealth, GamePlay gamePlay) {
@@ -77,17 +79,32 @@ public class BucketActor extends CollidableActor {
 
     //Initializers
     private void loadTextures() {
-        textureLeft = new Texture(Gdx.files.internal("WalleLeft.png"));
-        textureRight = new Texture(Gdx.files.internal("WalleRight.png"));
-        textureUp = new Texture(Gdx.files.internal("WalleBack.png"));
-        textureDown = new Texture(Gdx.files.internal("WalleDown.png"));
+        directionTextures = new EnumMap<>(Direction.class);
+        directionTextures.put(Direction.LEFT, new Texture(Gdx.files.internal("WalleLeft.png")));
+        directionTextures.put(Direction.RIGHT, new Texture(Gdx.files.internal("WalleRight.png")));
+        directionTextures.put(Direction.UP, new Texture(Gdx.files.internal("WalleBack.png")));
+        directionTextures.put(Direction.DOWN, new Texture(Gdx.files.internal("WalleDown.png")));
     }
 
     private void initializeSprite() {
-        currentSprite = new Sprite(textureDown);
+        // Assuming DOWN is the default direction. Adjust if necessary.
+        Texture defaultTexture = directionTextures.get(Direction.DOWN);
+        if (defaultTexture != null) {
+            currentSprite = new Sprite(defaultTexture);
+        } else {
+            // Handle the case where the texture is not found. This could be logging an error or using a fallback texture.
+            Gdx.app.log("BucketActor", "Default texture (DOWN) not found. Check if directionTextures is initialized properly.");
+            return; // Early return to avoid NullPointerException in case defaultTexture is null
+        }
+
+        // Set the desired size for the sprite.
         currentSprite.setSize(90, 115);
+
+        // Optionally, update the actor's size to match the sprite if needed.
+        // This is useful if your actor's dimensions are meant to match the sprite exactly.
         this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
     }
+
 
     private void initializeInputHandler() {
         setTouchable(Touchable.enabled);
@@ -186,23 +203,14 @@ public class BucketActor extends CollidableActor {
 
 
     public void changeDirection(Direction direction) {
-        switch (direction) {
-            case LEFT:
-                currentSprite.setTexture(textureLeft);
-                break;
-            case RIGHT:
-                currentSprite.setTexture(textureRight);
-                break;
-            case UP:
-                currentSprite.setTexture(textureUp);
-                break;
-            case DOWN:
-                currentSprite.setTexture(textureDown);
-                break;
+        Texture newDirectionTexture = directionTextures.get(direction);
+        if (newDirectionTexture != null) {
+            currentSprite.setTexture(newDirectionTexture);
+            this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
+            // You may also need to adjust the sprite's size or other properties here.
         }
-        // Update the size of the actor to match the new sprite's size
-        this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
     }
+
     // Provides a bounding box for the bucket, useful for collision detection.
     public Rectangle getBounds() {
         Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
@@ -220,11 +228,9 @@ public class BucketActor extends CollidableActor {
     }
 
     public void dispose() {
-        // Dispose of the texture when the object is no longer needed to free up resources.
-        textureLeft.dispose();
-        textureRight.dispose();
-        textureUp.dispose();
-        textureDown.dispose();
+        for (Texture texture : directionTextures.values()) {
+            texture.dispose();
+        }
     }
 
     public void decreaseLife(float amount) {
