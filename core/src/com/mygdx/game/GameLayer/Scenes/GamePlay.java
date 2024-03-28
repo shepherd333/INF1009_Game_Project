@@ -79,7 +79,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
 
         // Now that all dependencies are assured to be initialized, set up the TimerManager.
         // This step is done last to ensure 'font', 'batch', and 'AudioManager' are ready.
-        timerManager = new TimerManager(30, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
+        timerManager = new TimerManager(90, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
     }
 
     public void update(float deltaTime) {
