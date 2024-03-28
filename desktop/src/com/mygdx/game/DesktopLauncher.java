@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("INF1009-OOP-Game // Recycle Hero");
-		config.setWindowedMode(1500, 950); // Replace 800 and 600 with your desired dimensions
+		config.setWindowedMode(1200, 800); // Replace 800 and 600 with your desired dimensions
 
 		// Optionally, prevent the window from being resizable
 		config.setResizable(false);

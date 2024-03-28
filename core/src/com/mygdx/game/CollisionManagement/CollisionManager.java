@@ -3,8 +3,8 @@ package com.mygdx.game.CollisionManagement;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.CollisionManagement.handlers.ICollisionHandler;
-import com.mygdx.game.CollisionManagement.handlers.PickUpCollisionHandler;
-import com.mygdx.game.CollisionManagement.CollisionCriterias.PickUpCollisionCriteria;
+import com.mygdx.game.CollisionManagement.handlers.CollisionHandler;
+import com.mygdx.game.CollisionManagement.CollisionCriterias.CollisionCriteria;
 import com.mygdx.game.CollisionManagement.CollisionCriterias.Criterias;
 import com.mygdx.game.EntityManagement.Foundation.CollidableActor;
 
@@ -26,7 +26,7 @@ public class CollisionManager {
     private void initializeCriteriaToHandlersMap() {
         // Map each criteria class to its corresponding handler class.
         // This design allows for flexibility and easy addition of new collision criteria and handlers.
-        this.criteriaToHandlers.put(PickUpCollisionCriteria.class, PickUpCollisionHandler.class);
+        this.criteriaToHandlers.put(CollisionCriteria.class, CollisionHandler.class);
     }
 
     public void handleCollisions() {

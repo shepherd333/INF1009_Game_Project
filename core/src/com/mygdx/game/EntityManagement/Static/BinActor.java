@@ -1,4 +1,4 @@
-package com.mygdx.game.EntityManagement.Bins;
+package com.mygdx.game.EntityManagement.Static;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
