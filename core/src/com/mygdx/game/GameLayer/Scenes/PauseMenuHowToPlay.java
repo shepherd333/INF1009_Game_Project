@@ -1,13 +1,11 @@
 package com.mygdx.game.GameLayer.Scenes;
 
+import GameEngine.InputControl.UIButtonManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 public class PauseMenuHowToPlay extends BaseScene {
-
+    private UIButtonManager uiButtonManager;
     public PauseMenuHowToPlay(SceneManager sceneManager) {
         super(sceneManager);
     }
@@ -20,23 +18,8 @@ public class PauseMenuHowToPlay extends BaseScene {
     @Override
     public void initialize() {
         super.initialize(); // Call the initialize method of the superclass
-
-        int buttonWidth = 100;
-        int buttonHeight = 25;
-        int rightMargin = 10;
-        int topMargin = 10;
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
-        int verticalOffset = (screenHeight - buttonHeight) / 2;
-
-//        addButton("Back", new ClickListener() {
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                // Transition to the PlayScene
-//                getSceneManager().set(new PauseMenu(getSceneManager()));
-//            }
-//        }, screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin, buttonWidth, buttonHeight);
-
+        UIButtonManager uiButtonManager = new UIButtonManager(skin, stage, getSceneManager());
+        uiButtonManager.setupPauseMenuHowToPlay();
     }
 
     @Override

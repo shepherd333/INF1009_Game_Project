@@ -81,7 +81,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
 
         // Now that all dependencies are assured to be initialized, set up the TimerManager.
         // This step is done last to ensure 'font', 'batch', and 'AudioManager' are ready.
-        timerManager = new TimerManager(90, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
+        timerManager = new TimerManager(2, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
     }
 
     public void update(float deltaTime) {
@@ -130,20 +130,20 @@ public class GamePlay extends BaseScene implements GameOverListener {
 
     private void initializeUIComponents() {
         skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
-//        createPauseButton();
+        createPauseButton();
         createHomeButton();
     }
 
-//    private void createPauseButton() {
-//        TextButton pauseBtn = new TextButton("Pause", skin);
-//        setupButton(pauseBtn, 1);
-//        pauseBtn.addListener(new ClickListener() {
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                sceneManager.pushScene(new PauseMenu(sceneManager));
-//            }
-//        });
-//    }
+    private void createPauseButton() {
+        TextButton pauseBtn = new TextButton("Pause", skin);
+        setupButton(pauseBtn, 1);
+        pauseBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                sceneManager.pushScene(new PauseMenu(sceneManager));
+            }
+        });
+    }
 
     private void createHomeButton() {
         TextButton homeBtn = new TextButton("Home", skin);
