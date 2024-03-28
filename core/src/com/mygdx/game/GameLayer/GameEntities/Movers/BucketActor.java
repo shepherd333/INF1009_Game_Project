@@ -13,7 +13,7 @@ import GameEngine.EntityManagement.CollidableActor;
 import GameEngine.PlayerControl.BucketInputHandler;
 import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.SimulationLifecycleManagement.LifeManager;
-import GameEngine.SimulationLifecycleManagement.ScoreSystem.ScoreManager;
+import GameEngine.SimulationLifecycleManagement.ScoreManager;
 import com.mygdx.game.GameLayer.GameEntities.Movers.enums.Direction;
 import com.mygdx.game.GameLayer.GameEntities.Static.BinActor;
 import com.mygdx.game.GameLayer.Scenes.GamePlay;
