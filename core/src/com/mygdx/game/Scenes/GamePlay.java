@@ -31,6 +31,7 @@ import com.mygdx.game.InputManagement.InputManager;
 import com.mygdx.game.Lifecycle.AudioManager;
 import com.mygdx.game.Lifecycle.LevelConfig;
 import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
+import com.mygdx.game.Lifecycle.TimerManager;
 import com.mygdx.game.enums.ItemType;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GamePlay extends BaseScene implements GameOverListener {
     private ShapeRenderer shapeRenderer;
-    private boolean isDisposed = false;
     private Random random = new Random();
     private Stage stage;
     private Skin skin;
@@ -50,7 +50,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private Sprite bgSprite;
     private BucketActor bucket;
     private Texture bucketTexture;
-    private float spawnTimer = 0;
+    private float spawnTimer;
     private InputManager inputManager;
     private BitmapFont font;
     private Array<ItemActor> items = new Array<>();
@@ -61,154 +61,54 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private long startTime;
     private TrashMonsterActor trashMonsterActor;
     private AIManager aiManager;
-    private ToxicWasteActor toxicWaste;
-    private float timer;
-    private boolean countdownPlayed = false;
     private ScoreManager scoreManager;
-
-    public float getTimer() {
-        return timer;
-    }
-    public void setTimer(int t) {
-        timer = t;
-    }
-    public void increaseTimer(int t) {
-        timer += t;
-    }
-    public void decreaseTimer(int t) {
-        timer -= t;
-    }
-
-    private void goToLeaderboard() {
-        // Assuming sceneManager is a member of GamePlay and is initialized in its constructor
-        sceneManager.pushScene(new Leaderboard(sceneManager));
-        // If you use pushScene for a stack-based navigation, replace setScene with pushScene as needed.
-    }
-    public void timerCountdown(float deltaTime) {
-        if (timer > 0) {
-            timer -= deltaTime;
-
-            // If timer reaches 10 seconds, play the countdown sound effect
-            if ((int)Math.floor(timer) == 10 && !countdownPlayed) {
-                AudioManager.getInstance().playCountdownSound();
-                countdownPlayed = true; // Make sure the sound is only played once
-            }
-
-            if (timer <= 0) {
-                timer = 0; // Stop the timer at 0
-
-                int score = (int) Math.floor(getTimer());
-                ScoreManager.getInstance().addScore(score);
-                AudioManager.getInstance().stopCountdownSound(); // Stop the countdown sound
-
-                AudioManager.powerOffSound.play();
-
-                goToLeaderboard();
-            }
-        }
-    }
-    private Label timerLabel;
+    private TimerManager timerManager;
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
         this.levelConfig = levelConfig;
 
-        batch = new SpriteBatch();
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        Gdx.input.setInputProcessor(stage);
-        inputManager = new InputManager(stage);
-        skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
-        spawnToxicWaste(levelConfig.spawnToxicWaste);
+        // First, initialize all graphical components and input processors.
+        // This step ensures that 'font' and 'batch' are initialized before being used.
+        initializeGraphics();
 
-        bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
-        bgSprite = new Sprite(bg);
-        bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        // Initialize UI components next. This method likely relies on graphical elements
+        // like 'font' but not on gameplay logic, making it a good second step.
+        initializeUIComponents();
 
-        font = new BitmapFont();
+        // Initialize gameplay components. This might include setting up the game world,
+        // entities, and any managers that don't depend on 'font' or 'batch'.
+        initializeGameComponents();
 
-        spawnBins();
-
-        scoreManager = ScoreManager.getInstance();
-        scoreManager.resetCurrentScore();
-
-        conveyorBelt = new ConveyorBeltActor();
-        stage.addActor(conveyorBelt);
-
-//        timerLabel = new Label(String.format("Time: %d", (int)Math.floor(timer)), skin);
-//        timerLabel.setPosition(Gdx.graphics.getWidth() / 2 - timerLabel.getWidth() / 2, Gdx.graphics.getHeight() - timerLabel.getHeight() - 20); // Example position
-//        stage.addActor(timerLabel);
-
-        int buttonWidth = 100;
-        int buttonHeight = 25;
-        int buttonSpacing = 10;
-        int rightMargin = 10;
-        int topMargin = 10;
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
-        int totalHeight = (buttonHeight + buttonSpacing) * 5;
-        int totalWidth = (buttonWidth + buttonSpacing) * 5;
-
-        int verticalOffset = (screenHeight - totalHeight) / 2;
-        int horizontolOffset = (screenWidth - totalWidth) /2;
-        TextButton pausebtn = new TextButton("Pause", skin);
-        pausebtn.setSize(buttonWidth, buttonHeight);
-        pausebtn.setPosition(screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin);
-        pausebtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                sceneManager.pushScene(new PauseMenu(sceneManager));
-            }
-        });
-        stage.addActor(pausebtn);
-
-        TextButton homebtn = new TextButton("Home", skin);
-        homebtn.setSize(buttonWidth, buttonHeight);
-        homebtn.setPosition(screenWidth - buttonWidth - rightMargin, screenHeight - 2*buttonHeight - topMargin - buttonSpacing);
-        homebtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                sceneManager.pushScene(new MainMenu(sceneManager));
-            }
-        });
-        stage.addActor(homebtn);
-
-        bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
-        bucket = new BucketActor( 100, 100, 300,100,this);
-//        bucket.setSize(75,75);
-        actors.add(bucket); // Add the bucket to the actors list
-        collisionManager = new CollisionManager(actors,stage);
-        Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
-        stage.addActor(bucket);
-
-        bucket.debug();
-        stage.setDebugAll(true);
-
-        collisionManager = new CollisionManager(actors, stage);
-        shapeRenderer = new ShapeRenderer();
-        startTime = System.nanoTime();
-        this.aiManager = new AIManager(stage, bucket);
-        trashMonsterActor = new TrashMonsterActor();
-        stage.addActor(trashMonsterActor);
-
-        setTimer(90);
+        // Now that all dependencies are assured to be initialized, set up the TimerManager.
+        // This step is done last to ensure 'font', 'batch', and 'AudioManager' are ready.
+        timerManager = new TimerManager(90, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
     }
 
-    private void spawnBins() {
-        for (int i = 0; i < levelConfig.spawnTypes.length; i++) {
-            BinActor bin = new BinActor(levelConfig.spawnTypes[i], i); // Position might need adjusting
-            stage.addActor(bin);
-        }
+    public void update(float deltaTime) {
+        handleItemSpawning(deltaTime);
+        updateMonsterFollowBehavior(deltaTime);
+        checkMonsterBucketCollision();
+        // Update timer
+        timerManager.update(deltaTime);
+        handleCollisions();
+    }
+
+    @Override
+    public void render() {
+        clearScreen();
+        processInput();
+
+        update(Gdx.graphics.getDeltaTime());
+
+        renderBatch();
+        renderStage();
+        renderScore();
+        //renderDebugShapes();
     }
 
 
-    public void onGameOver() {
-        AudioManager.powerOffSound.play();
-        // Handle the transition to the leaderboard scene
-        sceneManager.pushScene(new Leaderboard(sceneManager));
-    }
-
-
-
+    //Initalizers
     @Override
     protected String getBackgroundTexturePath() {
         return "FloorBG.png";
@@ -218,6 +118,103 @@ public class GamePlay extends BaseScene implements GameOverListener {
     public void initialize() {
         // Set initial spawnTimer value to a smaller value
         spawnTimer = MathUtils.random(1.0f, 2.0f); // Random initial delay between 1 and 3 seconds
+    }
+
+    private void initializeGraphics() {
+        batch = new SpriteBatch();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        Gdx.input.setInputProcessor(stage);
+        bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
+        bgSprite = new Sprite(bg);
+        bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        font = new BitmapFont();
+    }
+
+    private void initializeUIComponents() {
+        skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
+        createPauseButton();
+        createHomeButton();
+    }
+
+    private void createPauseButton() {
+        TextButton pauseBtn = new TextButton("Pause", skin);
+        setupButton(pauseBtn, 1);
+        pauseBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                sceneManager.pushScene(new PauseMenu(sceneManager));
+            }
+        });
+    }
+
+    private void createHomeButton() {
+        TextButton homeBtn = new TextButton("Home", skin);
+        setupButton(homeBtn, 2);
+        homeBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                sceneManager.pushScene(new MainMenu(sceneManager));
+            }
+        });
+    }
+
+    private void setupButton(TextButton button, int order) {
+        int buttonWidth = 100;
+        int buttonHeight = 25;
+        int buttonSpacing = 10;
+        int rightMargin = 10;
+        int topMargin = 10;
+        button.setSize(buttonWidth, buttonHeight);
+        button.setPosition(Gdx.graphics.getWidth() - buttonWidth - rightMargin,
+                Gdx.graphics.getHeight() - order * (buttonHeight + buttonSpacing) - topMargin);
+        stage.addActor(button);
+    }
+
+    private void initializeGameComponents() {
+        inputManager = new InputManager(stage);
+        spawnToxicWaste(levelConfig.spawnToxicWaste);
+        spawnBins();
+        initializeScoreManager();
+        setupConveyorBelt();
+        initializeBucket();
+        setupCollisionManager();
+        initializeAIManager();
+    }
+    private void initializeScoreManager() {
+        scoreManager = ScoreManager.getInstance();
+        scoreManager.resetCurrentScore();
+    }
+
+    private void setupConveyorBelt() {
+        conveyorBelt = new ConveyorBeltActor();
+        stage.addActor(conveyorBelt);
+    }
+
+    private void initializeBucket() {
+        bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
+        bucket = new BucketActor(100, 100, 300, 100, this);
+        actors.add(bucket); // Assume actors is a list of actors for collision detection
+        Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
+        stage.addActor(bucket);
+    }
+
+    private void setupCollisionManager() {
+        collisionManager = new CollisionManager(actors, stage);
+        shapeRenderer = new ShapeRenderer();
+    }
+
+    private void initializeAIManager() {
+        aiManager = new AIManager(stage, bucket);
+        trashMonsterActor = new TrashMonsterActor();
+        stage.addActor(trashMonsterActor);
+    }
+
+    //Spawners
+    private void spawnBins() {
+        for (int i = 0; i < levelConfig.spawnTypes.length; i++) {
+            BinActor bin = new BinActor(levelConfig.spawnTypes[i], i); // Position might need adjusting
+            stage.addActor(bin);
+        }
     }
 
     private void spawnItem() {
@@ -239,12 +236,34 @@ public class GamePlay extends BaseScene implements GameOverListener {
         }
     }
 
-
     private void spawnToxicWaste(int spawnToxicWaste) {
         for (int i = 0; i < spawnToxicWaste; i++) {
             ToxicWasteActor toxicwaste = new ToxicWasteActor();
             stage.addActor(toxicwaste);
         }
+    }
+
+    private void handleItemSpawning(float deltaTime) {
+        spawnTimer += deltaTime;
+        final float spawnInterval = 3 / levelConfig.spawnSpeedFactor;
+        if (spawnTimer >= spawnInterval) {
+            spawnItem();
+            spawnTimer = 0; // Reset spawn timer
+        }
+    }
+
+    //Collisions
+    private boolean checkCollision(CollidableActor actor) {
+        for (CollidableActor existingActor : actors) {
+            if (actor.getBounds().overlaps(existingActor.getBounds())) {
+                return true; // Collision detected
+            }
+        }
+        return false; // No collision detected
+    }
+
+    private void handleCollisions() {
+        collisionManager.handleCollisions(); // Handles all game collisions
     }
 
     public void removeItemFromList(ItemActor item) {
@@ -258,76 +277,82 @@ public class GamePlay extends BaseScene implements GameOverListener {
         }
     }
 
-
-    private boolean checkCollision(CollidableActor actor) {
-        for (CollidableActor existingActor : actors) {
-            if (actor.getBounds().overlaps(existingActor.getBounds())) {
-                return true; // Collision detected
-            }
-        }
-        return false; // No collision detected
-    }
-
-    public void update(float deltaTime) {
-        spawnTimer += deltaTime;
-        if (spawnTimer >= 3/ levelConfig.spawnSpeedFactor) {
-            spawnItem();
-            spawnTimer = 0;
-        }
-        float followSpeed = 50; // Speed at which the monster follows the bucket, adjust as needed
+    //MonsterBehavior
+    private void updateMonsterFollowBehavior(float deltaTime) {
+        float followSpeed = 50; // Speed at which the monster follows the bucket
         aiManager.updateFollower(trashMonsterActor, deltaTime, followSpeed);
-
-        if (trashMonsterActor.overlaps(bucket)) {
-            // Decrease life of the bucket actor
-            bucket.decreaseLife(10); // You need to define the decreaseLife method in BucketActor
-            AudioManager.collisionSound.play();
-            trashMonsterActor.respawnAtRandomEdge();
-        }
-
-        timerCountdown(deltaTime);
     }
 
-//    @Override
-    public void render() {
+    private void checkMonsterBucketCollision() {
+        if (trashMonsterActor.overlaps(bucket)) {
+            bucket.decreaseLife(10); // This method needs to be defined in the BucketActor class
+            AudioManager.collisionSound.play(); // Play sound on collision
+            trashMonsterActor.respawnAtRandomEdge(); // Respawns the monster
+        }
+    }
+
+    //GameOver
+    public void onGameOver() {
+        AudioManager.powerOffSound.play();
+        // Handle the transition to the leaderboard scene
+        sceneManager.pushScene(new Leaderboard(sceneManager));
+    }
+    private void goToLeaderboard() {
+        // Assuming sceneManager is a member of GamePlay and is initialized in its constructor
+        sceneManager.pushScene(new Leaderboard(sceneManager));
+        // If you use pushScene for a stack-based navigation, replace setScene with pushScene as needed.
+    }
+
+    //GameRenderers
+    private void clearScreen() {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    }
+
+    private void processInput() {
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    private void renderBatch() {
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.input.setInputProcessor(stage);
-        stage.act(Gdx.graphics.getDeltaTime());
-
         batch.begin();
-
-        bgSprite.draw(batch);
-        String timerText = String.format("Time: %d", (int)Math.floor(timer));
-        GlyphLayout timerLayout = new GlyphLayout(); // Declare the GlyphLayout object
-        timerLayout.setText(font, timerText); // Set the text for the layout
-        float timerX = screenWidth - timerLayout.width - 10; // Right-align the timer
-        float timerY = screenHeight - timerLayout.height - 100; // Adjust the y-coordinate as needed
-        font.draw(batch, timerText, timerX, timerY);
+        drawBackground();
+        // Let TimerManager handle the drawing of the timer
+        timerManager.drawTimer(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
+    }
 
-        collisionManager.handleCollisions();
+    private void drawBackground() {
+        bgSprite.draw(batch);
+    }
 
+    private void renderStage() {
+        stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        update(Gdx.graphics.getDeltaTime());
+    }
 
+    private void renderScore() {
         ScoreManager.getInstance().render(batch, stage.getViewport());
+    }
 
+    private void renderDebugShapes() {
+        setupShapeRenderer();
+        drawDebugShapes();
+    }
+
+    private void setupShapeRenderer() {
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
+    }
 
-        // It's more efficient to reuse the ShapeRenderer instance if possible
+    private void drawDebugShapes() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
-
         Rectangle bucketBounds = bucket.getBounds();
         shapeRenderer.rect(bucketBounds.x, bucketBounds.y, bucketBounds.width, bucketBounds.height);
-
         shapeRenderer.end();
-        inputManager.handleInput(Gdx.graphics.getDeltaTime());
-//        logFPS();
     }
+
     private void logFPS() {
         if (System.nanoTime() - startTime >= 1000000000) { // Check if a second has passed
             Gdx.app.log("FPS", "Current FPS: " + Gdx.graphics.getFramesPerSecond());
