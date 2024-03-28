@@ -205,6 +205,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         AudioManager.powerOffSound.play();
         // Handle the transition to the leaderboard scene
         sceneManager.pushScene(new Leaderboard(sceneManager));
+
     }
 
 

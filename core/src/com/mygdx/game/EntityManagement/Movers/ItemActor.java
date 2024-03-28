@@ -60,6 +60,8 @@ public class ItemActor extends CollidableActor {
         setTouchable(Touchable.enabled);
         this.setSize(textureRegion.getRegionWidth()*3, textureRegion.getRegionHeight()*3); // Adjust size based on the texture
         this.uniqueValue = "1";
+
+        setSizeForItemType(itemType);
     }
 
 
@@ -137,6 +139,31 @@ public class ItemActor extends CollidableActor {
             }
         }
         }
+
+    private void setSizeForItemType(ItemType itemType) {
+        switch (itemType) {
+            case GLASS:
+                this.setSize(60, 60); // Example size for glass items
+                break;
+            case METAL:
+                this.setSize(50, 50); // Example size for metal items
+                break;
+            case PAPER:
+                this.setSize(70, 100); // Example size for paper items
+                break;
+            case PLASTIC:
+                this.setSize(55, 55); // Example size for plastic items
+                break;
+            case TRASH:
+                this.setSize(65, 65); // Example size for trash items
+                break;
+            default:
+                // Set a default size if item type is not recognized
+                this.setSize(50, 50);
+                break;
+        }
+    }
+
     public String getUniqueValue() {
         return uniqueValue;
     }

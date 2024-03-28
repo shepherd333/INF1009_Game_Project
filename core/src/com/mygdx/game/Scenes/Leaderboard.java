@@ -49,19 +49,14 @@ public class Leaderboard extends BaseScene {
 
     @Override
     public void render() {
-        super.render(); // Call the render method of the superclass
-
+        super.render();
         batch.begin();
-        font.getData().setScale(1.0f); // Set font scale if needed
+        font.getData().setScale(1.0f); // Adjust the scale as needed
 
-        int startY = 300; // Start Y position for scores
-        int offsetX = 100; // X position for scores
-        int gap = 30; // Gap between scores
-
-        // Assuming ScoreManager provides a method to get formatted scores as List<String>
-        for (String score : ScoreManager.getInstance().getFormattedScores()) {
-            font.draw(batch, score, offsetX, startY);
-            startY -= gap; // Move to the next line
+        int startY = Gdx.graphics.getHeight() - 100; // Starting Y position for the scores
+        for (String entry : ScoreManager.getInstance().getFormattedScores()) {
+            font.draw(batch, entry, 100, startY); // Adjust X position as needed
+            startY -= 30; // Adjust for the next entry
         }
 
         batch.end();
