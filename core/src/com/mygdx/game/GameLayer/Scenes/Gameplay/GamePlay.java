@@ -92,7 +92,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
         handleCollisions();
         playerController.handleInput(deltaTime);
         bucketItemHandler.handleItemPickupOrDrop();
-        processInput();
     }
 
     @Override
@@ -343,6 +342,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         setupShapeRenderer();
         drawDebugShapes();
     }
+
 
     private void setupShapeRenderer() {
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
