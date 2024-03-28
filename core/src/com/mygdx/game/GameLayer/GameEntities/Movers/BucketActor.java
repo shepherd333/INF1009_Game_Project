@@ -1,6 +1,6 @@
 package com.mygdx.game.GameLayer.GameEntities.Movers;
 import GameEngine.AIControl.ShakingHandler;
-import GameEngine.Collisions.BucketToxicHandler;
+import GameEngine.Collisions.handlers.BucketToxicHandler;
 import GameEngine.EntityManagement.EntityManager;
 import GameEngine.PlayerControl.GdxInputHandler;
 import GameEngine.PlayerControl.InputHandlerInterface;
@@ -19,11 +19,10 @@ import GameEngine.PlayerControl.BucketMovementHandler;
 import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.SimulationLifecycleManagement.LifeManager;
 import GameEngine.SimulationLifecycleManagement.ScoreManager;
-import com.mygdx.game.GameLayer.GameEntities.Movers.enums.Direction;
-import com.mygdx.game.GameLayer.GameEntities.Static.BinActor;
-import com.mygdx.game.GameLayer.Scenes.GamePlay;
-import GameEngine.SceneManagement.SceneManager;
-import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
+import GameEngine.Collisions.handlers.enums.Direction;
+import com.mygdx.game.GameLayer.GameEntities.Movers.Static.BinActor;
+import com.mygdx.game.GameLayer.Scenes.Gameplay.GamePlay;
+import GameEngine.Collisions.handlers.enums.ItemType;
 
 import java.util.EnumMap;
 
@@ -50,8 +49,8 @@ public class BucketActor extends CollidableActor {
     private EnumMap<Direction, Texture> directionTextures;
 
     // Constructor
-    public BucketActor(float x, float y, float speed, float maxHealth, EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public BucketActor(float x, float y, float speed, float maxHealth, GamePlay gamePlay) {
+        this.gamePlay = gamePlay;
         this.lifeManager = new LifeManager(maxHealth, 100, 10, Color.GREEN, gamePlay);
         this.speed = speed;
         this.setPosition(x, y);

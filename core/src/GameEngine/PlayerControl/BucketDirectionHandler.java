@@ -3,7 +3,7 @@ package GameEngine.PlayerControl;
 
 import com.badlogic.gdx.Input;
 import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
-import com.mygdx.game.GameLayer.GameEntities.Movers.enums.Direction;
+import GameEngine.Collisions.handlers.enums.Direction;
 
 /**
  * This class is responsible for handling the direction change of a BucketActor.

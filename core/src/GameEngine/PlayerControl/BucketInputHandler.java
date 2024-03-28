@@ -1,11 +1,9 @@
 package GameEngine.PlayerControl;
 
-import GameEngine.AIControl.ShakingManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
-import com.mygdx.game.GameLayer.GameEntities.Movers.enums.Direction;
-import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
+import GameEngine.Collisions.handlers.enums.Direction;
 
 public class BucketInputHandler {
     private final BucketActor bucketActor;

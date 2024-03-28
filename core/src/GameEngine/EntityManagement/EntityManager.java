@@ -6,11 +6,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
-import com.mygdx.game.GameLayer.GameEntities.Movers.ItemActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.Static.ConveyorBeltActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.ToxicWasteActor;
-import com.mygdx.game.GameLayer.GameEntities.Static.BinActor;
-import com.mygdx.game.GameLayer.GameEntities.Static.ConveyorBeltActor;
-import com.mygdx.game.GameLayer.Scenes.GamePlay;
+import com.mygdx.game.GameLayer.Scenes.Gameplay.GamePlay;
+
 
 import java.util.ArrayList;
 import java.util.List;

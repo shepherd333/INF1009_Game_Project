@@ -1,4 +1,4 @@
-package com.mygdx.game.GameLayer.Scenes;
+package com.mygdx.game.GameLayer.Scenes.Gameplay;
 
 import GameEngine.EntityManagement.EntityManager;
 import GameEngine.SceneManagement.BaseScene;
@@ -25,21 +25,24 @@ import GameEngine.Collisions.CollisionManager;
 import GameEngine.EntityManagement.CollidableActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.ItemActor;
-import com.mygdx.game.GameLayer.GameEntities.Static.TrashMonsterActor;
-import com.mygdx.game.GameLayer.GameEntities.Static.BinActor;
-import com.mygdx.game.GameLayer.GameEntities.Static.ConveyorBeltActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.Static.TrashMonsterActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.Static.BinActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.Static.ConveyorBeltActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.ToxicWasteActor;
 import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.SimulationLifecycleManagement.LevelConfig;
 import GameEngine.SimulationLifecycleManagement.ScoreManager;
 import GameEngine.SimulationLifecycleManagement.TimerManager;
-import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
+import GameEngine.Collisions.handlers.enums.ItemType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import GameEngine.AIControl.AIManager;
-import GameEngine.Collisions.BucketItemHandler;
+import GameEngine.Collisions.handlers.BucketItemHandler;
 import GameEngine.PlayerControl.PlayerController;
+import com.mygdx.game.GameLayer.Scenes.Leaderboard;
+import com.mygdx.game.GameLayer.Scenes.MainMenu;
+import com.mygdx.game.GameLayer.Scenes.PauseMenu;
 
 public class GamePlay extends BaseScene implements GameOverListener {
     private ShapeRenderer shapeRenderer;
@@ -66,6 +69,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private BucketItemHandler bucketItemHandler;
     private PlayerController playerController;
     private final EntityManager entityManager;
+    private InitializationGameManagers initManager;
 
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
@@ -74,46 +78,27 @@ public class GamePlay extends BaseScene implements GameOverListener {
         ScoreManager.getInstance().setCurrentLevel(levelConfig.levelNumber);
         entityManager = new EntityManager(this, levelConfig);
 
-        // First, initialize all graphical components and input processors.
-        // This step ensures that 'font' and 'batch' are initialized before being used.
         initializeGraphics();
-
-        // Initialize UI components next. This method likely relies on graphical elements
-        // like 'font' but not on gameplay logic, making it a good second step.
         initializeUIComponents();
-
-        // Initialize gameplay components. This might include setting up the game world,
-        // entities, and any managers that don't depend on 'font' or 'batch'.
         initializeGameComponents();
-
-        // Now that all dependencies are assured to be initialized, set up the TimerManager.
-        // This step is done last to ensure 'font', 'batch', and 'AudioManager' are ready.
-        timerManager = new TimerManager(90, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
-        float speed = 300; // Define the speed as per your requirement
-        playerController = new PlayerController(bucket, speed);
-        bucketItemHandler = new BucketItemHandler(bucket);
-
-
+        initializeGameManagers();
     }
 
     public void update(float deltaTime) {
+        timerManager.update(deltaTime);
         handleItemSpawning(deltaTime);
         updateMonsterFollowBehavior(deltaTime);
         checkMonsterBucketCollision();
-        // Update timer
-        timerManager.update(deltaTime);
         handleCollisions();
         playerController.handleInput(deltaTime);
         bucketItemHandler.handleItemPickupOrDrop();
+        processInput();
     }
 
     @Override
     public void render() {
         clearScreen();
-        processInput();
-
         update(Gdx.graphics.getDeltaTime());
-
         renderBatch();
         renderStage();
         renderScore();
@@ -132,6 +117,16 @@ public class GamePlay extends BaseScene implements GameOverListener {
         spawnTimer = MathUtils.random(1.0f, 2.0f); // Random initial delay between 1 and 3 seconds
     }
 
+    private void initializeGameManagers() {
+        initManager = new InitializationGameManagers(
+                sceneManager, AudioManager.getInstance(), font, batch, bucket
+        );
+
+        // Now you can access your managers through the initManager
+        timerManager = initManager.getTimerManager();
+        playerController = initManager.getPlayerController();
+        bucketItemHandler = initManager.getBucketItemHandler();
+    }
     private void initializeGraphics() {
         batch = new SpriteBatch();
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -181,7 +176,11 @@ public class GamePlay extends BaseScene implements GameOverListener {
                 Gdx.graphics.getHeight() - order * (buttonHeight + buttonSpacing) - topMargin);
         stage.addActor(button);
     }
-
+    private void setupGameManagement() {
+        setupCollisionManager();
+        initializeScoreManager();
+        initializeAIManager();
+    }
     private void initializeGameComponents() {
         spawnBins();
         entityManager.initializeGameEntities();
@@ -189,22 +188,22 @@ public class GamePlay extends BaseScene implements GameOverListener {
         initializeBucket();
         setupCollisionManager();
         initializeAIManager();
+        setupGameManagement();
 
     }
-    private void initializeBucket() {
-        bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
-        bucket = new BucketActor(100, 100, 300, 100, entityManager);
-        actors.add(bucket); // Assume actors is a list of actors for collision detection
-        Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
-        stage.addActor(bucket);
-    }
-
     private void initializeScoreManager() {
         scoreManager = ScoreManager.getInstance();
         scoreManager.resetCurrentScore();
     }
 
 
+    private void initializeBucket() {
+        bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
+        bucket = new BucketActor(100, 100, 300, 100, this);
+        actors.add(bucket); // Assume actors is a list of actors for collision detection
+        Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
+        stage.addActor(bucket);
+    }
 
     private void setupCollisionManager() {
         collisionManager = new CollisionManager(actors, stage);
@@ -308,11 +307,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         // Handle the transition to the leaderboard scene
         sceneManager.pushScene(new Leaderboard(sceneManager));
     }
-    private void goToLeaderboard() {
-        // Assuming sceneManager is a member of GamePlay and is initialized in its constructor
-        sceneManager.pushScene(new Leaderboard(sceneManager));
-        // If you use pushScene for a stack-based navigation, replace setScene with pushScene as needed.
-    }
+
 
     //GameRenderers
     private void clearScreen() {
@@ -324,8 +319,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
     }
 
     private void renderBatch() {
-        float screenWidth = Gdx.graphics.getWidth();
-        float screenHeight = Gdx.graphics.getHeight();
         batch.begin();
         drawBackground();
         // Let TimerManager handle the drawing of the timer
