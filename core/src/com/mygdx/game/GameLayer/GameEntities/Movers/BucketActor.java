@@ -1,4 +1,6 @@
 package com.mygdx.game.GameLayer.GameEntities.Movers;
+import GameEngine.PlayerControl.GdxInputHandler;
+import GameEngine.PlayerControl.InputHandlerInterface;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import GameEngine.EntityManagement.CollidableActor;
-import GameEngine.PlayerControl.BucketInputHandler;
+import GameEngine.PlayerControl.BucketMovementHandler;
 import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.SimulationLifecycleManagement.LifeManager;
 import GameEngine.SimulationLifecycleManagement.ScoreManager;
@@ -40,7 +42,7 @@ public class BucketActor extends CollidableActor {
     private float shakeIntensity = 5f;
     private float shakeTimer = 0f;
     private SceneManager sceneManager;
-    private BucketInputHandler inputHandler;
+    private BucketMovementHandler movementHandler;
 
     // Constructor
     public BucketActor(float x, float y, float speed, float maxHealth, GamePlay gamePlay) {
@@ -58,13 +60,14 @@ public class BucketActor extends CollidableActor {
         currentSprite.setSize(90,115);
         this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
         setTouchable(Touchable.enabled);
-        inputHandler = new BucketInputHandler(this, speed);
+        InputHandlerInterface inputHandler = new GdxInputHandler();
+        movementHandler = new BucketMovementHandler(this, speed, inputHandler);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        inputHandler.handle(delta);
+        movementHandler.handleMovement(delta);
         ensureInBounds();
         checkToxicWasteCollision();
 
@@ -224,7 +227,6 @@ public class BucketActor extends CollidableActor {
         this.shakeIntensity = intensity;
         this.shakeTimer = 0f; // Reset the shake timer
     }
-
 
     @Override
     public void setWidth(float width) {
