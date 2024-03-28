@@ -58,7 +58,7 @@ public class BucketActor extends CollidableActor {
         textureDown = new Texture(Gdx.files.internal("WalleDown.png"));
         // Set the initial texture, for example, facing up
         currentSprite = new Sprite(textureDown);
-        currentSprite.setSize(125,125);
+        currentSprite.setSize(90,115);
         this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
         setTouchable(Touchable.enabled);
     }
@@ -271,7 +271,7 @@ public class BucketActor extends CollidableActor {
     }
 
     public ItemType getOverlappingBinType() {
-        float proximityMargin = 100; // Define a margin for how close the bucket needs to be
+        float proximityMargin = 200; // Define a margin for how close the bucket needs to be
 
         for (Actor actor : getStage().getActors()) {
             if (actor instanceof BinActor) {

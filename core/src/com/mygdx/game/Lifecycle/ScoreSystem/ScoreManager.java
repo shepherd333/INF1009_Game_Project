@@ -88,7 +88,7 @@ public class ScoreManager {
 
 
     public void loadScores() {
-        FileHandle file = Gdx.files.internal("scores.txt");
+        FileHandle file = Gdx.files.local("scores.txt");
         if (file.exists()) {
             String scoreContents = file.readString();
             Gdx.app.log("ScoreManager", "File contents: \n" + scoreContents);
@@ -103,8 +103,11 @@ public class ScoreManager {
                     Gdx.app.error("ScoreManager", "Error parsing score: " + line, e);
                 }
             }
-            // Sort scores in descending order
+            // Sort scores in descending order and keep only the top 5
             Collections.sort(scores, Collections.reverseOrder());
+            while (scores.size() > 5) {
+                scores.remove(scores.size() - 1);
+            }
         } else {
             Gdx.app.log("ScoreManager", "scores.txt file not found.");
         }
