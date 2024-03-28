@@ -234,12 +234,7 @@ public class BucketActor extends CollidableActor {
     public void setHeight(float height) {
         super.setHeight(height);
     }
-    public void setItemType() {
-        this.itemType = itemType;
-    }
-    public ItemType getItemType() {
-        return itemType;
-    }
+
     public void dispose() {
         // Dispose of the texture when the object is no longer needed to free up resources.
         textureLeft.dispose();
@@ -266,18 +261,11 @@ public class BucketActor extends CollidableActor {
         this.itemPickedUp = itemPickedUp;
     }
 
-    public void setHeldItemTextureRegion(TextureRegion textureRegion) {
-        this.heldItemTextureRegion = textureRegion;
-        // Update any sprite or drawable that uses this texture region
-    }
-
     public void setHeldItemType(ItemType itemType) {
         this.heldItemType = itemType;
         Gdx.app.log("BucketActor", "Held item type set to: " + itemType);
     }
-    public ItemType getHeldItemType() {
-        return heldItemType;
-    }
+
     public enum Direction {
         LEFT, RIGHT, UP, DOWN
     }

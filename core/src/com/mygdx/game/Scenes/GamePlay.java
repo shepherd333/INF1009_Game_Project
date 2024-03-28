@@ -47,7 +47,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private BucketActor bucket;
     private Texture bucketTexture;
     private float spawnTimer;
-    private InputManager inputManager;
     private BitmapFont font;
     private Array<ItemActor> items = new Array<>();
     private List<CollidableActor> actors = new ArrayList<>();
@@ -102,7 +101,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
         renderScore();
         //renderDebugShapes();
     }
-
 
     //Initalizers
     @Override
@@ -167,7 +165,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
     }
 
     private void initializeGameComponents() {
-        inputManager = new InputManager(stage);
         spawnToxicWaste(levelConfig.spawnToxicWaste);
         spawnBins();
         initializeScoreManager();
