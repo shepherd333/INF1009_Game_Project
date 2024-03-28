@@ -1,4 +1,5 @@
 package GameEngine.InputControl;
+import GameEngine.Collisions.handlers.enums.ItemType;
 import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.SimulationLifecycleManagement.LevelConfig;
 import com.badlogic.gdx.Gdx;
@@ -8,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import GameEngine.SceneManagement.SceneManager;
-import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
 import com.mygdx.game.GameLayer.Scenes.*;
+import com.mygdx.game.GameLayer.Scenes.Gameplay.GamePlay;
 
 public class UIButtonManager {
     private Skin skin;
