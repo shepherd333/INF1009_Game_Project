@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
 import com.mygdx.game.Scenes.GameOverListener;
 import com.mygdx.game.Scenes.Leaderboard;
 

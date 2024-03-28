@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Lifecycle.ScoreSystem.ScoreManager;
 
 public class TimerManager {
     private float timer;
@@ -35,6 +36,9 @@ public class TimerManager {
             if (timer <= 0) {
                 timer = 0;
                 audioManager.stopCountdownSound();
+                int currentScore = ScoreManager.getInstance().getCurrentScore();
+                ScoreManager.getInstance().addScore(currentScore); // Add the current score to the high scores
+                ScoreManager.getInstance().resetCurrentScore(); // Optionally reset the current score
                 audioManager.powerOffSound.play();
                 if (onTimerEnd != null) {
                     onTimerEnd.run();

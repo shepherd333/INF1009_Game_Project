@@ -62,6 +62,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
         this.levelConfig = levelConfig;
+        ScoreManager.getInstance().setCurrentLevel(levelConfig.levelNumber);
 
         // First, initialize all graphical components and input processors.
         // This step ensures that 'font' and 'batch' are initialized before being used.
@@ -77,7 +78,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
 
         // Now that all dependencies are assured to be initialized, set up the TimerManager.
         // This step is done last to ensure 'font', 'batch', and 'AudioManager' are ready.
-        timerManager = new TimerManager(90, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
+        timerManager = new TimerManager(2, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
     }
 
     public void update(float deltaTime) {
@@ -287,6 +288,9 @@ public class GamePlay extends BaseScene implements GameOverListener {
     //GameOver
     public void onGameOver() {
         AudioManager.powerOffSound.play();
+        int currentScore = ScoreManager.getInstance().getCurrentScore();
+        ScoreManager.getInstance().addScore(currentScore); // Add the current score to the high scores
+        ScoreManager.getInstance().resetCurrentScore(); // Optionally reset the current score
         // Handle the transition to the leaderboard scene
         sceneManager.pushScene(new Leaderboard(sceneManager));
     }

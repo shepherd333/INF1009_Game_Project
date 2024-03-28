@@ -17,6 +17,7 @@ public class ScoreManager {
     private int currentScore = 0;
     private static ScoreManager instance;
     private BitmapFont font;
+    private int currentLevel = 1; // Default to level 1
 
     private ScoreManager() {
         scores = new ArrayList<>();
@@ -53,6 +54,16 @@ public class ScoreManager {
         currentScore = 0;
     }
 
+
+    private String getScoresFilePath() {
+        // Adjust the file name based on the current level
+        String filePath = "scores" + currentLevel + ".txt";
+        Gdx.app.log("ScoreManager", "getScoresFilePath: Retrieving file path for level " + currentLevel + " - " + filePath);
+        return filePath;
+    }
+    public void setCurrentLevel(int level) {
+        this.currentLevel = level;
+    }
     public void addScore(int score) {
         scores.add(score);
         Collections.sort(scores, Collections.reverseOrder());
@@ -60,8 +71,9 @@ public class ScoreManager {
             scores.remove(scores.size() - 1);
         }
 
-        saveScores(score);
+        saveScores();
     }
+
 
     public ArrayList<Integer> getScores() {
         return scores;
@@ -75,20 +87,22 @@ public class ScoreManager {
         }
     }
 
-    public void saveScores(int score) {
-        FileHandle file = Gdx.files.local("scores.txt");
+    public void saveScores() {
+        FileHandle file = Gdx.files.local(getScoresFilePath());
         try {
-            file.writeString(String.valueOf(currentScore) + "\n", true); // Append to the file.
+            // Append the current score followed by a newline character
+            file.writeString("\n" + String.valueOf(currentScore), true);
         } catch (Exception e) {
-            Gdx.app.error("ScoreManager", "Error writing score", e);
+            Gdx.app.error("ScoreManager", "Error writing scores", e);
         }
     }
 
 
 
 
+
     public void loadScores() {
-        FileHandle file = Gdx.files.local("scores.txt");
+        FileHandle file = Gdx.files.local(getScoresFilePath());
         if (file.exists()) {
             String scoreContents = file.readString();
             Gdx.app.log("ScoreManager", "File contents: \n" + scoreContents);
@@ -109,7 +123,7 @@ public class ScoreManager {
                 scores.remove(scores.size() - 1);
             }
         } else {
-            Gdx.app.log("ScoreManager", "scores.txt file not found.");
+            Gdx.app.log("ScoreManager", "Scores file not found for level " + currentLevel);
         }
     }
 
@@ -118,11 +132,16 @@ public class ScoreManager {
 
     // Method to get formatted high scores
     public ArrayList<String> getFormattedScores() {
+        // Load scores if not already loaded
+        if (scores.isEmpty()) {
+            loadScores();
+        }
+
         ArrayList<String> formattedScores = new ArrayList<>();
-        int rank = 1;
+        //int rank = 1;
         for (Integer score : scores) {
-            formattedScores.add(rank + ". " + score);
-            rank++;
+            formattedScores.add( " " + score);
+          //  rank++;
         }
         return formattedScores;
     }
