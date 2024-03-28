@@ -1,6 +1,7 @@
 // BucketItemHandler.java
 package GameEngine.Collisions;
 
+import GameEngine.AIControl.ShakingManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
@@ -32,7 +33,7 @@ public class BucketItemHandler {
             else if (overlappingBinType != null && overlappingBinType != heldItemType) {
                 logDebug("Attempting to drop item into incorrect bin. Starting shake.");
                 bucketActor.errorDropHeldItem();
-                bucketActor.startShaking(0.5F, 1);
+                ShakingManager.startShaking(bucketActor,0.5F, 4);
             } else {
                 logDebug("No overlapping bin detected or no item to drop.");
             }

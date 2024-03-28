@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import GameEngine.SimulationLifecycleManagement.ScoreSystem.ScoreManager;
 
 public class TimerManager {
     private float timer;

@@ -1,5 +1,6 @@
 package GameEngine.PlayerControl;
 
+import GameEngine.AIControl.ShakingManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
@@ -46,28 +47,7 @@ public class BucketInputHandler {
 
         if (moved) {
             bucketActor.setPosition(newX, newY);
-            logDebug("Moved to x: " + newX + ", y: " + newY);
-        }
-
-        // Handling the SPACE key press for item pickup/drop
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            ItemType overlappingBinType = bucketActor.getOverlappingBinType();
-            ItemType heldItemType = bucketActor.getHeldItemType();
-
-            logDebug("SPACE key pressed. Overlapping bin type: " + (overlappingBinType == null ? "None" : overlappingBinType) +
-                    ", Held item type: " + (heldItemType == null ? "None" : heldItemType));
-
-            if (overlappingBinType != null && overlappingBinType == heldItemType) {
-                logDebug("Attempting to drop item into correct bin.");
-                bucketActor.dropHeldItem();
-            }
-            else if (overlappingBinType != null && overlappingBinType != heldItemType) {
-                logDebug("Attempting to drop item into incorrect bin. Starting shake.");
-                bucketActor.errorDropHeldItem();
-                bucketActor.startShaking(0.5F, 1);
-            } else {
-                logDebug("No overlapping bin detected or no item to drop.");
-            }
+            //logDebug("Moved to x: " + newX + ", y: " + newY);
         }
     }
 }
