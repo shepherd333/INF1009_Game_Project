@@ -1,45 +1,50 @@
 package GameEngine.EntityManagement;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import GameEngine.SimulationLifecycleManagement.LevelConfig;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.ItemActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.ToxicWasteActor;
+import com.mygdx.game.GameLayer.GameEntities.Static.BinActor;
+import com.mygdx.game.GameLayer.GameEntities.Static.ConveyorBeltActor;
+import com.mygdx.game.GameLayer.Scenes.GamePlay;
 
-// Class responsible for managing all entities (actors) within a Stage in the game.
+import java.util.ArrayList;
+import java.util.List;
+
 public class EntityManager {
+    private LevelConfig levelConfig;
+    private final GamePlay gamePlay;
     private Stage stage;
+    private ConveyorBeltActor conveyorBelt;
+    private BucketActor bucket;
+    private Texture bucketTexture;
+    private List<CollidableActor> actors = new ArrayList<>();
 
-    // Constructor initializes the stage with a specific viewport.
-    public EntityManager(Viewport viewport) {
-        this.stage = new Stage(viewport);
+    public EntityManager(GamePlay gamePlay, LevelConfig levelConfig) {
+        this.gamePlay = gamePlay;
+        this.levelConfig = levelConfig;
     }
 
-    // Adds an actor (entity) to the stage.
-    public void addEntity(Actor entity) {
-        this.stage.addActor(entity);
+    public void initializeGameEntities() {
+        spawnToxicWaste(levelConfig.spawnToxicWaste);
+        setupConveyorBelt();
     }
 
-    // Updates the stage, which in turn updates all actors within it.
-    public void update(float delta) {
-        this.stage.act(delta);
+
+
+    private void spawnToxicWaste(int spawnToxicWaste) {
+        for (int i = 0; i < spawnToxicWaste; i++) {
+            ToxicWasteActor toxicwaste = new ToxicWasteActor();
+            gamePlay.getStage().addActor(toxicwaste);
+        }
     }
 
-    // Draws all actors within the stage.
-    public void draw() {
-        this.stage.draw();
-    }
-
-    // Optionally, get access to the Stage if needed for more advanced operations.
-    public Stage getStage() {
-        return this.stage;
-    }
-
-    // Removes an actor (entity) from the stage.
-    public void removeEntity(Actor entity) {
-        entity.remove(); // Actors can be removed directly.
-    }
-
-    // Method to clear all entities from the stage.
-    public void clearEntities() {
-        this.stage.clear();
+    private void setupConveyorBelt() {
+        conveyorBelt = new ConveyorBeltActor();
+        gamePlay.getStage().addActor(conveyorBelt);
     }
 }

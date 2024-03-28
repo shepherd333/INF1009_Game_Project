@@ -1,5 +1,6 @@
 package com.mygdx.game.GameLayer.Scenes;
 
+import GameEngine.EntityManagement.EntityManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.GameOverListener;
 import GameEngine.SceneManagement.SceneManager;
@@ -64,12 +65,14 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private TimerManager timerManager;
     private BucketItemHandler bucketItemHandler;
     private PlayerController playerController;
+    private final EntityManager entityManager;
 
 
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
         this.levelConfig = levelConfig;
         ScoreManager.getInstance().setCurrentLevel(levelConfig.levelNumber);
+        entityManager = new EntityManager(this, levelConfig);
 
         // First, initialize all graphical components and input processors.
         // This step ensures that 'font' and 'batch' are initialized before being used.
@@ -89,6 +92,8 @@ public class GamePlay extends BaseScene implements GameOverListener {
         float speed = 300; // Define the speed as per your requirement
         playerController = new PlayerController(bucket, speed);
         bucketItemHandler = new BucketItemHandler(bucket);
+
+
     }
 
     public void update(float deltaTime) {
@@ -178,31 +183,28 @@ public class GamePlay extends BaseScene implements GameOverListener {
     }
 
     private void initializeGameComponents() {
-        spawnToxicWaste(levelConfig.spawnToxicWaste);
         spawnBins();
+        entityManager.initializeGameEntities();
         initializeScoreManager();
-        setupConveyorBelt();
         initializeBucket();
         setupCollisionManager();
         initializeAIManager();
+
     }
+    private void initializeBucket() {
+        bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
+        bucket = new BucketActor(100, 100, 300, 100, entityManager);
+        actors.add(bucket); // Assume actors is a list of actors for collision detection
+        Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
+        stage.addActor(bucket);
+    }
+
     private void initializeScoreManager() {
         scoreManager = ScoreManager.getInstance();
         scoreManager.resetCurrentScore();
     }
 
-    private void setupConveyorBelt() {
-        conveyorBelt = new ConveyorBeltActor();
-        stage.addActor(conveyorBelt);
-    }
 
-    private void initializeBucket() {
-        bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
-        bucket = new BucketActor(100, 100, 300, 100, this);
-        actors.add(bucket); // Assume actors is a list of actors for collision detection
-        Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
-        stage.addActor(bucket);
-    }
 
     private void setupCollisionManager() {
         collisionManager = new CollisionManager(actors, stage);
@@ -213,6 +215,10 @@ public class GamePlay extends BaseScene implements GameOverListener {
         aiManager = new AIManager(stage, bucket);
         trashMonsterActor = new TrashMonsterActor();
         stage.addActor(trashMonsterActor);
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 
     //Spawners
@@ -242,12 +248,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         }
     }
 
-    private void spawnToxicWaste(int spawnToxicWaste) {
-        for (int i = 0; i < spawnToxicWaste; i++) {
-            ToxicWasteActor toxicwaste = new ToxicWasteActor();
-            stage.addActor(toxicwaste);
-        }
-    }
+
 
     private void handleItemSpawning(float deltaTime) {
         spawnTimer += deltaTime;
