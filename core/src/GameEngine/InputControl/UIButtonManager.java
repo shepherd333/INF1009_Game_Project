@@ -159,6 +159,40 @@ public class UIButtonManager {
             }
         }, x, startY - 3 * (buttonHeight + spacing), buttonWidth, buttonHeight);
     }
+
+//    public void setupGamePlay() {
+//        int screenWidth = Gdx.graphics.getWidth();
+//        int screenHeight = Gdx.graphics.getHeight();
+//        int rightMargin = 10;
+//        int topMargin = 10;
+//        int buttonWidth = 100;
+//        int buttonHeight = 25;
+//
+//        // Play Game Button
+//        addCustomButton("Play Game", new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                sceneManager.set(new LevelMenu(sceneManager));
+//            }
+//        }, screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin, buttonWidth, buttonHeight);
+//
+//        // Back to Home Button
+//        addCustomButton("Back to Home", new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                sceneManager.set(new MainMenu(sceneManager));
+//            }
+//        }, screenWidth - buttonWidth - rightMargin, screenHeight - 2*buttonHeight - topMargin - spacing, buttonWidth, buttonHeight);
+//
+//        // Back Button
+//        addCustomButton("Back", new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                sceneManager.set(new GameObjective(sceneManager));
+//            }
+//        }, screenWidth - buttonWidth - rightMargin, screenHeight - 4*buttonHeight - topMargin - 3*spacing, buttonWidth, buttonHeight);
+//    }
+
     public void setupEndMenu() {
         int buttonWidth = 200;
         int buttonHeight = 50;
