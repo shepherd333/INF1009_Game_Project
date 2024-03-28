@@ -80,6 +80,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     }
 
     public void update(float deltaTime) {
+        Gdx.input.setInputProcessor(stage);
         timerManager.update(deltaTime);
         handleItemSpawning(deltaTime);
         updateMonsterFollowBehavior(deltaTime);
