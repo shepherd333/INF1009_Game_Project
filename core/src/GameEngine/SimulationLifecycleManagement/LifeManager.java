@@ -1,4 +1,4 @@
-package GameEngine.SimulationLifecycleManagement.LifeSystem;
+package GameEngine.SimulationLifecycleManagement;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

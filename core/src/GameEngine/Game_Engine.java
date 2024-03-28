@@ -7,7 +7,7 @@ import com.mygdx.game.GameLayer.Scenes.MainMenu;
 import GameEngine.SceneManagement.SceneManager;
 //import com.mygdx.game.Lifecycle.HighScore.HighScoreManager;
 //import com.mygdx.game.Lifecycle.HighScore.ScoreFileHandler;
-//import GameEngine.SimulationLifecycleManagement.LifeSystem.LifeManager;
+//import GameEngine.SimulationLifecycleManagement.LifeManager;
 
 public class Game_Engine extends ApplicationAdapter {
 	SceneManager sm;

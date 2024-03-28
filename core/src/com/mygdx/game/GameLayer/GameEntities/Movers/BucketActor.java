@@ -1,4 +1,6 @@
 package com.mygdx.game.GameLayer.GameEntities.Movers;
+import GameEngine.AIControl.ShakingHandler;
+import GameEngine.Collisions.BucketToxicHandler;
 import GameEngine.PlayerControl.GdxInputHandler;
 import GameEngine.PlayerControl.InputHandlerInterface;
 import com.badlogic.gdx.Gdx;
@@ -14,12 +16,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import GameEngine.EntityManagement.CollidableActor;
 import GameEngine.PlayerControl.BucketMovementHandler;
 import GameEngine.SimulationLifecycleManagement.AudioManager;
-import GameEngine.SimulationLifecycleManagement.LifeSystem.LifeManager;
-import GameEngine.SimulationLifecycleManagement.ScoreSystem.ScoreManager;
+import GameEngine.SimulationLifecycleManagement.LifeManager;
+import GameEngine.SimulationLifecycleManagement.ScoreManager;
+import com.mygdx.game.GameLayer.GameEntities.Movers.enums.Direction;
 import com.mygdx.game.GameLayer.GameEntities.Static.BinActor;
 import com.mygdx.game.GameLayer.Scenes.GamePlay;
 import GameEngine.SceneManagement.SceneManager;
 import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
+
 
 public class BucketActor extends CollidableActor {
     private Texture textureLeft;
@@ -29,7 +33,6 @@ public class BucketActor extends CollidableActor {
     private Sprite currentSprite;
     private float speed;
     private boolean itemPickedUp; // Flag to check if an item has been picked up
-    private ItemType itemType; // Type of item picked up
     private Sprite heldItemSprite; // Sprite to display the item picked up
     private LifeManager lifeManager;
     private ItemType heldItemType;
@@ -39,63 +42,60 @@ public class BucketActor extends CollidableActor {
     private float shakeDuration = 0f;
     private float shakeIntensity = 5f;
     private float shakeTimer = 0f;
-    private SceneManager sceneManager;
     private BucketMovementHandler movementHandler;
+
 
     // Constructor
     public BucketActor(float x, float y, float speed, float maxHealth, GamePlay gamePlay) {
         this.gamePlay = gamePlay;
-        this.sceneManager = sceneManager; // Initialize the SceneManager
         this.lifeManager = new LifeManager(maxHealth, 100, 10, Color.GREEN, gamePlay);
         this.speed = speed;
         this.setPosition(x, y);
-        textureLeft = new Texture(Gdx.files.internal("WalleLeft.png"));
-        textureRight = new Texture(Gdx.files.internal("WalleRight.png"));
-        textureUp = new Texture(Gdx.files.internal("WalleBack.png"));
-        textureDown = new Texture(Gdx.files.internal("WalleDown.png"));
-        // Set the initial texture, for example, facing up
-        currentSprite = new Sprite(textureDown);
-        currentSprite.setSize(90,115);
-        this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
-        setTouchable(Touchable.enabled);
-        InputHandlerInterface inputHandler = new GdxInputHandler();
-        movementHandler = new BucketMovementHandler(this, speed, inputHandler);
+        loadTextures();
+        initializeSprite();
+        initializeInputHandler();
     }
-
     @Override
     public void act(float delta) {
         super.act(delta);
         movementHandler.handleMovement(delta);
         ensureInBounds();
-        checkToxicWasteCollision();
-
-        // Existing logic for handling shaking, etc.
-        if (isShaking) {
-            shakeTimer += delta;
-            if (shakeTimer <= shakeDuration) {
-                // Apply shaking by randomly offsetting the actor's position within the shake intensity range
-                float shakeOffsetX = MathUtils.random(-shakeIntensity, shakeIntensity);
-                float shakeOffsetY = MathUtils.random(-shakeIntensity, shakeIntensity);
-                setPosition(getX() + shakeOffsetX, getY() + shakeOffsetY);
-            } else {
-                isShaking = false;
-                shakeTimer = 0;
-            }
-        }
+        BucketToxicHandler.checkToxicWasteCollision(this, getStage(), AudioManager.getInstance());
+        ShakingHandler.updateShaking(this, delta);
     }
 
-    private void checkToxicWasteCollision() {
-        for (Actor actor : getStage().getActors()) {
-            if (actor instanceof ToxicWasteActor) {
-                ToxicWasteActor toxicWaste = (ToxicWasteActor) actor;
-                if (getBounds().overlaps(toxicWaste.getBounds())) {
-                    decreaseLife(0.1F); // Decrease life by 1 or another value based on your game's balance
-                    AudioManager.getInstance().playSoundEffect("collision", 1.0f);
-                    break; // Optional: break if you only want to apply damage from one toxic waste per frame
-                }
-            }
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        batch.draw(currentSprite, getX(), getY(), getWidth(), getHeight());
+        if (heldItemSprite != null) {
+            heldItemSprite.setPosition(this.getX(), this.getY() + this.getHeight()); // Position it relative to the bucket
+            heldItemSprite.draw(batch);
         }
+        lifeManager.draw(batch, getX(), getY(), getWidth(), getHeight());
     }
+
+    //Initializers
+    private void loadTextures() {
+        textureLeft = new Texture(Gdx.files.internal("WalleLeft.png"));
+        textureRight = new Texture(Gdx.files.internal("WalleRight.png"));
+        textureUp = new Texture(Gdx.files.internal("WalleBack.png"));
+        textureDown = new Texture(Gdx.files.internal("WalleDown.png"));
+    }
+
+    private void initializeSprite() {
+        currentSprite = new Sprite(textureDown);
+        currentSprite.setSize(90, 115);
+        this.setSize(currentSprite.getWidth(), currentSprite.getHeight());
+    }
+
+    private void initializeInputHandler() {
+        setTouchable(Touchable.enabled);
+        InputHandlerInterface inputHandler = new GdxInputHandler();
+        movementHandler = new BucketMovementHandler(this, speed, inputHandler);
+    }
+
+    //Item Methods
     // Call this method when the item is picked up
     public void holdItem(ItemActor item) {
         this.heldItem = item;
@@ -183,16 +183,7 @@ public class BucketActor extends CollidableActor {
         // Optionally, set the origin of the sprite if you need to rotate it around its center
         this.heldItemSprite.setOrigin(25, 25); // Set origin to center for a 50x50 sprite
     }
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        batch.draw(currentSprite, getX(), getY(), getWidth(), getHeight());
-        if (heldItemSprite != null) {
-            heldItemSprite.setPosition(this.getX(), this.getY() + this.getHeight()); // Position it relative to the bucket
-            heldItemSprite.draw(batch);
-        }
-        lifeManager.draw(batch, getX(), getY(), getWidth(), getHeight());
-    }
+
 
     public void changeDirection(Direction direction) {
         switch (direction) {
@@ -219,13 +210,6 @@ public class BucketActor extends CollidableActor {
         return bounds;
     }
 
-    public void startShaking(float duration, float intensity) {
-        this.isShaking = true;
-        this.shakeDuration = duration;
-        this.shakeIntensity = intensity;
-        this.shakeTimer = 0f; // Reset the shake timer
-    }
-
     @Override
     public void setWidth(float width) {
         super.setWidth(width);
@@ -246,14 +230,9 @@ public class BucketActor extends CollidableActor {
     public void decreaseLife(float amount) {
         lifeManager.decreaseHealth(amount); // Assuming LifeManager has a method to decrease life
         if (lifeManager.getLife() <= 0) {
-            // Handle the bucket's life reaching zero or below
-            // For example, trigger a game over or respawn the bucket
         }
     }
 
-    public float getSpeed() {
-        return speed;
-    }
     public boolean isItemPickedUp() {
         return itemPickedUp;
     }
@@ -268,10 +247,6 @@ public class BucketActor extends CollidableActor {
 
     public ItemType getHeldItemType() {
         return heldItemType;
-    }
-
-    public enum Direction {
-        LEFT, RIGHT, UP, DOWN
     }
 
     public ItemType getOverlappingBinType() {
@@ -293,5 +268,37 @@ public class BucketActor extends CollidableActor {
             }
         }
         return null;
+    }
+
+    public void setShaking(boolean shaking) {
+        this.isShaking = shaking;
+    }
+
+    public void setShakeDuration(float duration) {
+        this.shakeDuration = duration;
+    }
+
+    public void setShakeIntensity(float intensity) {
+        this.shakeIntensity = intensity;
+    }
+
+    public void setShakeTimer(float timer) {
+        this.shakeTimer = timer;
+    }
+
+    public boolean isShaking() {
+        return isShaking;
+    }
+
+    public float getShakeDuration() {
+        return shakeDuration;
+    }
+
+    public float getShakeIntensity() {
+        return shakeIntensity;
+    }
+
+    public float getShakeTimer() {
+        return shakeTimer;
     }
 }

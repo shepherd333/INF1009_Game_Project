@@ -3,6 +3,7 @@ package GameEngine.PlayerControl;
 
 import com.badlogic.gdx.Input;
 import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.enums.Direction;
 
 /**
  * This class is responsible for handling the direction change of a BucketActor.
@@ -20,16 +21,16 @@ public class BucketDirectionHandler {
 
     public void handleDirectionChange() {
         if (inputHandler.isKeyPressed(Input.Keys.LEFT)) {
-            bucketActor.changeDirection(BucketActor.Direction.LEFT);
+            bucketActor.changeDirection(Direction.LEFT);
         }
         if (inputHandler.isKeyPressed(Input.Keys.RIGHT)) {
-            bucketActor.changeDirection(BucketActor.Direction.RIGHT);
+            bucketActor.changeDirection(Direction.RIGHT);
         }
         if (inputHandler.isKeyPressed(Input.Keys.UP)) {
-            bucketActor.changeDirection(BucketActor.Direction.UP);
+            bucketActor.changeDirection(Direction.UP);
         }
         if (inputHandler.isKeyPressed(Input.Keys.DOWN)) {
-            bucketActor.changeDirection(BucketActor.Direction.DOWN);
+            bucketActor.changeDirection(Direction.DOWN);
         }
     }
 }

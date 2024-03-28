@@ -1,4 +1,4 @@
-package GameEngine.SimulationLifecycleManagement.ScoreSystem;
+package GameEngine.SimulationLifecycleManagement;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

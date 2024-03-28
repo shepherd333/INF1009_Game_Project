@@ -30,7 +30,7 @@ import com.mygdx.game.GameLayer.GameEntities.Static.ConveyorBeltActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.ToxicWasteActor;
 import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.SimulationLifecycleManagement.LevelConfig;
-import GameEngine.SimulationLifecycleManagement.ScoreSystem.ScoreManager;
+import GameEngine.SimulationLifecycleManagement.ScoreManager;
 import GameEngine.SimulationLifecycleManagement.TimerManager;
 import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
 import java.util.ArrayList;
