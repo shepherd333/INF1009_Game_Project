@@ -1,5 +1,6 @@
 package com.mygdx.game.GameLayer.Scenes.Gameplay;
 
+import GameEngine.EntityManagement.EntityManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.GameOverListener;
 import GameEngine.SceneManagement.SceneManager;
@@ -67,6 +68,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private TimerManager timerManager;
     private BucketItemHandler bucketItemHandler;
     private PlayerController playerController;
+    private final EntityManager entityManager;
     private InitializationGameManagers initManager;
 
 
@@ -74,6 +76,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         super(sceneManager);
         this.levelConfig = levelConfig;
         ScoreManager.getInstance().setCurrentLevel(levelConfig.levelNumber);
+        entityManager = new EntityManager(this, levelConfig);
 
         initializeGraphics();
         initializeUIComponents();
@@ -173,33 +176,26 @@ public class GamePlay extends BaseScene implements GameOverListener {
                 Gdx.graphics.getHeight() - order * (buttonHeight + buttonSpacing) - topMargin);
         stage.addActor(button);
     }
-
     private void setupGameManagement() {
         setupCollisionManager();
         initializeScoreManager();
         initializeAIManager();
     }
-
-    private void initializeGameEntities() {
-        spawnBins();
-        setupConveyorBelt();
-        initializeBucket();
-        spawnToxicWaste(levelConfig.spawnToxicWaste);
-    }
-
     private void initializeGameComponents() {
-        initializeGameEntities();
+        spawnBins();
+        entityManager.initializeGameEntities();
+        initializeScoreManager();
+        initializeBucket();
+        setupCollisionManager();
+        initializeAIManager();
         setupGameManagement();
+
     }
     private void initializeScoreManager() {
         scoreManager = ScoreManager.getInstance();
         scoreManager.resetCurrentScore();
     }
 
-    private void setupConveyorBelt() {
-        conveyorBelt = new ConveyorBeltActor();
-        stage.addActor(conveyorBelt);
-    }
 
     private void initializeBucket() {
         bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
@@ -218,6 +214,10 @@ public class GamePlay extends BaseScene implements GameOverListener {
         aiManager = new AIManager(stage, bucket);
         trashMonsterActor = new TrashMonsterActor();
         stage.addActor(trashMonsterActor);
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 
     //Spawners
@@ -247,12 +247,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         }
     }
 
-    private void spawnToxicWaste(int spawnToxicWaste) {
-        for (int i = 0; i < spawnToxicWaste; i++) {
-            ToxicWasteActor toxicwaste = new ToxicWasteActor();
-            stage.addActor(toxicwaste);
-        }
-    }
+
 
     private void handleItemSpawning(float deltaTime) {
         spawnTimer += deltaTime;

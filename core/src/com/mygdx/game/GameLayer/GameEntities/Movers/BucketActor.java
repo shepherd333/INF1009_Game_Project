@@ -1,6 +1,7 @@
 package com.mygdx.game.GameLayer.GameEntities.Movers;
 import GameEngine.AIControl.ShakingHandler;
 import GameEngine.Collisions.handlers.BucketToxicHandler;
+import GameEngine.EntityManagement.EntityManager;
 import GameEngine.PlayerControl.GdxInputHandler;
 import GameEngine.PlayerControl.InputHandlerInterface;
 import com.badlogic.gdx.Gdx;
@@ -38,6 +39,7 @@ public class BucketActor extends CollidableActor {
     private LifeManager lifeManager;
     private ItemType heldItemType;
     private GamePlay gamePlay;
+    private EntityManager entityManager;
     private ItemActor heldItem; // Reference to the currently held item
     private boolean isShaking = false;
     private float shakeDuration = 0f;
