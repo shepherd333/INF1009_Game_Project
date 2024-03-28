@@ -1,7 +1,6 @@
 package com.mygdx.game.Scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,18 +12,17 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.CollisionManagement.CollisionManager;
-import com.mygdx.game.EntityManagement.Bins.*;
 import com.mygdx.game.EntityManagement.Foundation.CollidableActor;
 import com.mygdx.game.EntityManagement.Movers.BucketActor;
 import com.mygdx.game.EntityManagement.Movers.ItemActor;
 import com.mygdx.game.EntityManagement.Movers.TrashMonsterActor;
+import com.mygdx.game.EntityManagement.Static.BinActor;
 import com.mygdx.game.EntityManagement.Static.ConveyorBeltActor;
 import com.mygdx.game.EntityManagement.Static.ToxicWasteActor;
 import com.mygdx.game.InputManagement.InputManager;
@@ -37,8 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import com.mygdx.game.AIManagement.AIManager;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GamePlay extends BaseScene implements GameOverListener {
     private ShapeRenderer shapeRenderer;

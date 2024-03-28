@@ -6,11 +6,11 @@ import com.mygdx.game.EntityManagement.Movers.BucketActor;
 import com.mygdx.game.EntityManagement.Movers.ItemActor;
 import com.mygdx.game.InputManagement.InputManager;
 
-public class PickUpCollisionCriteria implements Criterias {
+public class CollisionCriteria implements Criterias {
     private InputManager inputManager;
     private Stage stage;
 
-    public PickUpCollisionCriteria(Stage stage) {
+    public CollisionCriteria(Stage stage) {
         if (stage == null) {
             throw new IllegalArgumentException("Stage cannot be null");
         }

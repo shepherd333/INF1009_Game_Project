@@ -6,10 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.EntityManagement.Movers.BucketActor;
 import com.mygdx.game.EntityManagement.Movers.ItemActor;
 
-public class PickUpCollisionHandler extends BaseCollisionHandler {
+public class CollisionHandler extends BaseCollisionHandler {
     private Stage stage;
 
-    public PickUpCollisionHandler(Actor actor1, Actor actor2, Stage stage) {
+    public CollisionHandler(Actor actor1, Actor actor2, Stage stage) {
         super(actor1, actor2);
         this.stage = stage;
     }
@@ -31,7 +31,7 @@ public class PickUpCollisionHandler extends BaseCollisionHandler {
             bucket.setItemPickedUp(true);
             bucket.holdItem(item);
             item.removeItem();
-            Gdx.app.log("PickUpCollisionHandler", "Item picked up: " + item.getItemType());
+            Gdx.app.log("CollisionHandler", "Item picked up: " + item.getItemType());
         }
     }
 }
