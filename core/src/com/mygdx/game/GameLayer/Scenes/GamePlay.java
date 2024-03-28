@@ -315,6 +315,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private void goToLeaderboard() {
         // logic to transition to the leaderboard scene
         sceneManager.pushScene(new Leaderboard(sceneManager));
+        AudioManager.getInstance().stopCountdownSound();
     }
 
     private void logFPS() {

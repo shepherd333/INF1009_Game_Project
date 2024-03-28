@@ -92,12 +92,14 @@ public class UIButtonManager {
     public void setupPauseMenu() {
         int startY = calculateStartY() - buttonHeight; // Adjust startY as needed based on your UI design
         int x = (Gdx.graphics.getWidth() - buttonWidth) / 2; // Centered horizontally
+        AudioManager.getInstance().stopCountdownSound();
 
         // Resume Button
         addButton("Resume", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 sceneManager.popScene(); // Return to the gameplay scene
+                AudioManager.getInstance().playSoundEffect("countdown", 1.0f);
             }
         }, x, startY, buttonWidth, buttonHeight);
 
