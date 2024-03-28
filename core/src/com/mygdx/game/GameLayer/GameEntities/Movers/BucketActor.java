@@ -33,7 +33,6 @@ public class BucketActor extends CollidableActor {
     private Sprite currentSprite;
     private float speed;
     private boolean itemPickedUp; // Flag to check if an item has been picked up
-    private ItemType itemType; // Type of item picked up
     private Sprite heldItemSprite; // Sprite to display the item picked up
     private LifeManager lifeManager;
     private ItemType heldItemType;
@@ -43,7 +42,6 @@ public class BucketActor extends CollidableActor {
     private float shakeDuration = 0f;
     private float shakeIntensity = 5f;
     private float shakeTimer = 0f;
-    private SceneManager sceneManager;
     private BucketMovementHandler movementHandler;
 
 
@@ -212,13 +210,6 @@ public class BucketActor extends CollidableActor {
         return bounds;
     }
 
-//    public void startShaking(float duration, float intensity) {
-//        this.isShaking = true;
-//        this.shakeDuration = duration;
-//        this.shakeIntensity = intensity;
-//        this.shakeTimer = 0f; // Reset the shake timer
-//    }
-
     @Override
     public void setWidth(float width) {
         super.setWidth(width);
@@ -239,14 +230,9 @@ public class BucketActor extends CollidableActor {
     public void decreaseLife(float amount) {
         lifeManager.decreaseHealth(amount); // Assuming LifeManager has a method to decrease life
         if (lifeManager.getLife() <= 0) {
-            // Handle the bucket's life reaching zero or below
-            // For example, trigger a game over or respawn the bucket
         }
     }
 
-    public float getSpeed() {
-        return speed;
-    }
     public boolean isItemPickedUp() {
         return itemPickedUp;
     }
