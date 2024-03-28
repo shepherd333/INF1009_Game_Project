@@ -7,7 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import GameEngine.SimulationLifecycleManagement.ScoreSystem.ScoreManager;
+import GameEngine.SimulationLifecycleManagement.ScoreManager;
 
 public class Leaderboard extends BaseScene {
     private BitmapFont font;

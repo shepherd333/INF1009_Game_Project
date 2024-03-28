@@ -1,6 +1,6 @@
 package GameEngine.SimulationLifecycleManagement;
 
-import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
+import GameEngine.Collisions.handlers.enums.ItemType;
 
 public class LevelConfig {
     public float spawnSpeedFactor;

@@ -1,11 +1,11 @@
-package com.mygdx.game.GameLayer.GameEntities.Static;
+package com.mygdx.game.GameLayer.GameEntities.Movers.Static;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import GameEngine.EntityManagement.CollidableActor;
-import com.mygdx.game.GameLayer.GameEntities.Movers.enums.ItemType;
+import GameEngine.Collisions.handlers.enums.ItemType;
 
 public class BinActor extends CollidableActor {
     private Sprite sprite;
