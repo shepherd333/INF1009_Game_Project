@@ -1,5 +1,6 @@
 package com.mygdx.game.GameLayer.Scenes;
 
+import GameEngine.InputControl.UIButtonManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
 import com.badlogic.gdx.Gdx;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class EndMenu extends BaseScene {
+    private UIButtonManager uiButtonManager;
     public EndMenu(SceneManager sceneManager) {
         super(sceneManager);
     }
@@ -19,20 +21,8 @@ public class EndMenu extends BaseScene {
     @Override
     public void initialize() {
         super.initialize(); // Call the initialize method of the superclass
-
-        int buttonWidth = 200;
-        int buttonHeight = 50;
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
-        int verticalOffset = (screenHeight - ((buttonHeight + 5) * 5)) / 2; // Calculate vertical offset for button placement
-
-        addButton("Back to Home", new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // Transition to the PlayScene
-                getSceneManager().set(new MainMenu(getSceneManager()));
-            }
-        }, (screenWidth - buttonWidth) / 2, 50, buttonWidth, buttonHeight);
+        uiButtonManager = new UIButtonManager(skin, stage, getSceneManager());
+        uiButtonManager.setupEndMenu();
     }
 
     @Override

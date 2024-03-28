@@ -1,5 +1,4 @@
-package GameEngine.SceneManagement;
-
+package GameEngine.InputControl;
 import GameEngine.Collisions.handlers.enums.ItemType;
 import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.SimulationLifecycleManagement.LevelConfig;
@@ -92,7 +91,9 @@ public class UIButtonManager {
 
     public void setupPauseMenu() {
         int startY = calculateStartY() - buttonHeight; // Adjust startY as needed based on your UI design
-        int x = (Gdx.graphics.getWidth() - buttonWidth) / 2; // Centered horizontally// Resume Button
+        int x = (Gdx.graphics.getWidth() - buttonWidth) / 2; // Centered horizontally
+
+        // Resume Button
         addButton("Resume", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -160,20 +161,31 @@ public class UIButtonManager {
     }
 
     public void setupGamePlay() {
-        int startY = calculateStartY() - buttonHeight; // Adjust as necessary
-        int x = (Gdx.graphics.getWidth() - buttonWidth) / 2;
-        // Example: Set up a pause button
-        int xPause = Gdx.graphics.getWidth() - 100; // Example position
-        int yPause = Gdx.graphics.getHeight() - 50; // Example position
-        addButton("Level 1", new ClickListener() {
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+        int rightMargin = 10;
+        int topMargin = 10;
+        int buttonWidth = 100;
+        int buttonHeight = 25;
+
+        // Play Game Button
+        addCustomButton("Pause", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig level1Config = new LevelConfig(0.5f, 1f, 0, new ItemType[]{ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC}, 1);
-                sceneManager.set(new GamePlay(sceneManager, level1Config));
+                sceneManager.pushScene(new PauseMenu(sceneManager));
             }
-        }, x, startY, buttonWidth, buttonHeight);
-        // Add other GamePlay-specific buttons as needed
-    }public void setupEndMenu() {
+        }, screenWidth - buttonWidth - rightMargin, screenHeight - buttonHeight - topMargin, buttonWidth, buttonHeight);
+
+        // Back to Home Button
+        addCustomButton("Back to Home", new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                sceneManager.set(new MainMenu(sceneManager));
+            }
+        }, screenWidth - buttonWidth - rightMargin, screenHeight - 2*buttonHeight - topMargin - spacing, buttonWidth, buttonHeight);
+    }
+
+    public void setupEndMenu() {
         int buttonWidth = 200;
         int buttonHeight = 50;
         int screenHeight = Gdx.graphics.getHeight();
@@ -260,7 +272,9 @@ public class UIButtonManager {
                 sceneManager.set(new EndMenu(sceneManager));
             }
         }, nextButtonX, nextButtonY, buttonWidth, buttonHeight);
-    }public void setupPauseMenuHowToPlay() {
+    }
+
+    public void setupPauseMenuHowToPlay() {
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
         int buttonWidth = 100;

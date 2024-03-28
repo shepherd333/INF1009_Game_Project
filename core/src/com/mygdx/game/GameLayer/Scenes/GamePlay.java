@@ -1,10 +1,10 @@
 package com.mygdx.game.GameLayer.Scenes;
 
 import GameEngine.EntityManagement.EntityManager;
+import GameEngine.InputControl.UIButtonManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.GameOverListener;
 import GameEngine.SceneManagement.SceneManager;
-import GameEngine.SceneManagement.UIButtonManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -29,7 +29,6 @@ import com.mygdx.game.GameLayer.GameEntities.Movers.ItemActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.Static.TrashMonsterActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.Static.BinActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.Static.ConveyorBeltActor;
-import com.mygdx.game.GameLayer.GameEntities.Movers.ToxicWasteActor;
 import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.SimulationLifecycleManagement.LevelConfig;
 import GameEngine.SimulationLifecycleManagement.ScoreManager;
@@ -41,9 +40,6 @@ import java.util.Random;
 import GameEngine.AIControl.AIManager;
 import GameEngine.Collisions.handlers.BucketItemHandler;
 import GameEngine.PlayerControl.PlayerController;
-import com.mygdx.game.GameLayer.Scenes.Leaderboard;
-import com.mygdx.game.GameLayer.Scenes.MainMenu;
-import com.mygdx.game.GameLayer.Scenes.PauseMenu;
 
 public class GamePlay extends BaseScene implements GameOverListener {
     private ShapeRenderer shapeRenderer;
@@ -81,20 +77,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
         initializeUIComponents();
         initializeGameComponents();
         initializeGameManagers();
-
-        skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
-        this.uiButtonManager = new UIButtonManager(skin, stage, sceneManager);
-        uiButtonManager.setupGamePlay();
-    }
-
-    private void initializeGraphics() {
-        batch = new SpriteBatch();
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        Gdx.input.setInputProcessor(stage);
-        bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
-        bgSprite = new Sprite(bg);
-        bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        font = new BitmapFont();
     }
 
     public void update(float deltaTime) {
@@ -122,7 +104,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
     public void initialize() {
         // Set initial spawnTimer value to a smaller value
         spawnTimer = MathUtils.random(1.0f, 2.0f); // Random initial delay between 1 and 3 seconds
-
     }
     private void initializeGameManagers() {
         timerManager = new TimerManager(11, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
@@ -130,52 +111,27 @@ public class GamePlay extends BaseScene implements GameOverListener {
         bucketItemHandler = new BucketItemHandler(bucket);
     }
 
+    private void initializeGraphics() {
+        batch = new SpriteBatch();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        Gdx.input.setInputProcessor(stage);
+        bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
+        bgSprite = new Sprite(bg);
+        bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        font = new BitmapFont();
+    }
+
+    private void initializeUIComponents(){
+        skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
+        this.uiButtonManager = new UIButtonManager(skin, stage, sceneManager);
+        uiButtonManager.setupGamePlay();
+    }
+
     @Override
     protected String getBackgroundTexturePath() {
         return "FloorBG.png";
     }
 
-
-
-    private void initializeUIComponents() {
-//        skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
-//        createPauseButton();
-//        createHomeButton();
-    }
-
-    private void createPauseButton() {
-        TextButton pauseBtn = new TextButton("Pause", skin);
-        setupButton(pauseBtn, 1);
-        pauseBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                sceneManager.pushScene(new PauseMenu(sceneManager));
-            }
-        });
-    }
-
-    private void createHomeButton() {
-        TextButton homeBtn = new TextButton("Home", skin);
-        setupButton(homeBtn, 2);
-        homeBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                sceneManager.pushScene(new MainMenu(sceneManager));
-            }
-        });
-    }
-
-    private void setupButton(TextButton button, int order) {
-        int buttonWidth = 100;
-        int buttonHeight = 25;
-        int buttonSpacing = 10;
-        int rightMargin = 10;
-        int topMargin = 10;
-        button.setSize(buttonWidth, buttonHeight);
-        button.setPosition(Gdx.graphics.getWidth() - buttonWidth - rightMargin,
-                Gdx.graphics.getHeight() - order * (buttonHeight + buttonSpacing) - topMargin);
-        stage.addActor(button);
-    }
     private void setupGameManagement() {
         setupCollisionManager();
         initializeScoreManager();
@@ -376,11 +332,13 @@ public class GamePlay extends BaseScene implements GameOverListener {
     @Override
     public void dispose() {
         super.dispose();
+
+        //System.out.println("Disposing GamePlay. Is stage null? " + (stage == null));
         if (stage != null) {
             stage.dispose();
         }
         if (bucketTexture != null) bucketTexture.dispose();
-        conveyorBelt.dispose();
+        if (conveyorBelt != null) conveyorBelt.dispose();
         ScoreManager.getInstance().dispose();
 
         if (font != null) font.dispose();

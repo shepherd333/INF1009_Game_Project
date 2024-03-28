@@ -76,9 +76,14 @@ public abstract class BaseScene implements SceneInterface {
     @Override
     public void dispose() {
         // Dispose of any resources used by the scene
-        stage.dispose();
+        System.out.println("Disposing GamePlay. Is stage null? " + (stage == null));
+        if (stage != null) {
+            stage.dispose();
+        }
         skin.dispose();
-        batch.dispose();
+        if (batch != null) {
+            batch.dispose();
+        }
     }
 
     @Override
