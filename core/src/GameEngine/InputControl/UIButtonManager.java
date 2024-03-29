@@ -100,7 +100,6 @@ public class UIButtonManager {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 sceneManager.popScene(); // Return to the gameplay scene
-                AudioManager.getInstance().playSoundEffect("countdown", 1.0f);
             }
         }, x, startY, buttonWidth, buttonHeight);
 

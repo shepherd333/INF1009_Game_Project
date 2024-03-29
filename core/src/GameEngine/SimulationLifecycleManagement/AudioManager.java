@@ -25,7 +25,7 @@ public class AudioManager {
         soundEffects.put("correctBin", Gdx.audio.newSound(Gdx.files.internal("CorrectBinSound.mp3")));
         soundEffects.put("powerOff", Gdx.audio.newSound(Gdx.files.internal("PowerOffSound.mp3")));
         soundEffects.put("itemPickup", Gdx.audio.newSound(Gdx.files.internal("ItemPickupSound.mp3")));
-        soundEffects.put("countdown", Gdx.audio.newSound(Gdx.files.internal("countdown.mp3")));
+        soundEffects.put("beep", Gdx.audio.newSound(Gdx.files.internal("beep.mp3")));
         // Add other sound effects here
     }
 

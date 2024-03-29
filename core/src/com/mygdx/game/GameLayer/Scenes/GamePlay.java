@@ -53,7 +53,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private LevelConfig levelConfig;
     private CollisionManager collisionManager;
     private ConveyorBeltActor conveyorBelt;
-    private long startTime;
     private TrashMonsterActor trashMonsterActor;
     private AIManager aiManager;
     private ScoreManager scoreManager;
