@@ -53,20 +53,5 @@ public class TimerManager {
         font.draw(batch, timerText, timerX, timerY);
     }
 
-    public float getTimer() {
-        return timer;
-    }
-
-    public void setTimer(float timer) {
-        this.timer = timer;
-    }
-
-    public void increaseTimer(int seconds) {
-        this.timer += seconds;
-    }
-
-    public void decreaseTimer(int seconds) {
-        this.timer -= seconds;
-    }
 }
 

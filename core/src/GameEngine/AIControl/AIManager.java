@@ -2,6 +2,7 @@ package GameEngine.AIControl;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+
 //import GameEngine.SimulationLifecycleManagement.LifeManager;
 //
 //public class AIManager {

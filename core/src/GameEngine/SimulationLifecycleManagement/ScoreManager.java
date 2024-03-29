@@ -31,9 +31,6 @@ public class ScoreManager {
         return instance;
     }
 
-    public void create() {
-        scores = new ArrayList<>();
-    }
 
     public int getCurrentScore() {
         return currentScore;
@@ -74,17 +71,6 @@ public class ScoreManager {
     }
 
 
-    public ArrayList<Integer> getScores() {
-        return scores;
-    }
-
-    public int getTopScore() {
-        if (!scores.isEmpty()) {
-            return scores.get(0);
-        } else {
-            return 0;
-        }
-    }
 
     public void saveScores() {
         FileHandle file = Gdx.files.local(getScoresFilePath());
@@ -95,10 +81,6 @@ public class ScoreManager {
             Gdx.app.error("ScoreManager", "Error writing scores", e);
         }
     }
-
-
-
-
 
     public void loadScores() {
         FileHandle file = Gdx.files.local(getScoresFilePath());
@@ -126,9 +108,6 @@ public class ScoreManager {
         }
     }
 
-
-
-
     // Method to get formatted high scores
     public ArrayList<String> getFormattedScores() {
         // Load scores if not already loaded
@@ -145,18 +124,6 @@ public class ScoreManager {
         return formattedScores;
     }
 
-    public void renderTopScore(SpriteBatch batch, BitmapFont font, Viewport viewport) {
-        if (!scores.isEmpty()) {
-            font.getData().setScale(2f);
-            String scoreDisplay = "Top Score: " + scores.get(0);
-            GlyphLayout scoreLayout = new GlyphLayout(font, scoreDisplay);
-            float scoreX = viewport.getWorldWidth() - scoreLayout.width - 250;
-            float scoreY = viewport.getWorldHeight() - scoreLayout.height - 250;
-            batch.begin();
-            font.draw(batch, scoreDisplay, scoreX, scoreY);
-            batch.end();
-        }
-    }
 
     public void render(SpriteBatch batch, Viewport viewport) {
         batch.begin();

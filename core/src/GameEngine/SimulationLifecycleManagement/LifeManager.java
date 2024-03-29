@@ -76,15 +76,6 @@ public class LifeManager {
         }
     }
 
-    public void updateHealth(float currentHealth) {
-        this.currentHealth = Math.max(0, Math.min(currentHealth, maxHealth)); // Clamp to valid range
-    }
-
-    public void increaseHealth(float amount) {
-        // Increase health but do not exceed maxHealth
-        this.currentHealth = Math.min(this.currentHealth + amount, maxHealth);
-    }
-
     public void decreaseHealth(float amount) {
         // Decrease health but do not drop below 0
         this.currentHealth = Math.max(0, this.currentHealth - amount);
