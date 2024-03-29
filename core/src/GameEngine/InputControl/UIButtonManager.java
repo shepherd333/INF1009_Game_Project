@@ -65,7 +65,7 @@ public class UIButtonManager {
         addButton("Play", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sceneManager.set(new LevelMenu(sceneManager));
+                sceneManager.set(new GameObjective(sceneManager));
             }
         }, x, startY, buttonWidth, buttonHeight);
 
