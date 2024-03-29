@@ -6,7 +6,14 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.GameLayer.GameEntities.Movers.PlayerActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.ToxicWasteActor;
-// Handles collisions between the bucket actor and toxic waste actors.
+/**
+ * PlayerToxicHandler is a class that handles collisions between the player actor and toxic waste actors in a game.
+ * This includes:
+ * - Providing a static method to check for collisions between the player actor and toxic waste actors.
+ * - In this method, it iterates over all actors in the stage.
+ * - If an actor is an instance of ToxicWasteActor and its bounds overlap with the player actor's bounds, it decreases the player actor's life.
+ * - It also checks if enough time has passed since the last sound effect was played. If so, it plays a collision sound effect and updates the lastSoundPlayTime.
+ */
 public class PlayerToxicHandler {
 
     // Checks for collisions between the bucket actor and toxic waste actors.

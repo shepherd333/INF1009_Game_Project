@@ -28,7 +28,27 @@ import GameEngine.Collisions.handlers.enums.ItemType;
 
 import java.util.EnumMap;
 
-// Class PlayerActor is an actor that can move around and interact with other entities on the screen.
+/**
+ * PlayerActor is a class that represents an actor that can move around and interact with other entities on the screen.
+ * This includes:
+ * - Holding references to a Sprite, LifeManager, GamePlay, EntityManager, ItemActor, PlayerMovementHandler, and an EnumMap of Direction and Texture.
+ * - Providing a constructor to initialize the PlayerActor with x, y, speed, maxHealth, and GamePlay. In this constructor, it sets the GamePlay, initializes the LifeManager, sets the speed, sets the actor's starting position, loads necessary textures for different directions, initializes the actor's sprite with a texture, and sets up input handling for movement.
+ * - Overriding a method to act on the actor. In this method, it calls the act method of the superclass, handles movement based on input, ensures the actor stays within game boundaries, checks for collisions with toxic waste, and updates shaking effect if applicable.
+ * - Overriding a method to draw the actor and its held item sprite onto the screen. In this method, it draws the main sprite, positions the held item sprite, draws the held item sprite, and draws health/life info.
+ * - Providing a method to load textures for each direction the bucket can face.
+ * - Providing a method to initialize the sprite with the default texture.
+ * - Providing a method to setup input handling to control the actor's movement.
+ * - Providing a method to ensure the actor remains within the bounds of the game screen.
+ * - Providing a method to change the direction the actor is facing by updating the sprite texture.
+ * - Providing a method to get the bounding box of the actor, used for collision detection.
+ * - Providing a method to handle logic when an item is picked up by the actor.
+ * - Providing a method to handle logic when the held item is dropped.
+ * - Providing a method to handle incorrect item drop situations.
+ * - Providing a method to set the sprite for the item currently being held.
+ * - Providing a method to clear the references to the held item.
+ * - Providing a method to determine the type of bin that is currently overlapping with the actor.
+ * - Overriding and providing utility methods like setWidth, setHeight, dispose, decreaseLife, getters, and setters. These handle various aspects like managing actor size, cleanup, managing health, and accessing/modifying properties.
+ */
 public class PlayerActor extends CollidableActor {
     // Fields for the actor's properties
     private Sprite currentSprite;

@@ -1,24 +1,22 @@
 package GameEngine.SceneManagement;
 
-import GameEngine.SceneManagement.SceneInterface;
-import GameEngine.SceneManagement.SceneManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 
-// BaseScene is an abstract class that implements the SceneInterface interface
-// It provides a basic structure for the scenes classes, PauseMenu, MainMenu, LeaderBoard, HowToPlay and GamePlay.
-// It provides a common structure for the scenes to initialize, update, render, and dispose.
-
-// It also provides a method to add buttons to the scene.
-// It also provides a method to get the path of the background texture for the scene.
+/**
+ * BaseScene is an abstract class that implements the SceneInterface interface.
+ * It provides a basic structure for the scenes classes, such as PauseMenu, MainMenu, LeaderBoard, HowToPlay, and GamePlay.
+ * This includes:
+ * - Providing a common structure for the scenes to initialize, update, render, and dispose.
+ * - Providing a method to add buttons to the scene.
+ * - Providing a method to get the path of the background texture for the scene.
+ */
 public abstract class BaseScene implements SceneInterface {
     protected Stage stage;
     protected SceneManager sceneManager;

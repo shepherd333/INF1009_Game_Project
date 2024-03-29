@@ -15,8 +15,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents a falling item in the game, which can be of different types (e.g., glass, metal, paper, plastic, trash).
+ * ItemActor is a class that represents a falling item in a game, which can be of different types (e.g., glass, metal, paper, plastic, trash).
  * Each item type has its own texture and behavior.
+ * This includes:
+ * - Holding references to a TextureAtlas, TextureRegion, GamePlay, and ItemType.
+ * - Providing a constructor to initialize the ItemActor with an ItemType, speed, bucketX, bucketWidth, and GamePlay. In this constructor, it sets the ItemType, speed, bucketX, bucketWidth, and GamePlay, loads the texture atlas for the item type if it hasn't already been loaded, assigns the texture region for this item, makes the actor touchable to detect interactions, sets the size of the actor based on the texture, initializes the unique value placeholder, and adjusts the size based on the item type.
+ * - Providing a method to reset the position of the item to the top of the screen for re-use.
+ * - Overriding a method to act on the item. In this method, it calls the act method of the superclass, moves the item across the screen, and removes the actor if it goes off-screen.
+ * - Overriding a method to draw the item. In this method, it draws the texture region on the batch if it is not null.
+ * - Overriding a method to remove the item. In this method, it calls the remove method of the superclass and performs additional cleanup if necessary.
+ * - Providing a method to get the bounds of the item.
+ * - Providing a method to dispose of resources when the item is no longer needed.
+ * - Providing a method to adjust the size of the actor based on the item type.
+ * - Providing getters and setters for various properties.
+ * - Providing a method to remove this item from the game play.
  */
 public class ItemActor extends CollidableActor {
     private static final Map<ItemType, TextureAtlas> atlasMap = new HashMap<>();

@@ -5,7 +5,16 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-// TimerManager manages the countdown timer functionality in the game.
+/**
+ * TimerManager is responsible for managing the countdown timer functionality in the game.
+ * This includes:
+ * - Maintaining the current timer value.
+ * - Updating the timer based on elapsed time.
+ * - Playing a beep sound in the last 10 seconds of the countdown.
+ * - Handling the event when the timer reaches zero.
+ * - Drawing the timer on the screen.
+ * - Disposing of resources when they are no longer needed.
+ */
 public class TimerManager {
     private float timer; // Current timer value
     private boolean countdownPlayed = false; // Flag to track if countdown sound has been played

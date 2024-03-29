@@ -4,7 +4,17 @@ import com.mygdx.game.GameLayer.GameEntities.Movers.Static.ConveyorBeltActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.ToxicWasteActor;
 import com.mygdx.game.GameLayer.Scenes.GamePlay;
 
-// EntityManager class manages the creation and initialization of game entities.
+/**
+ * EntityManager is a class that manages the creation and initialization of game entities.
+ * This includes:
+ * - Holding the configuration for the level.
+ * - Holding a reference to the game play scene.
+ * - Holding a reference to the conveyor belt actor.
+ * - Providing a constructor to initialize the EntityManager with a game play scene and a level configuration.
+ * - Providing a method to initialize game entities based on the level configuration.
+ * - Providing a method to spawn toxic waste entities based on a given count.
+ * - Providing a method to setup the conveyor belt entity.
+ */
 public class EntityManager {
     private LevelConfig levelConfig; // The configuration for the level
     private final GamePlay gamePlay; // Reference to the game play scene

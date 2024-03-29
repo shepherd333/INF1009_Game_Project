@@ -6,7 +6,13 @@ import GameEngine.SimulationLifecycleManagement.AudioManager;
 import com.mygdx.game.GameLayer.Scenes.MainMenu;
 import GameEngine.SceneManagement.SceneManager;
 
-// Main class for the game, extending ApplicationAdapter for lifecycle management.
+/**
+ * Game_Engine is the main class for the game, responsible for managing the game's lifecycle.
+ * This includes:
+ * - Creating and managing scenes within the game, such as menus and gameplay.
+ * - Playing and controlling the background music for the game.
+ * - Handling the creation, rendering, resizing, and disposal of the game.
+ */
 public class Game_Engine extends ApplicationAdapter {
 	private SceneManager sm; // Manages scenes within the game, such as menus and gameplay.
 	private Music backgroundMusic; // Background music for the game.

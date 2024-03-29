@@ -3,7 +3,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.GameLayer.GameEntities.Movers.PlayerActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.Static.TrashMonsterActor;
-
+/**
+ * AIManager is a class that manages the AI behavior in a game.
+ * This includes:
+ * - Holding references to a Stage, an Actor (player), and a TrashMonsterActor.
+ * - Providing a constructor to initialize the AIManager with a Stage, an Actor, and a TrashMonsterActor.
+ * - Providing a method to update the behavior of the TrashMonsterActor following the PlayerActor. In this method, it calculates the target position (center of the PlayerActor), calculates the distance between the TrashMonsterActor and the target position, moves the TrashMonsterActor towards the target position if the distance is greater than 1, determines the movement speed (limited by followSpeed and deltaTime), calculates the movement angle, calculates the movement components along x and y axes, and updates the position of the TrashMonsterActor.
+ */
 public class AIManager {
     private Stage stage; // Reference to the stage where AI entities exist
     private Actor player; // The player actor that enemies will follow

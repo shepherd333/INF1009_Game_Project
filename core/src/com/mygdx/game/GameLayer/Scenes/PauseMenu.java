@@ -3,9 +3,15 @@ import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import GameEngine.InputControl.UIButtonManager;
-
-//Pause Menu for the game
+/**
+ * PauseMenu is a class that represents the pause menu scene in a game.
+ * This includes:
+ * - Holding references to a ShapeRenderer and a UIButtonManager.
+ * - Providing a constructor to initialize the PauseMenu with a SceneManager. In this constructor, it calls the superclass constructor with the SceneManager and initializes the ShapeRenderer.
+ * - Overriding a method to specify the background texture path for the PauseMenu scene. In this method, it returns the path to the background texture for the PauseMenu scene.
+ * - Overriding a method to initialize the PauseMenu. In this method, it calls the initialize method of the superclass, initializes the UIButtonManager, and sets up the UI buttons for the PauseMenu scene.
+ * - Overriding a method to render the PauseMenu. In this method, it begins a new batch for rendering, draws the background sprite on the batch, ends the batch, updates the stage with the time since the last frame, and draws the stage.
+ */
 public class PauseMenu extends BaseScene {
     private ShapeRenderer shapeRenderer;
     private UIButtonManager uiButtonManager;
@@ -31,17 +37,5 @@ public class PauseMenu extends BaseScene {
         batch.end();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-    }
-    @Override
-    public void update(float deltaTime) {
-        // Update logic here, if any
-    }
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height); // Call the resize method of the superclass
-    }
-    @Override
-    public void dispose() {
-        super.dispose(); // Call the dispose method of the superclass
     }
 }
