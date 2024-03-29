@@ -46,6 +46,8 @@ public class BucketActor extends CollidableActor {
     private float shakeTimer = 0f; // Timer to track shaking duration
     private BucketMovementHandler movementHandler; // Handles movement logic for the bucket
     private EnumMap<Direction, Texture> directionTextures; // Textures for each movement direction
+    public float lastSoundPlayTime = -1; // Initialize to -1 to indicate sound hasn't been played yet
+
 
     // Constructor to initialize a BucketActor instance
     public BucketActor(float x, float y, float speed, float maxHealth, GamePlay gamePlay) {

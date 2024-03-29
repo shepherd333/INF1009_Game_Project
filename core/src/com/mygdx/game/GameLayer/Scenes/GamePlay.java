@@ -71,8 +71,8 @@ public class GamePlay extends BaseScene implements GameOverListener {
         entityManager = new EntityManager(this, levelConfig);
 
         initializeGraphics();  // Initialize components
-        initializeUIComponents();
         initializeGameComponents();
+        initializeUIComponents();
         initializeGameManagers();
     }
 
@@ -93,8 +93,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         update(Gdx.graphics.getDeltaTime());
         renderBatch();
         renderStage();
-        renderScore();
-        //renderDebugShapes();
+        renderScoreTimer();
     }
 
     //  Initializers for various components
@@ -104,7 +103,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         spawnTimer = MathUtils.random(1.0f, 2.0f); // Random initial delay between 1 and 3 seconds
     }
     private void initializeGameManagers() {
-        timerManager = new TimerManager(11, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
+        timerManager = new TimerManager(60, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
         playerController = new PlayerController(bucket, 300);
         bucketItemHandler = new BucketItemHandler(bucket);
     }
@@ -167,10 +166,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
         trashMonsterActor = new TrashMonsterActor();
         stage.addActor(trashMonsterActor);
         aiManager = new AIManager(stage, bucket,trashMonsterActor);
-    }
-
-    public Stage getStage() {
-        return stage;
     }
 
     //Spawners
@@ -255,7 +250,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         batch.begin();
         drawBackground();
         // Let TimerManager handle the drawing of the timer
-        timerManager.drawTimer(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         batch.end();
     }
 
@@ -268,9 +263,14 @@ public class GamePlay extends BaseScene implements GameOverListener {
         stage.draw();
     }
 
-    private void renderScore() {  // Renders the current score
+    private void renderScoreTimer() {  // Renders the current score
         ScoreManager.getInstance().render(batch, stage.getViewport());
+        timerManager.drawTimer(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
+    public Stage getStage() {
+        return stage;
+    }
+
 
 
     private void goToLeaderboard() {   // Transitions to the leaderboard scene when the game ends

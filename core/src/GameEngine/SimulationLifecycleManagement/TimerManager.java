@@ -17,7 +17,7 @@ public class TimerManager {
         this.timer = startTime; // Initialize timer with start time
         this.audioManager = audioManager; // Set AudioManager instance
         this.onTimerEnd = onTimerEnd; // Set callback for timer end
-        this.font = font; // Set font for rendering text
+        this.font = ScoreManager.getInstance().getFont();
         this.batch = batch; // Set SpriteBatch for rendering
     }
 
@@ -48,10 +48,12 @@ public class TimerManager {
 
     // Method to draw the timer on the screen.
     public void drawTimer(float screenWidth, float screenHeight) {
+        batch.begin();
         String timerText = String.format("Time: %d", (int)Math.floor(timer)); // Format timer text
         GlyphLayout timerLayout = new GlyphLayout(font, timerText); // Create layout for timer text
         float timerX = screenWidth - timerLayout.width - 10; // Calculate x coordinate for timer text
         float timerY = screenHeight - timerLayout.height - 100; // Calculate y coordinate for timer text
         font.draw(batch, timerText, timerX, timerY); // Draw timer text on the screen
+        batch.end();
     }
 }

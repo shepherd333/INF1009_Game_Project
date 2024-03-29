@@ -140,6 +140,10 @@ public class ScoreManager {
         batch.end();
     }
 
+    public BitmapFont getFont() {
+        return font;
+    }
+
     // Method to dispose of resources
     public void dispose() {
         if (font != null) {

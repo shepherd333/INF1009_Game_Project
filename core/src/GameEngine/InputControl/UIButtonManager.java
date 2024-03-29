@@ -71,15 +71,15 @@ public class UIButtonManager {
         }, x, startY, buttonWidth, buttonHeight);
 
         // How to Play Button
-        addButton("How to Play", new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                sceneManager.set(new GameObjective(sceneManager));
-            }
-        }, x, startY - (buttonHeight + spacing), buttonWidth, buttonHeight);
+//        addButton("How to Play", new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                sceneManager.set(new GameObjective(sceneManager));
+//            }
+//        }, x, startY - (buttonHeight + spacing), buttonWidth, buttonHeight);
 
         // Mute Button
-        createOrUpdateMuteButton(x, startY - 2 * (buttonHeight + spacing));
+        createOrUpdateMuteButton(x, startY - 1 * (buttonHeight + spacing));
 
         // Exit Game Button
         addButton("Exit Game", new ClickListener() {
@@ -87,7 +87,7 @@ public class UIButtonManager {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
-        }, x, startY - 3 * (buttonHeight + spacing), buttonWidth, buttonHeight);
+        }, x, startY - 2 * (buttonHeight + spacing), buttonWidth, buttonHeight);
     }
 
     public void setupPauseMenu() {
@@ -298,7 +298,7 @@ public class UIButtonManager {
 
     private int calculateStartY() {
         // Simplified for demonstration
-        return (Gdx.graphics.getHeight() / 2) + ((buttonHeight + spacing) * 2);
+        return (Gdx.graphics.getHeight() / 2) + ((buttonHeight + spacing) );
     }
 
     public void addCustomButton(String text, ClickListener listener, int x, int y, int width, int height) {
