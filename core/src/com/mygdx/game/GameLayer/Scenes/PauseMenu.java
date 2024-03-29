@@ -1,16 +1,11 @@
 package com.mygdx.game.GameLayer.Scenes;
-
 import GameEngine.InputControl.UIButtonManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import GameEngine.SimulationLifecycleManagement.AudioManager;
 
+//Pause Menu for the game
 public class PauseMenu extends BaseScene {
     private ShapeRenderer shapeRenderer;
     private UIButtonManager uiButtonManager;

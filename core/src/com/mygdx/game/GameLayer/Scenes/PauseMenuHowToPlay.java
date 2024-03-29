@@ -1,9 +1,9 @@
 package com.mygdx.game.GameLayer.Scenes;
-
 import GameEngine.InputControl.UIButtonManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
 
+//PauseMenuHowtoPlay for the game
 public class PauseMenuHowToPlay extends BaseScene {
     private UIButtonManager uiButtonManager;
     public PauseMenuHowToPlay(SceneManager sceneManager) {

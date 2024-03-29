@@ -1,19 +1,17 @@
 package com.mygdx.game.GameLayer.Scenes;
-
 import GameEngine.InputControl.UIButtonManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-
+//GameObjective scene for the game
 public class GameObjective extends BaseScene {
     private UIButtonManager uiButtonManager;
 
+    // Constructor for the GameObjective scene
     public GameObjective(SceneManager sceneManager) {
         super(sceneManager);
     }
 
+    // Method to specify the background texture path for the Gam scene
     @Override
     protected String getBackgroundTexturePath() {
         return "GameObjective.jpg"; // Set the path to the background texture for the how to play scene

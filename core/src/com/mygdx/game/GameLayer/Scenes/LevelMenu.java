@@ -2,15 +2,10 @@ package com.mygdx.game.GameLayer.Scenes;
 import GameEngine.InputControl.UIButtonManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import GameEngine.SimulationLifecycleManagement.LevelConfig;
-import GameEngine.Collisions.handlers.enums.ItemType;
-
-
+//Level Menu for the game
 public class LevelMenu extends BaseScene {
+
+    // Constructor for the EndMenu scene
     private UIButtonManager uiButtonManager;
     public LevelMenu(SceneManager sceneManager) {
         super(sceneManager);
