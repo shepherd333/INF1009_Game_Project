@@ -3,7 +3,19 @@ import com.badlogic.gdx.Gdx;
 import com.mygdx.game.GameLayer.Scenes.MainMenu;
 import java.util.Stack;
 
-// SceneManager manages the scenes in the game.
+/**
+ * SceneManager is responsible for managing the scenes in the game.
+ * This includes:
+ * - Initializing scenes and pushing the initial scene onto a stack.
+ * - Pushing new scenes onto the stack.
+ * - Popping the current scene from the stack.
+ * - Getting the current scene from the stack.
+ * - Setting a new scene, disposing of the current scene.
+ * - Updating the current scene.
+ * - Rendering the current scene.
+ * - Resizing the current scene.
+ * - Disposing of all scenes when they are no longer needed.
+ */
 public class SceneManager {
     private Stack<SceneInterface> sceneStack = new Stack<>(); // Stack to manage scenes
 

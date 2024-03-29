@@ -5,7 +5,17 @@ import com.badlogic.gdx.audio.Sound;
 import java.util.HashMap;
 import java.util.Map;
 
-// AudioManager manages audio in the game, including background music and sound effects.
+/**
+ * AudioManager is responsible for managing all audio-related functionalities in the game.
+ * This includes:
+ * - Loading and storing sound effects used in the game.
+ * - Playing and stopping background music.
+ * - Playing sound effects.
+ * - Muting and unmuting the music.
+ * - Disposing of audio resources when they are no longer needed.
+ *
+ * AudioManager follows the Singleton design pattern to ensure there is only one instance of AudioManager in the game.
+ */
 public class AudioManager {
     private static AudioManager instance; // Singleton instance of AudioManager
     private Music backgroundMusic; // Background music

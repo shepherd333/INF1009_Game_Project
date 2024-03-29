@@ -5,7 +5,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.GameLayer.GameEntities.Movers.PlayerActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.ItemActor;
 
-// Handles collision between a bucket actor and an item actor.
+/**
+ * CollisionHandler is a class that extends BaseCollisionHandler and handles collisions between a player actor and an item actor in a game.
+ * This includes:
+ * - Holding a reference to the stage where the collision occurs.
+ * - Providing a constructor to initialize the collision handler with the actors involved and the stage.
+ * - Overriding a method to handle the collision between the actors. In this method, it checks if one actor is a player and the other is an item to handle item pickup.
+ * - Providing a method to handle the pickup of an item by a player actor. In this method, if the player is not already holding an item, it picks up the item, assigns the item's properties to the player, removes the item from the stage, and logs a message.
+ */
 public class CollisionHandler extends BaseCollisionHandler {
     private Stage stage;
 

@@ -1,7 +1,18 @@
 package GameEngine.SimulationLifecycleManagement;
 import GameEngine.Collisions.handlers.enums.ItemType;
 
-// LevelConfig represents the configuration for a game level.
+/**
+ * LevelConfig is responsible for storing the configuration for a game level.
+ * This includes:
+ * - The spawn speed factor, which affects the spawn speed of items on the conveyor belt.
+ * - The movement speed factor, which affects the movement speed of items on the conveyor belt.
+ * - The number of toxic waste items to spawn.
+ * - The types of bins to spawn.
+ * - The level number.
+ * - The path to the background image for the level.
+ *
+ * The LevelConfig class is used to initialize these settings for each level in the game.
+ */
 public class LevelConfig {
     public float spawnSpeedFactor; // Factor affecting spawn speed of items on the conveyor belt
     public float movementSpeedFactor; // Factor affecting movement speed of items on the conveyor belt

@@ -9,8 +9,17 @@ import com.badlogic.gdx.math.Rectangle;
 import GameEngine.EntityManagement.CollidableActor;
 
 /**
- * Represents a toxic waste item in the game that players must avoid or interact with.
+ * ToxicWasteActor is a class that represents a toxic waste item in a game that players must avoid or interact with.
  * It is randomly positioned within defined bounds, avoiding the UI and other fixed elements.
+ * This includes:
+ * - Holding a reference to a Sprite.
+ * - Providing a constructor to initialize the ToxicWasteActor. In this constructor, it loads the texture and sets the sprite size, defines the bounds for random positioning, and randomizes position within bounds.
+ * - Providing a method to get the bounding rectangle for collision detection.
+ * - Providing a method to calculate the minimum Y-coordinate for positioning the toxic waste, ensuring it does not overlap with bottom UI elements or bins.
+ * - Providing a method to calculate the maximum Y-coordinate for positioning the toxic waste, ensuring it does not overlap with top UI elements.
+ * - Overriding a method to draw the toxic waste. In this method, it sets the position of the sprite and draws the sprite.
+ * - Overriding a method to act on the toxic waste. In this method, it calls the act method of the superclass.
+ * - Providing a method to dispose of the sprite's texture. This should be called to free up resources when the actor is no longer needed.
  */
 public class ToxicWasteActor extends CollidableActor {
     private Sprite sprite; // The visual representation of the toxic waste.

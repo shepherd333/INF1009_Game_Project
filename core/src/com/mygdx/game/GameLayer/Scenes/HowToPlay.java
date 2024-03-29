@@ -1,9 +1,14 @@
 package com.mygdx.game.GameLayer.Scenes;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
-import GameEngine.InputControl.UIButtonManager;
-// HowToPlay scene for the game
-
+/**
+ * HowToPlay is a class that represents the how to play scene in a game.
+ * This includes:
+ * - Holding a reference to a UIButtonManager.
+ * - Providing a constructor to initialize the HowToPlay with a SceneManager. In this constructor, it calls the superclass constructor with the SceneManager.
+ * - Overriding a method to specify the background texture path for the HowToPlay scene. In this method, it returns the path to the background texture for the HowToPlay scene.
+ * - Overriding a method to initialize the HowToPlay. In this method, it calls the initialize method of the superclass, initializes the UIButtonManager, and sets up the UI buttons for the HowToPlay scene.
+ */
 public class HowToPlay extends BaseScene {
     private UIButtonManager uiButtonManager;
     public HowToPlay(SceneManager sceneManager) {
@@ -20,26 +25,5 @@ public class HowToPlay extends BaseScene {
         super.initialize(); // Call the initialize method of the superclass
         uiButtonManager = new UIButtonManager(skin, stage, getSceneManager());
         uiButtonManager.setupHowToPlay();
-    }
-
-    @Override
-    public void update(float deltaTime) {
-        // Update logic here, if any
-    }
-
-    @Override
-    public void render() {
-        super.render(); // Call the render method of the superclass
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height); // Call the resize method of the superclass
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose(); // Call the dispose method of the superclass
-        // Dispose any additional resources specific to HowToPlay
     }
 }

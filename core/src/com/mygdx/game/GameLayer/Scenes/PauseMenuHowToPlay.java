@@ -1,9 +1,15 @@
 package com.mygdx.game.GameLayer.Scenes;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
-import GameEngine.InputControl.UIButtonManager;
 
-//PauseMenuHowtoPlay for the game
+/**
+ * PauseMenuHowToPlay is a class that represents the pause menu how to play scene in a game.
+ * This includes:
+ * - Holding a reference to a UIButtonManager.
+ * - Providing a constructor to initialize the PauseMenuHowToPlay with a SceneManager. In this constructor, it calls the superclass constructor with the SceneManager.
+ * - Overriding a method to specify the background texture path for the PauseMenuHowToPlay scene. In this method, it returns the path to the background texture for the PauseMenuHowToPlay scene.
+ * - Overriding a method to initialize the PauseMenuHowToPlay. In this method, it calls the initialize method of the superclass, initializes the UIButtonManager, and sets up the UI buttons for the PauseMenuHowToPlay scene.
+ */
 public class PauseMenuHowToPlay extends BaseScene {
     private UIButtonManager uiButtonManager;
     public PauseMenuHowToPlay(SceneManager sceneManager) {
@@ -20,27 +26,6 @@ public class PauseMenuHowToPlay extends BaseScene {
         super.initialize(); // Call the initialize method of the superclass
         UIButtonManager uiButtonManager = new UIButtonManager(skin, stage, getSceneManager());
         uiButtonManager.setupPauseMenuHowToPlay();
-    }
-
-    @Override
-    public void update(float deltaTime) {
-        // Update logic here, if any
-    }
-
-    @Override
-    public void render() {
-        super.render(); // Call the render method of the superclass
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height); // Call the resize method of the superclass
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose(); // Call the dispose method of the superclass
-        // Dispose any additional resources specific to HowToPlay
     }
 }
 

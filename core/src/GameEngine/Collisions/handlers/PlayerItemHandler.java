@@ -6,7 +6,18 @@ import com.badlogic.gdx.Input;
 import com.mygdx.game.GameLayer.GameEntities.Movers.PlayerActor;
 import GameEngine.Collisions.handlers.enums.ItemType;
 
-// Handles interactions between the bucket actor and items.
+/**
+ * PlayerItemHandler is a class that handles interactions between the player actor and items in a game.
+ * This includes:
+ * - Holding a reference to the player actor being handled.
+ * - Providing a constructor to initialize the handler with the player actor.
+ * - Providing a method to log debug messages.
+ * - Providing a method to handle picking up or dropping items by the player actor.
+ * - In this method, it checks if the SPACE key is just pressed. If so, it gets the overlapping bin type and the held item type.
+ * - If the held item can be dropped into the overlapping bin, it drops the held item.
+ * - If the overlapping bin is incorrect, it initiates shaking and error handling.
+ * - If there is no overlapping bin detected or no item to drop, it logs a debug message.
+ */
 public class PlayerItemHandler {
     private final PlayerActor playerActor; // The bucket actor being handled
 

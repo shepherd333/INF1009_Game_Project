@@ -10,7 +10,18 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
 import java.util.Collections;
 
-// ScoreManager manages the scoring system in the game.
+/**
+ * ScoreManager is responsible for managing the scoring system in the game.
+ * This includes:
+ * - Maintaining the current score and a list of high scores.
+ * - Adding and subtracting points from the current score.
+ * - Resetting the current score to zero.
+ * - Saving and loading scores to and from a file.
+ * - Rendering the current score on the screen.
+ * - Disposing of resources when they are no longer needed.
+ *
+ * ScoreManager follows the Singleton design pattern to ensure there is only one instance of ScoreManager in the game.
+ */
 public class ScoreManager {
     private ArrayList<Integer> scores; // List to store high scores
     private static final int MAX_SCORES = 10; // Maximum number of high scores to keep

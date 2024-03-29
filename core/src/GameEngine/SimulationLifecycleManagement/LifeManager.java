@@ -6,7 +6,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import GameEngine.SceneManagement.GameOverListener;
 
-// LifeManager handles the life bar display and logic for an entity in the game.
+/**
+ * LifeManager is responsible for managing the life bar display and logic for an entity in the game.
+ * This includes:
+ * - Maintaining the current and maximum health of the entity.
+ * - Drawing the life bar with appropriate colors based on the entity's health.
+ * - Decreasing the health of the entity.
+ * - Handling the event when the entity's health reaches zero (game over).
+ * - Disposing of resources when they are no longer needed.
+ */
 public class LifeManager {
     private float maxHealth; // Maximum health value
     private float currentHealth; // Current health value

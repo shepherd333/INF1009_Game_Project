@@ -7,7 +7,13 @@ import com.mygdx.game.GameLayer.GameEntities.Movers.PlayerActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.ItemActor;
 import GameEngine.PlayerControl.GdxInputHandler;
 
-//A criteria implementation that checks if the space bar is pressed and if the collision involves a bucket and an item actor.
+/**
+ * CollisionCriteria is a class that implements Criterias and defines a criteria for collisions in a game.
+ * This includes:
+ * - Holding references to a PlayerActionHandler and a Stage.
+ * - Providing a constructor to initialize the CollisionCriteria with a Stage. In this constructor, it also initializes the PlayerActionHandler and checks if the Stage is not null.
+ * - Overriding a method to check if the criteria are met given two actors. In this method, it checks if the space bar is pressed and if one actor is a PlayerActor and the other is an ItemActor.
+ */
 public class CollisionCriteria implements Criterias {
     private PlayerActionHandler playerActionHandler;
     private Stage stage;

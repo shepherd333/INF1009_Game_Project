@@ -1,7 +1,11 @@
 package GameEngine.AIControl;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.GameLayer.GameEntities.Movers.PlayerActor;
-
+/**
+ * ShakingHandler is a class that manages the shaking behavior of a PlayerActor in a game.
+ * This includes:
+ * - Providing a static method to update the shaking effect on the PlayerActor. In this method, it checks if the PlayerActor is currently shaking, increments the shake timer based on delta time, applies the shaking effect by randomly offsetting the PlayerActor's position within the intensity range if the shake duration has not been exceeded, stops shaking and resets the timer when the duration is reached, and updates the shake timer in the PlayerActor.
+ */
 public class ShakingHandler {
     // Method to update shaking effect on the bucket
     public static void updateShaking(PlayerActor playerActor, float delta) {

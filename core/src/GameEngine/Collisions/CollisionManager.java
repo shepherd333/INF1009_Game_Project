@@ -9,7 +9,17 @@ import GameEngine.EntityManagement.CollidableActor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * CollisionManager is a class that manages the collisions between collidable actors in a game.
+ * This includes:
+ * - Holding a list of collidable actors in the game.
+ * - Holding a reference to the stage where the collision occurs.
+ * - Holding a map of criteria to handlers.
+ * - Providing a constructor to initialize the CollisionManager with a list of actors and a stage.
+ * - Providing a method to initialize the map of criteria to handlers.
+ * - Providing a method to handle collisions between collidable actors.
+ * - Providing a method to process a collision between two collidable actors.
+ */
 public class CollisionManager {
     private List<CollidableActor> actors; // List of collidable actors in the game
     private Stage stage; // The stage where the collision occurs

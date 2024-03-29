@@ -1,7 +1,6 @@
 package com.mygdx.game.GameLayer.Scenes;
 
 import GameEngine.EntityManagement.EntityManager;
-import GameEngine.InputControl.UIButtonManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.GameOverListener;
 import GameEngine.SceneManagement.SceneManager;
@@ -35,7 +34,6 @@ import java.util.Random;
 import GameEngine.AIControl.AIManager;
 import GameEngine.Collisions.handlers.PlayerItemHandler;
 import GameEngine.PlayerControl.PlayerController;
-import com.mygdx.game.GameLayer.Scenes.Leaderboard;
 
 public class GamePlay extends BaseScene implements GameOverListener {
     private ShapeRenderer shapeRenderer;

@@ -1,5 +1,6 @@
-package GameEngine.InputControl;
+package com.mygdx.game.GameLayer.Scenes;
 import GameEngine.Collisions.handlers.enums.ItemType;
+import GameEngine.InputControl.ButtonConfigurator;
 import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.SimulationLifecycleManagement.LevelConfig;
 import com.badlogic.gdx.Gdx;
