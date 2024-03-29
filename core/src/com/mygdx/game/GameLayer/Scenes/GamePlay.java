@@ -64,20 +64,20 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private UIButtonManager uiButtonManager;
 
 
-    public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
+    public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {  // Constructor initializes the game with the provided scene manager and level configuration
         super(sceneManager);
         this.levelConfig = levelConfig;
-        ScoreManager.getInstance().setCurrentLevel(levelConfig.levelNumber);
+        ScoreManager.getInstance().setCurrentLevel(levelConfig.levelNumber);  // Setting up the game based on level selection
         entityManager = new EntityManager(this, levelConfig);
 
-        initializeGraphics();
+        initializeGraphics();  // Initialize components
         initializeUIComponents();
         initializeGameComponents();
         initializeGameManagers();
     }
 
-    public void update(float deltaTime) {
-        Gdx.input.setInputProcessor(stage);
+    public void update(float deltaTime) {    // Main update loop for the game, called every frame
+        Gdx.input.setInputProcessor(stage);    // All the components which have to be called and updated
         timerManager.update(deltaTime);
         handleItemSpawning(deltaTime);
         aiManager.updateMonsterFollowBehavior(deltaTime, bucket);
@@ -88,8 +88,8 @@ public class GamePlay extends BaseScene implements GameOverListener {
     }
 
     @Override
-    public void render() {
-        clearScreen();
+    public void render() {  // Renders the game scene
+        clearScreen();  // Clear screen, update state, render game elements
         update(Gdx.graphics.getDeltaTime());
         renderBatch();
         renderStage();
@@ -97,7 +97,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         //renderDebugShapes();
     }
 
-    //Initalizers
+    //  Initializers for various components
     @Override
     public void initialize() {
         // Set initial spawnTimer value to a smaller value
@@ -128,14 +128,14 @@ public class GamePlay extends BaseScene implements GameOverListener {
     @Override
     protected String getBackgroundTexturePath() {
         return "FloorBG.png";
-    }
+    }  // Sets the background for the game
 
-    private void setupGameManagement() {
+    private void setupGameManagement() {  // Sets the core gameplay functionalities
         setupCollisionManager();
         initializeScoreManager();
         initializeAIManager();
     }
-    private void initializeGameComponents() {
+    private void initializeGameComponents() {  // Initializes core game components, like actors and the player
         spawnBins();
         entityManager.initializeGameEntities();
         initializeScoreManager();
@@ -144,26 +144,26 @@ public class GamePlay extends BaseScene implements GameOverListener {
         initializeAIManager();
         setupGameManagement();
     }
-    private void initializeScoreManager() {
+    private void initializeScoreManager() {  // Initializes the score tracking functionality
         scoreManager = ScoreManager.getInstance();
         scoreManager.resetCurrentScore();
     }
 
 
-    private void initializeBucket() {
-        bucketTexture = new Texture(Gdx.files.internal("Walle.png"));
-        bucket = new BucketActor(100, 100, 300, 100, this);
+    private void initializeBucket() {  // Initializes the main player character
+        bucketTexture = new Texture(Gdx.files.internal("Walle.png"));  // The player's sprite
+        bucket = new BucketActor(100, 100, 300, 100, this); // Setting the player's position, speed and health
         actors.add(bucket); // Assume actors is a list of actors for collision detection
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
     }
 
-    private void setupCollisionManager() {
+    private void setupCollisionManager() {  // Sets up the collision manager and the shape renderer
         collisionManager = new CollisionManager(actors, stage);
         shapeRenderer = new ShapeRenderer();
     }
 
-    private void initializeAIManager() {
+    private void initializeAIManager() {  // Initialize the AI NPC which is the Trash Monster
         trashMonsterActor = new TrashMonsterActor();
         stage.addActor(trashMonsterActor);
         aiManager = new AIManager(stage, bucket,trashMonsterActor);
@@ -174,22 +174,23 @@ public class GamePlay extends BaseScene implements GameOverListener {
     }
 
     //Spawners
-    private void spawnBins() {
+    private void spawnBins() {  // Spawning the different bin actors based on level configuration
         for (int i = 0; i < levelConfig.spawnTypes.length; i++) {
             BinActor bin = new BinActor(levelConfig.spawnTypes[i], i); // Position might need adjusting
             stage.addActor(bin);
         }
     }
 
-    private void spawnItem() {
+    private void spawnItem() {  // Spawning of the items that player recycles
         if (levelConfig.spawnTypes.length > 0) {
             // Select a random item type from the level-configured bin types
             int itemToSpawnIndex = random.nextInt(levelConfig.spawnTypes.length);
             ItemType itemType = levelConfig.spawnTypes[itemToSpawnIndex];
 
             float baseSpeed = 75; // Consider making this part of LevelConfig if it varies by level
+            // Setting the speed of the item movement based on level configured
             ItemActor item = new ItemActor(itemType, baseSpeed * levelConfig.movementSpeedFactor, 0, 0, this);
-            if (!checkCollision(item)) {
+            if (!checkCollision(item)) {  // Ensuring the items check for collision before spawning
                 items.add(item);
                 actors.add(item); // Assuming 'actors' can include any CollidableActor
                 stage.addActor(item);
@@ -200,7 +201,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         }
     }
 
-    private void handleItemSpawning(float deltaTime) {
+    private void handleItemSpawning(float deltaTime) {  // Setting the spawn intervals of the items
         spawnTimer += deltaTime;
         final float spawnInterval = 3 / levelConfig.spawnSpeedFactor;
         if (spawnTimer >= spawnInterval) {
@@ -210,7 +211,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     }
 
     //Collisions
-    private boolean checkCollision(CollidableActor actor) {
+    private boolean checkCollision(CollidableActor actor) {  // Checks collisions within the actors on the screen
         for (CollidableActor existingActor : actors) {
             if (actor.getBounds().overlaps(existingActor.getBounds())) {
                 return true; // Collision detected
@@ -223,7 +224,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         collisionManager.handleCollisions(); // Handles all game collisions
     }
 
-    public void removeItemFromList(ItemActor item) {
+    public void removeItemFromList(ItemActor item) {  // Removes an item from the game when necessary
         if (items.contains(item, true)) {
             items.removeValue(item, true);
         }
@@ -235,9 +236,9 @@ public class GamePlay extends BaseScene implements GameOverListener {
     }
 
     //GameOver
-    public void onGameOver() {
-        AudioManager.getInstance().playSoundEffect("powerOff", 1.0f);
-        AudioManager.getInstance().stopCountdownSound();
+    public void onGameOver() {  // Calls the methods needed for when end of game is  detected
+        AudioManager.getInstance().playSoundEffect("powerOff", 1.0f); // Sound effect for game end
+        AudioManager.getInstance().stopCountdownSound();  // Stopping the countdown timer effect if game ends before final 10 seconds
         int currentScore = ScoreManager.getInstance().getCurrentScore();
         ScoreManager.getInstance().addScore(currentScore); // Add the current score to the high scores
         ScoreManager.getInstance().resetCurrentScore(); // Optionally reset the current score
@@ -250,7 +251,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
-    private void renderBatch() {
+    private void renderBatch() {  // Begins a new batch for rendering, drawing the background and timer
         batch.begin();
         drawBackground();
         // Let TimerManager handle the drawing of the timer
@@ -262,17 +263,17 @@ public class GamePlay extends BaseScene implements GameOverListener {
         bgSprite.draw(batch);
     }
 
-    private void renderStage() {
+    private void renderStage() {  // Renders the stage, which contains actors and UI elements
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
 
-    private void renderScore() {
+    private void renderScore() {  // Renders the current score
         ScoreManager.getInstance().render(batch, stage.getViewport());
     }
 
 
-    private void goToLeaderboard() {
+    private void goToLeaderboard() {   // Transitions to the leaderboard scene when the game ends
         // logic to transition to the leaderboard scene
         sceneManager.pushScene(new Leaderboard(sceneManager));
         AudioManager.getInstance().stopCountdownSound();
@@ -280,14 +281,14 @@ public class GamePlay extends BaseScene implements GameOverListener {
 
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height) {  // Handles window resizing, adjusting the viewport as necessary
         if (stage != null) {
             stage.getViewport().update(width, height, true);
         }
     }
 
     @Override
-    public void dispose() {
+    public void dispose() {   // Disposes of resources when the game scene is closed
         super.dispose();
 
         //System.out.println("Disposing GamePlay. Is stage null? " + (stage == null));
