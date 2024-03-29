@@ -102,7 +102,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         spawnTimer = MathUtils.random(1.0f, 2.0f); // Random initial delay between 1 and 3 seconds
     }
     private void initializeGameManagers() {
-        timerManager = new TimerManager(60, AudioManager.getInstance(), this::goToLeaderboard, font, batch, shapeRenderer);
+        timerManager = new TimerManager(90, AudioManager.getInstance(), this::goToLeaderboard, font, batch, shapeRenderer);
         playerController = new PlayerController(bucket, 200);
         playerItemHandler = new PlayerItemHandler(bucket);
     }
