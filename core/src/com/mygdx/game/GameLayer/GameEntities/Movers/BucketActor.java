@@ -28,10 +28,6 @@ import java.util.EnumMap;
 
 
 public class BucketActor extends CollidableActor {
-    private Texture textureLeft;
-    private Texture textureRight;
-    private Texture textureUp;
-    private Texture textureDown;
     private Sprite currentSprite;
     private float speed;
     private boolean itemPickedUp; // Flag to check if an item has been picked up
