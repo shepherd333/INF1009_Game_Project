@@ -46,6 +46,7 @@ public class UIButtonManager {
             muteButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    AudioManager.getInstance().playSoundEffect("buttonSound", 0.5f); // Play button sound
                     audioManager.toggleMusicMute();
                     // Update text based on current state right after toggling
                     muteButton.setText(audioManager.isMusicMuted() ? "Unmute" : "Mute");
@@ -241,9 +242,17 @@ public class UIButtonManager {
         TextButton button = new TextButton(text, skin);
         button.setSize(width, height);
         button.setPosition(x, y);
-        button.addListener(listener);
+        button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y); // Call the overridden clicked method
+                AudioManager.getInstance().playSoundEffect("buttonSound", 0.5f); // Play button sound
+                listener.clicked(event, x, y); // Trigger the original listener's clicked event
+            }
+        });
         stage.addActor(button);
     }
+
 
     public void setupGameObjective() {
         int screenWidth = Gdx.graphics.getWidth();
@@ -304,7 +313,15 @@ public class UIButtonManager {
         TextButton button = new TextButton(text, skin);
         button.setSize(width, height);
         button.setPosition(x, y);
-        button.addListener(listener);
+        button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y); // Call the overridden clicked method
+                AudioManager.getInstance().playSoundEffect("buttonSound", 0.5f); // Play button sound
+                listener.clicked(event, x, y); // Trigger the original listener's clicked event
+            }
+        });
         stage.addActor(button);
     }
+
 }

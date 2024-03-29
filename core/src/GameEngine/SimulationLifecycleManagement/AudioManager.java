@@ -26,6 +26,7 @@ public class AudioManager {
         soundEffects.put("powerOff", Gdx.audio.newSound(Gdx.files.internal("PowerOffSound.mp3")));
         soundEffects.put("itemPickup", Gdx.audio.newSound(Gdx.files.internal("ItemPickupSound.mp3")));
         soundEffects.put("beep", Gdx.audio.newSound(Gdx.files.internal("beep.mp3")));
+        soundEffects.put("buttonSound", Gdx.audio.newSound(Gdx.files.internal("ButtonSound.mp3")));
         // Add other sound effects here
     }
 
