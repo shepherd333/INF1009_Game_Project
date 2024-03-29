@@ -27,6 +27,7 @@ public abstract class BaseScene implements SceneInterface {
     protected Texture bg;
     protected Sprite bgSprite;
 
+//    Constructs a BaseScene with a reference to the SceneManager.
     public BaseScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
         initialize();
@@ -47,19 +48,12 @@ public abstract class BaseScene implements SceneInterface {
     // Abstract method to get the path of the background texture for subclasses to implement
     protected abstract String getBackgroundTexturePath();
 
-    protected void addButton(String buttonText, ClickListener listener, int x, int y, int buttonWidth, int buttonHeight) {
-        TextButton button = new TextButton(buttonText, skin);
-        button.setSize(buttonWidth, buttonHeight);
-        button.setPosition(x, y);
-        button.addListener(listener);
-        stage.addActor(button);
-    }
-
     @Override
     public void update(float deltaTime) {
-        // Update game logic, deltaTime is the time between frames
+        // Update game logic
     }
 
+    //Render resources
     @Override
     public void render() {
         batch.begin();
@@ -88,6 +82,6 @@ public abstract class BaseScene implements SceneInterface {
 
     @Override
     public SceneManager getSceneManager() {
-        return this.sceneManager;
+        return this.sceneManager; // Return the SceneManager associated with this scene
     }
 }
