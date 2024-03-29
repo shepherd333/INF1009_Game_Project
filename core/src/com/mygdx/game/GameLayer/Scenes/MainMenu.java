@@ -1,13 +1,8 @@
 package com.mygdx.game.GameLayer.Scenes;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.InputControl.UIButtonManager;
-
+//Main Menu for the game
 public class MainMenu extends BaseScene {
     private UIButtonManager uiButtonManager;
 

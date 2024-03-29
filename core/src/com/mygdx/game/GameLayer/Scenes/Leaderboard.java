@@ -1,14 +1,12 @@
 package com.mygdx.game.GameLayer.Scenes;
-
 import GameEngine.InputControl.UIButtonManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import GameEngine.SimulationLifecycleManagement.ScoreManager;
 
+// Constructor for the Leaderboard scene
 public class Leaderboard extends BaseScene {
     private BitmapFont font;
     private UIButtonManager uiButtonManager;
@@ -19,7 +17,7 @@ public class Leaderboard extends BaseScene {
         ScoreManager.getInstance().loadScores(); // Load scores at scene initialization
 
     }
-
+    // Method to specify the background texture path for the Leaderboard scene
     @Override
     protected String getBackgroundTexturePath() {
         return "Leaderboard.jpg"; // Set the path to the background texture for the leaderboard scene
