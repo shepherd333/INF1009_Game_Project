@@ -39,7 +39,6 @@ public class CollisionHandler extends BaseCollisionHandler {
         if (!bucket.isItemPickedUp()) {
             // Assign the item's properties to the bucket.
             bucket.setHeldItemType(item.getItemType());
-            bucket.setHeldItemSprite(item.getTextureRegion());
             bucket.setItemPickedUp(true);
             bucket.holdItem(item);
             item.removeItem(); // Remove the item from the stage.

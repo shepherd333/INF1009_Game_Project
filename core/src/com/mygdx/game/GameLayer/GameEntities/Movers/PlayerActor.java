@@ -88,6 +88,17 @@ public class PlayerActor extends CollidableActor {
         ensureInBounds(); // Ensure the actor stays within game boundaries
         PlayerToxicHandler.checkToxicWasteCollision(this, getStage(), AudioManager.getInstance()); // Check for collisions with toxic waste
         ShakingHandler.updateShaking(this, delta); // Update shaking effect if applicable
+        updateHeldItemPosition();
+    }
+
+    private void updateHeldItemPosition() {
+        if (heldItemSprite != null) {
+            // Align the bottom center of the held item sprite with the top center of the player sprite
+            float verticalOffset = 20; // Offset above the player
+            float heldItemX = this.getX() + (this.getWidth() - heldItemSprite.getWidth()) * 0.5f; // Center horizontally
+            float heldItemY = this.getY() + this.getHeight() + verticalOffset; // Place above the player
+            heldItemSprite.setPosition(heldItemX, heldItemY);
+        }
     }
 
     // Draws the actor and its held item sprite onto the screen
@@ -96,8 +107,7 @@ public class PlayerActor extends CollidableActor {
         super.draw(batch, parentAlpha);
         batch.draw(currentSprite, getX(), getY(), getWidth(), getHeight()); // Draw the main sprite
         if (heldItemSprite != null) {
-            heldItemSprite.setPosition(this.getX(), this.getY() + this.getHeight()); // Position the held item sprite
-            heldItemSprite.draw(batch); // Draw the held item sprite
+            heldItemSprite.draw(batch); // This draws the sprite with its own position, which we've been updating
         }
         lifeManager.draw(batch, getX(), getY(), getWidth(), getHeight()); // Draw health/life info
     }
@@ -191,10 +201,16 @@ public class PlayerActor extends CollidableActor {
 
     // Sets the sprite for the item currently being held
     public void setHeldItemSprite(TextureRegion textureRegion) {
+        float scale = 1f; // Define the scale factor, 1 for original size, 0.5 for half size, etc.
+
         this.heldItemSprite = new Sprite(textureRegion); // Initialize the sprite with the texture region
-        this.heldItemSprite.setSize(50, 50); // Set the size of the sprite
-        this.heldItemSprite.setOrigin(25, 25); // Set the origin for potential rotations
+        // Calculate the scaled size based on the original region's width and height
+        this.heldItemSprite.setSize(textureRegion.getRegionWidth() * scale, textureRegion.getRegionHeight() * scale);
+        // Set the origin to the center of the sprite for rotations
+        this.heldItemSprite.setOrigin(this.heldItemSprite.getWidth() / 2, this.heldItemSprite.getHeight() / 2);
     }
+
+
 
     // Clears the references to the held item
     public void clearHeldItem() {

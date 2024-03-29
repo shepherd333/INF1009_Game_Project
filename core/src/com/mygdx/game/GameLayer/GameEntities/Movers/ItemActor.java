@@ -42,6 +42,7 @@ public class ItemActor extends CollidableActor {
     private GamePlay gamePlay; // Reference to the game play scene for interaction
     private ItemType itemType; // Type of the item
     private String uniqueValue; // Placeholder for unique properties or identification
+    private float scaleFactor = 2F ; // This scale factor will multiply the size of the item
 
     // Path to texture atlases and region names for different item types
     private static final String[] atlasPaths = {
@@ -91,7 +92,7 @@ public class ItemActor extends CollidableActor {
         this.uniqueValue = "1";
 
         // Adjust the size based on the item type
-        setSizeForItemType(itemType);
+        setSizeForItem(itemType);
     }
 
     /**
@@ -156,29 +157,39 @@ public class ItemActor extends CollidableActor {
     /**
      * Adjusts the size of the actor based on the item type.
      */
-    private void setSizeForItemType(ItemType itemType) {
-        // Adjust the size based on specific item types
-        switch (itemType) {
-            case GLASS:
-                this.setSize(60, 60);
-                break;
-            case METAL:
-                this.setSize(50, 50);
-                break;
-            case PAPER:
-                this.setSize(70, 100);
-                break;
-            case PLASTIC:
-                this.setSize(55, 55);
-                break;
-            case TRASH:
-                this.setSize(65, 65);
-                break;
-            default:
-                this.setSize(50, 50); // Default size
-                break;
+//    private void setSizeForItemType(ItemType itemType) {
+//        // Adjust the size based on specific item types
+//        switch (itemType) {
+//            case GLASS:
+//                this.setSize(90, 90);
+//                break;
+//            case METAL:
+//                this.setSize(90, 90);
+//                break;
+//            case PAPER:
+//                this.setSize(90, 90);
+//                break;
+//            case PLASTIC:
+//                this.setSize(90, 90);
+//                break;
+//            case TRASH:
+//                this.setSize(90, 90);
+//                break;
+//            default:
+//                this.setSize(90, 90); // Default size
+//                break;
+//        }
+//    }
+
+
+
+    private void setSizeForItem(ItemType itemType) {
+        // If the textureRegion is not null, set the size based on its width and height scaled by scaleFactor
+        if (textureRegion != null) {
+            this.setSize(textureRegion.getRegionWidth() * scaleFactor, textureRegion.getRegionHeight() * scaleFactor);
         }
     }
+
 
     // Getters and setters for various properties
     public float getSpeed() { return speed; }
