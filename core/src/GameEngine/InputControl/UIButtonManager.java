@@ -120,6 +120,7 @@ public class UIButtonManager {
             public void clicked(InputEvent event, float x, float y) {
                 // Transition to the main menu
                 sceneManager.set(new MainMenu(sceneManager));
+                AudioManager.getInstance().stopCountdownSound();
             }
         }, x, startY - 3 * (buttonHeight + spacing), buttonWidth, buttonHeight);
     }
@@ -183,6 +184,7 @@ public class UIButtonManager {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 sceneManager.set(new MainMenu(sceneManager));
+                AudioManager.getInstance().stopCountdownSound();
             }
         }, screenWidth - buttonWidth - rightMargin, screenHeight - 2*buttonHeight - topMargin - spacing, buttonWidth, buttonHeight);
     }

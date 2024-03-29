@@ -67,6 +67,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private final EntityManager entityManager;
     private UIButtonManager uiButtonManager;
 
+
     public GamePlay(SceneManager sceneManager, LevelConfig levelConfig) {
         super(sceneManager);
         this.levelConfig = levelConfig;
@@ -83,8 +84,8 @@ public class GamePlay extends BaseScene implements GameOverListener {
         Gdx.input.setInputProcessor(stage);
         timerManager.update(deltaTime);
         handleItemSpawning(deltaTime);
-        updateMonsterFollowBehavior(deltaTime);
-        checkMonsterBucketCollision();
+        trashMonsterActor.updateMonsterFollowBehavior(deltaTime, bucket);
+        trashMonsterActor.checkMonsterBucketCollision(bucket);
         handleCollisions();
         playerController.handleInput(deltaTime);
         bucketItemHandler.handleItemPickupOrDrop();
@@ -146,7 +147,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
         setupCollisionManager();
         initializeAIManager();
         setupGameManagement();
-
     }
     private void initializeScoreManager() {
         scoreManager = ScoreManager.getInstance();
@@ -204,8 +204,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
         }
     }
 
-
-
     private void handleItemSpawning(float deltaTime) {
         spawnTimer += deltaTime;
         final float spawnInterval = 3 / levelConfig.spawnSpeedFactor;
@@ -240,20 +238,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
         }
     }
 
-    //MonsterBehavior
-    private void updateMonsterFollowBehavior(float deltaTime) {
-        float followSpeed = 50; // Speed at which the monster follows the bucket
-        aiManager.updateFollower(trashMonsterActor, deltaTime, followSpeed);
-    }
-
-    private void checkMonsterBucketCollision() {
-        if (trashMonsterActor.overlaps(bucket)) {
-            bucket.decreaseLife(10); // This method needs to be defined in the BucketActor class
-            AudioManager.getInstance().playSoundEffect("collision", 1.0f);
-            trashMonsterActor.respawnAtRandomEdge(); // Respawns the monster
-        }
-    }
-
     //GameOver
     public void onGameOver() {
         AudioManager.getInstance().playSoundEffect("powerOff", 1.0f);
@@ -265,12 +249,10 @@ public class GamePlay extends BaseScene implements GameOverListener {
         sceneManager.pushScene(new Leaderboard(sceneManager));
     }
 
-
     //GameRenderers
     private void clearScreen() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
-
 
     private void renderBatch() {
         batch.begin();
@@ -341,9 +323,8 @@ public class GamePlay extends BaseScene implements GameOverListener {
         }
         if (bucketTexture != null) bucketTexture.dispose();
         if (conveyorBelt != null) conveyorBelt.dispose();
-        ScoreManager.getInstance().dispose();
+
 
         if (font != null) font.dispose();
     }
-
 }

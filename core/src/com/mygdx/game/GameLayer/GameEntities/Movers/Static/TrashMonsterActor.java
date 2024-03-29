@@ -1,4 +1,6 @@
 package com.mygdx.game.GameLayer.GameEntities.Movers.Static;
+
+import GameEngine.SimulationLifecycleManagement.AudioManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -58,7 +60,29 @@ public class TrashMonsterActor extends CollidableActor {
         setPosition(newX, newY);
     }
 
+    public void updateMonsterFollowBehavior(float deltaTime, BucketActor bucket) {
+        float followSpeed = 50; // Speed at which the monster follows the bucket
+        float targetX = bucket.getX() + bucket.getWidth() / 2;
+        float targetY = bucket.getY() + bucket.getHeight() / 2;
+        float dx = targetX - (getX() + getWidth() / 2);
+        float dy = targetY - (getY() + getHeight() / 2);
+        float distance = (float) Math.sqrt(dx * dx + dy * dy);
+        if (distance > 1) {
+            float speed = Math.min(followSpeed * deltaTime, distance);
+            float angle = (float) Math.atan2(dy, dx);
+            float dx1 = (float) (speed * Math.cos(angle));
+            float dy1 = (float) (speed * Math.sin(angle));
+            setPosition(getX() + dx1, getY() + dy1);
+        }
+    }
 
+    public void checkMonsterBucketCollision(BucketActor bucket) {
+        if (overlaps(bucket)) {
+            bucket.decreaseLife(10); // This method needs to be defined in the BucketActor class
+            AudioManager.getInstance().playSoundEffect("collision", 1.0f);
+            respawnAtRandomEdge(); // Respawns the monster
+        }
+    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
@@ -74,5 +98,4 @@ public class TrashMonsterActor extends CollidableActor {
     public void dispose() {
         sprite.getTexture().dispose();
     }
-
 }
