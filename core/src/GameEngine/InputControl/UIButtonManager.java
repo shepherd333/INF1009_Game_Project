@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import GameEngine.SceneManagement.SceneManager;
 import com.mygdx.game.GameLayer.Scenes.*;
 
+// UIButtonManager handles the creation and setup of UI buttons in different game scenes.
 public class UIButtonManager {
     private Skin skin;
     private Stage stage;
@@ -65,7 +66,7 @@ public class UIButtonManager {
         addButton("Play", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sceneManager.set(new LevelMenu(sceneManager));
+                sceneManager.set(new GameObjective(sceneManager));
             }
         }, x, startY, buttonWidth, buttonHeight);
 

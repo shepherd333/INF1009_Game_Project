@@ -1,21 +1,20 @@
 package GameEngine.SimulationLifecycleManagement;
-
 import GameEngine.Collisions.handlers.enums.ItemType;
 
+// LevelConfig represents the configuration for a game level.
 public class LevelConfig {
-    public float spawnSpeedFactor;
-    public float movementSpeedFactor;
-    public int spawnToxicWaste;
+    public float spawnSpeedFactor; // Factor affecting spawn speed of items on the conveyor belt
+    public float movementSpeedFactor; // Factor affecting movement speed of items on the conveyor belt
+    public int spawnToxicWaste; // Number of toxic waste items to spawn
     public ItemType[] spawnTypes; // Array of bin types to spawn
-    public int levelNumber; // Add level number
+    public int levelNumber; // Level number to be set for each level
 
-
-    public LevelConfig(float spawnSpeedFactor, float movementSpeedFactor, int spawnToxicWaste, ItemType[] spawnTypes, int i) {
-        this.spawnSpeedFactor = spawnSpeedFactor;
-        this.movementSpeedFactor = movementSpeedFactor;
-        this.spawnToxicWaste = spawnToxicWaste;
+    // Constructor to initialize a LevelConfig object with provided parameters.
+    public LevelConfig(float spawnSpeedFactor, float movementSpeedFactor, int spawnToxicWaste, ItemType[] spawnTypes, int levelNumber) {
+        this.spawnSpeedFactor = spawnSpeedFactor; // Set the spawn speed
+        this.movementSpeedFactor = movementSpeedFactor; // Set the movement speed
+        this.spawnToxicWaste = spawnToxicWaste; // Set the number of toxic bin spawns
         this.spawnTypes = spawnTypes; // Initialize with desired bin types
-        this.levelNumber = i;
-
+        this.levelNumber = levelNumber; // Set the level number
     }
 }
