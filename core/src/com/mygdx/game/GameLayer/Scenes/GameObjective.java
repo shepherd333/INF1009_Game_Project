@@ -1,7 +1,8 @@
 package com.mygdx.game.GameLayer.Scenes;
-import GameEngine.InputControl.UIButtonManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
+import GameEngine.InputControl.UIButtonManager;
+
 //GameObjective scene for the game
 public class GameObjective extends BaseScene {
     private UIButtonManager uiButtonManager;

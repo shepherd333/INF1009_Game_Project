@@ -1,22 +1,22 @@
 // PlayerController.java
 package GameEngine.PlayerControl;
 
-import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.PlayerActor;
 
 /**
  * This class is responsible for controlling the player's actions.
- * It uses a BucketMovementHandler to handle the player's movement and a BucketDirectionHandler to handle the player's direction change.
+ * It uses a PlayerMovementHandler to handle the player's movement and a PlayerDirectionHandler to handle the player's direction change.
  * It uses an InputHandlerInterface to get the player's input.
  * Directly links to GamePlay scene
  */
 public class PlayerController {
-    private final BucketMovementHandler movementHandler;
-    private final BucketDirectionHandler directionHandler;
+    private final PlayerMovementHandler movementHandler;
+    private final PlayerDirectionHandler directionHandler;
 
-    public PlayerController(BucketActor bucketActor, float speed) {
+    public PlayerController(PlayerActor playerActor, float speed) {
         InputHandlerInterface inputHandler = new GdxInputHandler();
-        this.movementHandler = new BucketMovementHandler(bucketActor, speed, inputHandler);
-        this.directionHandler = new BucketDirectionHandler(bucketActor, inputHandler);
+        this.movementHandler = new PlayerMovementHandler(playerActor, speed, inputHandler);
+        this.directionHandler = new PlayerDirectionHandler(playerActor, inputHandler);
     }
 
     public void handleInput(float deltaTime) {

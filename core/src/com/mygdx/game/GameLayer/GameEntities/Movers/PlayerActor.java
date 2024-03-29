@@ -2,10 +2,11 @@ package com.mygdx.game.GameLayer.GameEntities.Movers;
 
 // Import statements to use various functionalities from different packages
 import GameEngine.AIControl.ShakingHandler;
-import GameEngine.Collisions.handlers.BucketToxicHandler;
+import GameEngine.Collisions.handlers.PlayerToxicHandler;
 import GameEngine.EntityManagement.EntityManager;
 import GameEngine.PlayerControl.GdxInputHandler;
 import GameEngine.PlayerControl.InputHandlerInterface;
+import GameEngine.PlayerControl.PlayerMovementHandler;
 import GameEngine.SimulationLifecycleManagement.AudioManager;
 import GameEngine.SimulationLifecycleManagement.ScoreManager;
 import com.badlogic.gdx.Gdx;
@@ -14,7 +15,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import GameEngine.EntityManagement.CollidableActor;
-import GameEngine.PlayerControl.BucketMovementHandler;
 import GameEngine.SimulationLifecycleManagement.LifeManager;
 import GameEngine.Collisions.handlers.enums.Direction;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -28,8 +28,8 @@ import GameEngine.Collisions.handlers.enums.ItemType;
 
 import java.util.EnumMap;
 
-// Class BucketActor is an actor that can move around and interact with other entities on the screen.
-public class BucketActor extends CollidableActor {
+// Class PlayerActor is an actor that can move around and interact with other entities on the screen.
+public class PlayerActor extends CollidableActor {
     // Fields for the actor's properties
     private Sprite currentSprite;
     private float speed;
@@ -44,13 +44,13 @@ public class BucketActor extends CollidableActor {
     private float shakeDuration = 0f; // Duration of the shaking effect
     private float shakeIntensity = 5f; // How intense the shake effect should be
     private float shakeTimer = 0f; // Timer to track shaking duration
-    private BucketMovementHandler movementHandler; // Handles movement logic for the bucket
+    private PlayerMovementHandler movementHandler; // Handles movement logic for the bucket
     private EnumMap<Direction, Texture> directionTextures; // Textures for each movement direction
     public float lastSoundPlayTime = -1; // Initialize to -1 to indicate sound hasn't been played yet
 
 
-    // Constructor to initialize a BucketActor instance
-    public BucketActor(float x, float y, float speed, float maxHealth, GamePlay gamePlay) {
+    // Constructor to initialize a PlayerActor instance
+    public PlayerActor(float x, float y, float speed, float maxHealth, GamePlay gamePlay) {
         this.gamePlay = gamePlay;
         this.lifeManager = new LifeManager(maxHealth, 100, 10, Color.GREEN, gamePlay);
         this.speed = speed;
@@ -66,7 +66,7 @@ public class BucketActor extends CollidableActor {
         super.act(delta);
         movementHandler.handleMovement(delta); // Handle movement based on input
         ensureInBounds(); // Ensure the actor stays within game boundaries
-        BucketToxicHandler.checkToxicWasteCollision(this, getStage(), AudioManager.getInstance()); // Check for collisions with toxic waste
+        PlayerToxicHandler.checkToxicWasteCollision(this, getStage(), AudioManager.getInstance()); // Check for collisions with toxic waste
         ShakingHandler.updateShaking(this, delta); // Update shaking effect if applicable
     }
 
@@ -100,7 +100,7 @@ public class BucketActor extends CollidableActor {
             this.setSize(currentSprite.getWidth(), currentSprite.getHeight()); // Match actor's size to sprite
         } else {
             // Log error if default texture is not found
-            Gdx.app.log("BucketActor", "Default texture (DOWN) not found. Check if directionTextures is initialized properly.");
+            Gdx.app.log("PlayerActor", "Default texture (DOWN) not found. Check if directionTextures is initialized properly.");
         }
     }
 
@@ -108,7 +108,7 @@ public class BucketActor extends CollidableActor {
     private void initializeInputHandler() {
         setTouchable(Touchable.enabled); // Make the actor touchable for input events
         InputHandlerInterface inputHandler = new GdxInputHandler();
-        movementHandler = new BucketMovementHandler(this, speed, inputHandler); // Initialize the movement handler
+        movementHandler = new PlayerMovementHandler(this, speed, inputHandler); // Initialize the movement handler
     }
 
     // Ensure the actor remains within the bounds of the game screen
@@ -149,7 +149,7 @@ public class BucketActor extends CollidableActor {
             ItemType overlappingBinType = getOverlappingBinType(); // Determine the type of bin the item is dropped into
             if (overlappingBinType != null && overlappingBinType == heldItem.getItemType()) {
                 AudioManager.getInstance().playSoundEffect("correctBin", 1.0f); // Play sound for correct item drop
-                ScoreManager.getInstance().addToCurrentScore(100); // Increment score for correct drop
+                ScoreManager.getInstance().addToCurrentScore(50); // Increment score for correct drop
             } else {
                 // If item drop is incorrect or no bin overlap, log or handle accordingly
             }
@@ -164,7 +164,7 @@ public class BucketActor extends CollidableActor {
             ItemType overlappingBinType = getOverlappingBinType(); // Check the type of bin currently overlapping
             if (overlappingBinType != null && overlappingBinType != heldItem.getItemType()){
                 AudioManager.getInstance().playSoundEffect("errorSound", 1.0f); // Play error sound effect
-                ScoreManager.getInstance().subtractFromCurrentScore(50); // Subtract score for incorrect drop
+                ScoreManager.getInstance().subtractFromCurrentScore(100); // Subtract score for incorrect drop
             }
         }
     }
@@ -236,7 +236,7 @@ public class BucketActor extends CollidableActor {
 
     public void setHeldItemType(ItemType itemType) {
         this.heldItemType = itemType;
-        Gdx.app.log("BucketActor", "Held item type set to: " + itemType);
+        Gdx.app.log("PlayerActor", "Held item type set to: " + itemType);
     }
 
     public ItemType getHeldItemType() {

@@ -1,15 +1,15 @@
-// BucketActionHandler.java
+// PlayerActionHandler.java
 package GameEngine.PlayerControl;
 
 /**
- * This class, BucketActionHandler, is responsible for handling the action related to the space bar press.
+ * This class, PlayerActionHandler, is responsible for handling the action related to the space bar press.
  * It uses an InputHandlerInterface to check if the space bar is currently being pressed.
  * The result of this check can be retrieved using the isSpaceBarPressed() method.
  */
-public class BucketActionHandler {
+public class PlayerActionHandler {
     private final InputHandlerInterface inputHandler;
 
-    public BucketActionHandler(InputHandlerInterface inputHandler) {
+    public PlayerActionHandler(InputHandlerInterface inputHandler) {
         this.inputHandler = inputHandler;
     }
 

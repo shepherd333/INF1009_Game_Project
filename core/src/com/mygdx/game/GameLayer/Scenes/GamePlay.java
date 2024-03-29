@@ -6,7 +6,6 @@ import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.GameOverListener;
 import GameEngine.SceneManagement.SceneManager;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -20,7 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import GameEngine.Collisions.CollisionManager;
 import GameEngine.EntityManagement.CollidableActor;
-import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.PlayerActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.ItemActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.Static.TrashMonsterActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.Static.BinActor;
@@ -34,8 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import GameEngine.AIControl.AIManager;
-import GameEngine.Collisions.handlers.BucketItemHandler;
+import GameEngine.Collisions.handlers.PlayerItemHandler;
 import GameEngine.PlayerControl.PlayerController;
+import com.mygdx.game.GameLayer.Scenes.Leaderboard;
 
 public class GamePlay extends BaseScene implements GameOverListener {
     private ShapeRenderer shapeRenderer;
@@ -44,7 +44,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private SpriteBatch batch;
     private Texture bg;
     private Sprite bgSprite;
-    private BucketActor bucket;
+    private PlayerActor bucket;
     private Texture bucketTexture;
     private float spawnTimer;
     private BitmapFont font;
@@ -57,7 +57,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     private AIManager aiManager;
     private ScoreManager scoreManager;
     private TimerManager timerManager;
-    private BucketItemHandler bucketItemHandler;
+    private PlayerItemHandler playerItemHandler;
     private PlayerController playerController;
     private final EntityManager entityManager;
     private UIButtonManager uiButtonManager;
@@ -83,7 +83,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         trashMonsterActor.checkMonsterBucketCollision(bucket);
         handleCollisions();
         playerController.handleInput(deltaTime);
-        bucketItemHandler.handleItemPickupOrDrop();
+        playerItemHandler.handleItemPickupOrDrop();
     }
 
     @Override
@@ -102,16 +102,16 @@ public class GamePlay extends BaseScene implements GameOverListener {
         spawnTimer = MathUtils.random(1.0f, 2.0f); // Random initial delay between 1 and 3 seconds
     }
     private void initializeGameManagers() {
-        timerManager = new TimerManager(60, AudioManager.getInstance(), this::goToLeaderboard, font, batch);
-        playerController = new PlayerController(bucket, 300);
-        bucketItemHandler = new BucketItemHandler(bucket);
+        timerManager = new TimerManager(60, AudioManager.getInstance(), this::goToLeaderboard, font, batch, shapeRenderer);
+        playerController = new PlayerController(bucket, 200);
+        playerItemHandler = new PlayerItemHandler(bucket);
     }
 
     private void initializeGraphics() {
         batch = new SpriteBatch();
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
-        bg = new Texture(Gdx.files.internal("FloorBG.jpg"));
+        bg = new Texture(Gdx.files.internal(levelConfig.backgroundImagePath));
         bgSprite = new Sprite(bg);
         bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         font = new BitmapFont();
@@ -150,7 +150,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
 
     private void initializeBucket() {  // Initializes the main player character
         bucketTexture = new Texture(Gdx.files.internal("Walle.png"));  // The player's sprite
-        bucket = new BucketActor(100, 100, 300, 100, this); // Setting the player's position, speed and health
+        bucket = new PlayerActor(100, 100, 300, 100, this); // Setting the player's position, speed and health
         actors.add(bucket); // Assume actors is a list of actors for collision detection
         Gdx.app.log("GamePlay", "Bucket initialized at x=" + bucket.getX() + ", y=" + bucket.getY());
         stage.addActor(bucket);
@@ -263,7 +263,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
     }
 
     private void renderScoreTimer() {  // Renders the current score
-        ScoreManager.getInstance().render(batch, stage.getViewport());
+        ScoreManager.getInstance().render(batch, stage.getViewport(), shapeRenderer);
         timerManager.drawTimer(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
     public Stage getStage() {

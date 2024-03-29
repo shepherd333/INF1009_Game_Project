@@ -1,9 +1,11 @@
 package GameEngine.SimulationLifecycleManagement;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -130,13 +132,28 @@ public class ScoreManager {
     }
 
     // Method to render the current score
-    public void render(SpriteBatch batch, Viewport viewport) {
-        batch.begin();
+    public void render(SpriteBatch batch, Viewport viewport, ShapeRenderer shapeRenderer) {
         String scoreText = "Score: " + currentScore;
         GlyphLayout layout = new GlyphLayout(font, scoreText);
-        float x = viewport.getWorldWidth() - layout.width - 10; // Example x coordinate
-        float y = viewport.getWorldHeight() - layout.height - 70; // Example y coordinate
-        font.draw(batch, scoreText, x, y); // Render the score text
+        float padding = 10f; // Adjust padding as needed
+        float x = viewport.getWorldWidth() - layout.width - 250; // X coordinate for the text
+        float y = viewport.getWorldHeight() - layout.height - 10; // Y coordinate for the text
+
+        // Calculate background size
+        float backgroundWidth = layout.width + (padding * 2);
+        float backgroundHeight = layout.height + (padding * 2);
+        float backgroundX = x - padding; // Adjust X to include padding
+        float backgroundY = y - padding; // Adjust Y to include padding
+
+        // Start ShapeRenderer
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLACK); // Set background color
+        shapeRenderer.rect(backgroundX, backgroundY, backgroundWidth, backgroundHeight);
+        shapeRenderer.end();
+
+        // Now render the text over the background
+        batch.begin();
+        font.draw(batch, scoreText, x, y + layout.height); // Adjust y to draw text correctly
         batch.end();
     }
 

@@ -1,9 +1,9 @@
 package com.mygdx.game.GameLayer.Scenes;
-import GameEngine.InputControl.UIButtonManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import GameEngine.InputControl.UIButtonManager;
 
 //Pause Menu for the game
 public class PauseMenu extends BaseScene {

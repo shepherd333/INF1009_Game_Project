@@ -1,5 +1,6 @@
 package com.mygdx.game.GameLayer.GameEntities.Movers;
 
+import GameEngine.SimulationLifecycleManagement.ScoreManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -94,6 +95,7 @@ public class ItemActor extends CollidableActor {
         // Remove the actor if it goes off-screen
         if (getX() + getWidth() < 0) {
             remove();
+            ScoreManager.getInstance().subtractFromCurrentScore(10);
         }
     }
 

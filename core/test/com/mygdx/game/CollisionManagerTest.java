@@ -1,7 +1,7 @@
 //package com.mygdx.game;
 //
 //import GameEngine.Collisions.CollisionManager;
-//import com.mygdx.game.EntityManagement.Movers.BucketActor;
+//import com.mygdx.game.EntityManagement.Movers.PlayerActor;
 //import com.mygdx.game.EntityManagement.RaindropActor;
 //import GameEngine.EntityManagement.Entity;
 //
@@ -17,7 +17,7 @@
 //    public void testHandleCollisions() {
 //        List<Entity> entities = new ArrayList<>();
 //        entities.add(new RaindropActor(0, 0, 10, 10));
-//        entities.add(new BucketActor(5, 5, 10, 10));
+//        entities.add(new PlayerActor(5, 5, 10, 10));
 //
 //        CollisionManager collisionManager = new CollisionManager(entities);
 //        collisionManager.handleCollisions();

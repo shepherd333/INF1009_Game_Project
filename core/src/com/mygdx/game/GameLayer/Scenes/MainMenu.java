@@ -2,6 +2,7 @@ package com.mygdx.game.GameLayer.Scenes;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
 import GameEngine.InputControl.UIButtonManager;
+
 //Main Menu for the game
 public class MainMenu extends BaseScene {
     private UIButtonManager uiButtonManager;

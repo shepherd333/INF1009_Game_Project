@@ -1,27 +1,27 @@
-// BucketMovementHandler.java
+// PlayerMovementHandler.java
 package GameEngine.PlayerControl;
 
 import com.badlogic.gdx.Input;
-import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.PlayerActor;
 
 /**
- * This class is responsible for handling the movement of a BucketActor.
- * It uses an InputHandlerInterface to determine which direction the BucketActor should move in,
- * and then updates the BucketActor's position accordingly.
+ * This class is responsible for handling the movement of a PlayerActor.
+ * It uses an InputHandlerInterface to determine which direction the PlayerActor should move in,
+ * and then updates the PlayerActor's position accordingly.
  */
-public class BucketMovementHandler {
-    private final BucketActor bucketActor;
+public class PlayerMovementHandler {
+    private final PlayerActor playerActor;
     private final float speed;
     private final InputHandlerInterface inputHandler;
 
-    public BucketMovementHandler(BucketActor bucketActor, float speed, InputHandlerInterface inputHandler) {
-        this.bucketActor = bucketActor;
+    public PlayerMovementHandler(PlayerActor playerActor, float speed, InputHandlerInterface inputHandler) {
+        this.playerActor = playerActor;
         this.speed = speed;
         this.inputHandler = inputHandler;
     }
 
     public void handleMovement(float deltaTime) {
-        float newX = bucketActor.getX(), newY = bucketActor.getY();
+        float newX = playerActor.getX(), newY = playerActor.getY();
 
         if (inputHandler.isKeyPressed(Input.Keys.LEFT)) {
             newX -= speed * deltaTime;
@@ -36,6 +36,6 @@ public class BucketMovementHandler {
             newY -= speed * deltaTime;
         }
 
-        bucketActor.setPosition(newX, newY);
+        playerActor.setPosition(newX, newY);
     }
 }

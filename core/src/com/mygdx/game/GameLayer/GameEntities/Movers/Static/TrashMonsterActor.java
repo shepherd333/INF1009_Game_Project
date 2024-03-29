@@ -8,11 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import GameEngine.EntityManagement.CollidableActor;
-import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.PlayerActor;
 
 /**
  * Represents a TrashMonster actor in the game.
- * This actor can collide with the BucketActor, causing it to lose life and respawn at a random edge.
+ * This actor can collide with the PlayerActor, causing it to lose life and respawn at a random edge.
  */
 public class TrashMonsterActor extends CollidableActor {
     private Sprite sprite; // The visual representation of the TrashMonster
@@ -29,11 +29,11 @@ public class TrashMonsterActor extends CollidableActor {
     }
 
     /**
-     * Checks if this TrashMonster overlaps with a BucketActor.
-     * @param bucket The BucketActor to check for overlap.
+     * Checks if this TrashMonster overlaps with a PlayerActor.
+     * @param bucket The PlayerActor to check for overlap.
      * @return True if there is overlap, false otherwise.
      */
-    public boolean overlaps(BucketActor bucket) {
+    public boolean overlaps(PlayerActor bucket) {
         Rectangle trashMonsterBounds = new Rectangle(getX(), getY(), sprite.getWidth(), sprite.getHeight());
         Rectangle bucketBounds = new Rectangle(bucket.getX(), bucket.getY(), bucket.getWidth(), bucket.getHeight());
         return trashMonsterBounds.overlaps(bucketBounds);
@@ -73,10 +73,10 @@ public class TrashMonsterActor extends CollidableActor {
     }
 
     /**
-     * Checks for collision with the BucketActor and handles the effects of such a collision.
-     * @param bucket The BucketActor to check for collision.
+     * Checks for collision with the PlayerActor and handles the effects of such a collision.
+     * @param bucket The PlayerActor to check for collision.
      */
-    public void checkMonsterBucketCollision(BucketActor bucket) {
+    public void checkMonsterBucketCollision(PlayerActor bucket) {
         if (overlaps(bucket)) {
             bucket.decreaseLife(10); // Decrease the bucket's life
             AudioManager.getInstance().playSoundEffect("collision", 1.0f); // Play collision sound effect

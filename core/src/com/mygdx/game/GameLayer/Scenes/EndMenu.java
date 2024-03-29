@@ -1,7 +1,8 @@
 package com.mygdx.game.GameLayer.Scenes;
-import GameEngine.InputControl.UIButtonManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
+import GameEngine.InputControl.UIButtonManager;
+
 //End Menu for the game
 public class EndMenu extends BaseScene {
     private UIButtonManager uiButtonManager;

@@ -1,8 +1,8 @@
 package GameEngine.AIControl;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.mygdx.game.GameLayer.GameEntities.Movers.PlayerActor;
 import com.mygdx.game.GameLayer.GameEntities.Movers.Static.TrashMonsterActor;
-import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
 
 public class AIManager {
     private Stage stage; // Reference to the stage where AI entities exist
@@ -17,7 +17,7 @@ public class AIManager {
     }
 
     // Method to update the behavior of the trash monster following the player's bucket
-    public void updateMonsterFollowBehavior(float deltaTime, BucketActor bucket) {
+    public void updateMonsterFollowBehavior(float deltaTime, PlayerActor bucket) {
         // Speed at which the monster follows the bucket
         float followSpeed = 50;
 

@@ -29,7 +29,7 @@ public class BinActor extends CollidableActor {
         // Assuming a naming convention where the texture's name corresponds to the item type
         String texturePath = itemType.toString() + "Bin.png";
         sprite = new Sprite(new Texture(Gdx.files.internal(texturePath)));
-        sprite.setSize(200, 200); // Set the size of the bin
+        sprite.setSize(150, 150); // Set the size of the bin
 
         // Calculate and set the position of the bin based on its index
         float xPosition = 20 + (75 + 150) * positionIndex; // Determines x based on index

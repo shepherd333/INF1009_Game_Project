@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import GameEngine.SceneManagement.SceneManager;
 import com.mygdx.game.GameLayer.Scenes.*;
+import com.mygdx.game.GameLayer.Scenes.GamePlay;
 
 // UIButtonManager handles the creation and setup of UI buttons in different game scenes.
 public class UIButtonManager {
@@ -134,7 +135,10 @@ public class UIButtonManager {
         addButton("Level 1", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig level1Config = new LevelConfig(0.5f, 1f, 0, new ItemType[]{ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC}, 1);
+                LevelConfig level1Config = new LevelConfig(0.5f,
+                        1f, 0,
+                        new ItemType[]{ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC},
+                        1,"level1.jpg" );
                 sceneManager.set(new GamePlay(sceneManager, level1Config));
             }
         }, x, startY, buttonWidth, buttonHeight);
@@ -142,7 +146,10 @@ public class UIButtonManager {
         addButton("Level 2", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig level2Config = new LevelConfig(1f, 1.5f, 2, new ItemType[]{ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC, ItemType.METAL}, 2);
+                LevelConfig level2Config = new LevelConfig(1f,
+                        1.5f, 2,
+                        new ItemType[]{ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC, ItemType.METAL},
+                        2,"level2.jpg");
                 sceneManager.set(new GamePlay(sceneManager, level2Config));
             }
         }, x, startY - (buttonHeight + spacing), buttonWidth, buttonHeight);
@@ -150,7 +157,10 @@ public class UIButtonManager {
         addButton("Level 3", new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig level3Config = new LevelConfig(1.5f, 2f, 3, new ItemType[]{ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC, ItemType.METAL, ItemType.TRASH}, 3);
+                LevelConfig level3Config = new LevelConfig(1.5f,
+                        2f, 3,
+                        new ItemType[]{ItemType.GLASS, ItemType.PAPER, ItemType.PLASTIC, ItemType.METAL, ItemType.TRASH},
+                        3,"level3.jpg");
                 sceneManager.set(new GamePlay(sceneManager, level3Config));
             }
         }, x, startY - 2 * (buttonHeight + spacing), buttonWidth, buttonHeight);

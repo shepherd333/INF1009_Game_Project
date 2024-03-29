@@ -1,17 +1,17 @@
 package GameEngine.AIControl;
-import com.mygdx.game.GameLayer.GameEntities.Movers.BucketActor;
+import com.mygdx.game.GameLayer.GameEntities.Movers.PlayerActor;
 
 public class ShakingManager {
     // Method to start shaking the bucket
-    public static void startShaking(BucketActor bucketActor, float duration, float intensity) {
+    public static void startShaking(PlayerActor playerActor, float duration, float intensity) {
         // Set the bucket to shaking state
-        bucketActor.setShaking(true);
+        playerActor.setShaking(true);
 
         // Set the duration and intensity of the shake
-        bucketActor.setShakeDuration(duration);
-        bucketActor.setShakeIntensity(intensity);
+        playerActor.setShakeDuration(duration);
+        playerActor.setShakeIntensity(intensity);
 
         // Reset the shake timer
-        bucketActor.setShakeTimer(0f);
+        playerActor.setShakeTimer(0f);
     }
 }

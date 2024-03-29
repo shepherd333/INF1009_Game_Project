@@ -1,10 +1,10 @@
 package com.mygdx.game.GameLayer.Scenes;
-import GameEngine.InputControl.UIButtonManager;
 import GameEngine.SceneManagement.BaseScene;
 import GameEngine.SceneManagement.SceneManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import GameEngine.SimulationLifecycleManagement.ScoreManager;
+import GameEngine.InputControl.UIButtonManager;
 
 // Constructor for the Leaderboard scene
 public class Leaderboard extends BaseScene {

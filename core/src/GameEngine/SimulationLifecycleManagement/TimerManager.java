@@ -1,7 +1,9 @@
 package GameEngine.SimulationLifecycleManagement;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 // TimerManager manages the countdown timer functionality in the game.
 public class TimerManager {
@@ -12,15 +14,17 @@ public class TimerManager {
     private BitmapFont font; // Font for rendering text
     private SpriteBatch batch; // SpriteBatch for rendering
     private int lastBeepSecond = -1; // Initialize to -1 to indicate no beep has been played yet
+    private ShapeRenderer shapeRenderer;
 
 
     // Constructor to initialize TimerManager with specified parameters.
-    public TimerManager(float startTime, AudioManager audioManager, Runnable onTimerEnd, BitmapFont font, SpriteBatch batch) {
+    public TimerManager(float startTime, AudioManager audioManager, Runnable onTimerEnd, BitmapFont font, SpriteBatch batch, ShapeRenderer shapeRenderer) {
         this.timer = startTime; // Initialize timer with start time
         this.audioManager = audioManager; // Set AudioManager instance
         this.onTimerEnd = onTimerEnd; // Set callback for timer end
         this.font = ScoreManager.getInstance().getFont();
         this.batch = batch; // Set SpriteBatch for rendering
+        this.shapeRenderer = shapeRenderer;
     }
 
     // Method to update the timer based on elapsed time.
@@ -58,12 +62,26 @@ public class TimerManager {
 
     // Method to draw the timer on the screen.
     public void drawTimer(float screenWidth, float screenHeight) {
-        batch.begin();
+        // Assuming you have initialized 'shapeRenderer' somewhere
+
+        // First, calculate the size and position of the rectangle background
         String timerText = String.format("Time: %d", (int)Math.floor(timer)); // Format timer text
         GlyphLayout timerLayout = new GlyphLayout(font, timerText); // Create layout for timer text
-        float timerX = screenWidth - timerLayout.width - 10; // Calculate x coordinate for timer text
-        float timerY = screenHeight - timerLayout.height - 100; // Calculate y coordinate for timer text
-        font.draw(batch, timerText, timerX, timerY); // Draw timer text on the screen
+        float padding = 10; // Padding around the text for the background
+        float timerX = screenWidth - timerLayout.width - 130; // Calculate x coordinate for timer text
+        float timerY = screenHeight - timerLayout.height - 10; // Calculate y coordinate for timer text
+        float backgroundWidth = timerLayout.width + 2 * padding;
+        float backgroundHeight = timerLayout.height + 2 * padding;
+
+        // Draw the rectangle background
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLACK); // Set the color of the rectangle
+        shapeRenderer.rect(timerX - padding, timerY - padding, backgroundWidth, backgroundHeight);
+        shapeRenderer.end();
+
+        // You need to flush the batch before drawing with the ShapeRenderer if batch.begin() was called before
+        batch.begin();
+        font.draw(batch, timerText, timerX, timerY + timerLayout.height); // Correct Y position for drawing text
         batch.end();
     }
 }
