@@ -1,29 +1,30 @@
 package GameEngine.SimulationLifecycleManagement;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
+// ScoreManager manages the scoring system in the game.
 public class ScoreManager {
-    private ArrayList<Integer> scores;
-    private static final int MAX_SCORES = 10;
-    private int currentScore = 0;
-    private static ScoreManager instance;
-    private BitmapFont font;
+    private ArrayList<Integer> scores; // List to store high scores
+    private static final int MAX_SCORES = 10; // Maximum number of high scores to keep
+    private int currentScore = 0; // Current score
+    private static ScoreManager instance; // Singleton instance
+    private BitmapFont font; // Font for rendering text
     private int currentLevel = 1; // Default to level 1
 
+    // Private constructor to prevent direct instantiation
     private ScoreManager() {
         scores = new ArrayList<>();
         font = new BitmapFont(); // Optionally use a .fnt file for a custom font
         font.getData().setScale(1.5f); // Scale to fit your game's aesthetic
     }
 
+    // Singleton getInstance method
     public static ScoreManager getInstance() {
         if (instance == null) {
             instance = new ScoreManager();
@@ -31,47 +32,52 @@ public class ScoreManager {
         return instance;
     }
 
-
+    // Getter for current score
     public int getCurrentScore() {
         return currentScore;
     }
 
+    // Method to add points to the current score
     public void addToCurrentScore(int points) {
         currentScore += points;
         Gdx.app.log("ScoreManager", "Added score, new score: " + currentScore);
     }
 
+    // Method to subtract points from the current score
     public void subtractFromCurrentScore(int points) {
         currentScore -= points;
         Gdx.app.log("ScoreManager", "Subtracted score, new score: " + currentScore);
     }
 
+    // Method to reset the current score to zero
     public void resetCurrentScore() {
         currentScore = 0;
     }
 
-
+    // Method to get the file path for storing scores
     private String getScoresFilePath() {
         // Adjust the file name based on the current level
         String filePath = "scores" + currentLevel + ".txt";
         Gdx.app.log("ScoreManager", "getScoresFilePath: Retrieving file path for level " + currentLevel + " - " + filePath);
         return filePath;
     }
+
+    // Method to set the current level
     public void setCurrentLevel(int level) {
         this.currentLevel = level;
     }
+
+    // Method to add a score to the list of high scores
     public void addScore(int score) {
         scores.add(score);
-        Collections.sort(scores, Collections.reverseOrder());
+        Collections.sort(scores, Collections.reverseOrder()); // Sort scores in descending order
         if (scores.size() > MAX_SCORES) {
-            scores.remove(scores.size() - 1);
+            scores.remove(scores.size() - 1); // Remove excess scores
         }
-
-        saveScores();
+        saveScores(); // Save scores to file
     }
 
-
-
+    // Method to save scores to file
     public void saveScores() {
         FileHandle file = Gdx.files.local(getScoresFilePath());
         try {
@@ -82,6 +88,7 @@ public class ScoreManager {
         }
     }
 
+    // Method to load scores from file
     public void loadScores() {
         FileHandle file = Gdx.files.local(getScoresFilePath());
         if (file.exists()) {
@@ -116,26 +123,27 @@ public class ScoreManager {
         }
 
         ArrayList<String> formattedScores = new ArrayList<>();
-        //int rank = 1;
         for (Integer score : scores) {
-            formattedScores.add( " " + score);
-          //  rank++;
+            formattedScores.add(" " + score); // Add each score to the list
         }
         return formattedScores;
     }
 
-
+    // Method to render the current score
     public void render(SpriteBatch batch, Viewport viewport) {
         batch.begin();
         String scoreText = "Score: " + currentScore;
         GlyphLayout layout = new GlyphLayout(font, scoreText);
         float x = viewport.getWorldWidth() - layout.width - 10; // Example x coordinate
         float y = viewport.getWorldHeight() - layout.height - 70; // Example y coordinate
-        font.draw(batch, scoreText, x, y);
+        font.draw(batch, scoreText, x, y); // Render the score text
         batch.end();
     }
 
+    // Method to dispose of resources
     public void dispose() {
-        if (font != null) font.dispose();
+        if (font != null) {
+            font.dispose(); // Dispose of the BitmapFont
+        }
     }
 }
