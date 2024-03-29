@@ -80,7 +80,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         Gdx.input.setInputProcessor(stage);
         timerManager.update(deltaTime);
         handleItemSpawning(deltaTime);
-        trashMonsterActor.updateMonsterFollowBehavior(deltaTime, bucket);
+        aiManager.updateMonsterFollowBehavior(deltaTime, bucket);
         trashMonsterActor.checkMonsterBucketCollision(bucket);
         handleCollisions();
         playerController.handleInput(deltaTime);
@@ -164,9 +164,9 @@ public class GamePlay extends BaseScene implements GameOverListener {
     }
 
     private void initializeAIManager() {
-        aiManager = new AIManager(stage, bucket);
         trashMonsterActor = new TrashMonsterActor();
         stage.addActor(trashMonsterActor);
+        aiManager = new AIManager(stage, bucket,trashMonsterActor);
     }
 
     public Stage getStage() {
