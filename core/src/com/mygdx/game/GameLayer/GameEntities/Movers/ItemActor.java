@@ -5,9 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import GameEngine.EntityManagement.CollidableActor;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.GameLayer.Scenes.GamePlay;
 import GameEngine.Collisions.handlers.enums.ItemType;
 
@@ -67,11 +70,15 @@ public class ItemActor extends CollidableActor {
             }
         }
 
-        // Assign the texture region for this item
+        // Assign the texture region for this item, randomly selected from available ones for the itemType
         TextureAtlas itemAtlas = atlasMap.get(itemType);
-        textureRegion = itemAtlas.findRegion(regionNames[itemType.ordinal()]);
-        if (textureRegion == null) {
-            Gdx.app.error("ItemActor", "TextureRegion is null for item type: " + itemType);
+        Array<TextureAtlas.AtlasRegion> regions = itemAtlas.findRegions(regionNames[itemType.ordinal()]);
+
+        if (regions.size > 0) {
+            int index = MathUtils.random(0, regions.size - 1);
+            textureRegion = regions.get(index);
+        } else {
+            Gdx.app.error("ItemActor", "No TextureRegions found for item type: " + itemType);
         }
 
         // Make the actor touchable to detect interactions
