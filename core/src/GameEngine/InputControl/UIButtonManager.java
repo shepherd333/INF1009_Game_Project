@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import GameEngine.SceneManagement.SceneManager;
 import com.mygdx.game.GameLayer.Scenes.*;
 
+// UIButtonManager handles the creation and setup of UI buttons in different game scenes.
 public class UIButtonManager {
     private Skin skin;
     private Stage stage;
