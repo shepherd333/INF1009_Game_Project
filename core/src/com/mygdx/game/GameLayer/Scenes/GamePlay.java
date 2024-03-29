@@ -14,12 +14,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import GameEngine.Collisions.CollisionManager;
@@ -275,24 +271,6 @@ public class GamePlay extends BaseScene implements GameOverListener {
         ScoreManager.getInstance().render(batch, stage.getViewport());
     }
 
-    private void renderDebugShapes() {
-        setupShapeRenderer();
-        drawDebugShapes();
-    }
-
-
-    private void setupShapeRenderer() {
-        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
-    }
-
-    private void drawDebugShapes() {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        Rectangle bucketBounds = bucket.getBounds();
-        shapeRenderer.rect(bucketBounds.x, bucketBounds.y, bucketBounds.width, bucketBounds.height);
-        shapeRenderer.end();
-    }
 
     private void goToLeaderboard() {
         // logic to transition to the leaderboard scene
@@ -300,12 +278,7 @@ public class GamePlay extends BaseScene implements GameOverListener {
         AudioManager.getInstance().stopCountdownSound();
     }
 
-    private void logFPS() {
-        if (System.nanoTime() - startTime >= 1000000000) { // Check if a second has passed
-            Gdx.app.log("FPS", "Current FPS: " + Gdx.graphics.getFramesPerSecond());
-            startTime = System.nanoTime();
-        }
-    }
+
     @Override
     public void resize(int width, int height) {
         if (stage != null) {
